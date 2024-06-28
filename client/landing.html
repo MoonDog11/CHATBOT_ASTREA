@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="landing.css">
+    <style>
+        
+
+        .landing-page:before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            left: -1950px;
+            right: -850px;
+            bottom: -450px;
+            z-index: -1;
+            pointer-events: none;
+            background: linear-gradient(45deg, transparent 65%, rgba(255, 255, 255, 0.10) 80%, rgba(255, 255, 255, 0) 85%);
+            animation: sparkle 1s linear forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: translate(-50%, -50%);
+            }
+            100% {
+                transform: translate(150%, 150%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader"></div>
+    <div class="landing-page">
+        <div class="login-container">
+            <img src="./assets/logo abogados nordeste 2.png" alt="Logo" class="logo"> <!-- Asegúrate de que la ruta del logo sea correcta -->
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form" action="/api/login" method="POST">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="nombre_usuario" autocomplete="username" required>
+            
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="contrasena" required autocomplete="current-password">
+            
+                <button type="submit" id="submit-button" onclick="handleLogin(event)">Iniciar Sesión</button>
+
+                <p>¿No tienes una cuenta? <a href="register2.html">Regístrate aquí</a></p>
+
+            </form>
+
+            <div class="social-media">
+                <a href="https://www.facebook.com/tu_pagina" target="_blank">
+                    <img src="./assets/facebook-logo-circle-black.png" alt="Facebook">
+
+                <a href="https://www.instagram.com/tu_pagina" target="_blank">
+                    <img src="./assets/logo_ig_transp.png" alt="Instagram">
+                </a>
+                <a href="https://www.linkedin.com/tu_pagina" target="_blank">
+                    <img src="./assets/official-linkedin-icon-png-12.jpeg" alt="LinkedIn">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>

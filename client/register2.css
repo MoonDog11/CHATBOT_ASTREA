@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f4f4f4;
+}
+
+.register-page {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-container {
+    background: linear-gradient(to bottom, rgba(85, 82, 82, 0.9), rgba(85, 82, 82, 0));
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.register-container .logo {
+    width: 100px; /* Ajusta el tamaño del logo según sea necesario */
+    margin-bottom: 20px;
+}
+
+.register-container h2 {
+    margin-bottom: 20px;
+    color: #fff; /* Cambia el color del texto a blanco para contraste */
+}
+
+.register-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-container form label {
+    margin-top: 10px;
+    color: #fff; /* Cambia el color del texto a blanco para contraste */
+}
+
+.register-container form input {
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.register-container form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.register-container form button:hover {
+    background: #0056b3;
+}
+
