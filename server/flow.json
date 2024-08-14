@@ -1,0 +1,290 @@
+{
+  "flowPrincipal": {
+    "keywords": ["hola", "ole", "alo"],
+    "response": "🙌 Hola bienvenido a este *Chatbot Abogados Nordeste*",
+    "next": [
+      "flowDocs",
+      "flowGracias",
+      "flowTuto",
+      "flowDiscord"
+    ]
+  },
+  "flowContratos": {
+    "keywords": ["contrato", "acuerdo"],
+    "response": "¿Tienes alguna pregunta sobre contratos? Puedo ayudarte con temas como tipos de contratos, cláusulas, incumplimiento, etc.",
+    "next": [
+      "flowTiposContratos",
+      "flowClausulas",
+      "flowIncumplimiento",
+      "flowOtroTema"
+    ]
+  },
+  "flowTiposContratos": {
+    "keywords": ["tipos", "clases", "qué tipos hay"],
+    "response": "Los tipos de contratos más comunes son: [lista de tipos]. ¿Cuál te interesa?",
+    "next": "flowContratoEspecifico"
+  },
+  "flowContratoEspecifico": {
+    "keywords": ["compraventa", "alquiler", "trabajo"],
+    "response": "Necesito más detalles sobre el tipo de contrato específico que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowClausulas": {
+    "keywords": ["cláusulas", "condiciones"],
+    "response": "Algunas cláusulas comunes en los contratos son: [lista de cláusulas]. ¿Tienes alguna cláusula específica en mente?",
+    "next": "flowClausulaEspecifica"
+  },
+  "flowClausulaEspecifica": {
+    "keywords": ["penalización", "rescisión", "confidencialidad"],
+    "response": "Necesito más detalles sobre la cláusula específica que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowIncumplimiento": {
+    "keywords": ["incumplimiento", "no cumple", "retraso"],
+    "response": "El incumplimiento de un contrato puede tener diversas consecuencias legales. ¿Quieres saber más sobre las posibles acciones legales en caso de incumplimiento?",
+    "next": "flowConsecuenciasIncumplimiento"
+  },
+  "flowConsecuenciasIncumplimiento": {
+    "keywords": ["consecuencias", "acciones legales"],
+    "response": "Las consecuencias legales del incumplimiento pueden incluir: [lista de consecuencias]. ¿Te interesa algún detalle específico?",
+    "next": null
+  },
+  "flowSalarios": {
+    "keywords": ["salario", "sueldo"],
+    "response": "¿Tienes alguna pregunta sobre salarios? Puedo ayudarte con temas como cálculo de salarios, deducciones, etc.",
+    "next": [
+      "flowCalculoSalarios",
+      "flowDeducciones",
+      "flowOtroTemaSalario"
+    ]
+  },
+  "flowCalculoSalarios": {
+    "keywords": ["calcular", "cuánto gano", "nómina"],
+    "response": "Para calcular tu salario, necesito información como tu salario base, horas extras, bonificaciones y deducciones. ¿Puedes proporcionarme estos datos?",
+    "next": "flowDatosSalario"
+  },
+  "flowDatosSalario": {
+    "keywords": ["salario base", "horas extras", "bonificaciones", "deducciones"],
+    "response": "Tu salario neto es de [salario calculado].",
+    "next": null
+  },
+  "flowDeducciones": {
+    "keywords": ["deducciones", "descuentos"],
+    "response": "Los tipos de deducciones más comunes son: seguridad social, salud, pensiones, impuestos. ¿Tienes alguna pregunta sobre una deducción en particular?",
+    "next": "flowDeduccionEspecifica"
+  },
+  "flowDeduccionEspecifica": {
+    "keywords": ["seguridad social", "salud", "pensiones", "impuestos"],
+    "response": "Necesito más detalles sobre la deducción específica que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowVacaciones": {
+    "keywords": ["vacaciones", "descanso"],
+    "response": "¿Tienes alguna pregunta sobre vacaciones? Puedo ayudarte con temas como duración, pago, etc.",
+    "next": [
+      "flowDuracionVacaciones",
+      "flowPagoVacaciones",
+      "flowOtrosTemasVacaciones"
+    ]
+  },
+  "flowDuracionVacaciones": {
+    "keywords": ["duración", "cuántos días", "tiempo"],
+    "response": "La duración de las vacaciones suele estar establecida en el contrato laboral o en un convenio colectivo. ¿Quieres saber cuántos días de vacaciones tienes por ley en tu país?",
+    "next": "flowDuracionLegalVacaciones"
+  },
+  "flowDuracionLegalVacaciones": {
+    "keywords": ["legal", "por ley"],
+    "response": "En [país], la duración mínima de vacaciones por ley es de [duración legal] días.",
+    "next": null
+  },
+  "flowPagoVacaciones": {
+    "keywords": ["pago", "cobro", "sueldo"],
+    "response": "Durante las vacaciones, generalmente se sigue percibiendo el salario habitual. ¿Quieres saber más sobre el pago de las vacaciones?",
+    "next": "flowPagoDuranteVacaciones"
+  },
+  "flowPagoDuranteVacaciones": {
+    "keywords": ["durante", "mientras estoy de vacaciones"],
+    "response": "Sí, durante tus vacaciones normalmente sigues cobrando tu salario habitual. Sin embargo, hay algunas excepciones que pueden depender de tu contrato laboral o de la legislación de tu país. ¿Tienes alguna otra pregunta sobre el pago de las vacaciones?",
+    "next": null
+  },
+  "flowDelitos": {
+    "keywords": ["delito", "crimen"],
+    "response": "¿Tienes alguna pregunta sobre delitos? Puedo ayudarte con temas como tipos de delitos, penas, etc.",
+    "next": [
+      "flowTiposDelitos",
+      "flowPenas",
+      "flowOtrosTemasDelitos"
+    ]
+  },
+  "flowTiposDelitos": {
+    "keywords": ["tipos", "clases", "qué tipos hay"],
+    "response": "Los tipos de delitos más comunes son: [lista de tipos]. ¿En cuál estás interesado?",
+    "next": "flowDelitoEspecifico"
+  },
+  "flowDelitoEspecifico": {
+    "keywords": ["robo", "homicidio", "estafa"],
+    "response": "Necesito más detalles sobre el delito específico que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowPenas": {
+    "keywords": ["penas", "castigos"],
+    "response": "Las penas por cometer un delito varían según la gravedad del mismo y otros factores. ¿Quieres saber más sobre las penas por un delito en particular?",
+    "next": "flowPenaEspecifica"
+  },
+  "flowPenaEspecifica": {
+    "keywords": ["prisión", "multa", "inhabilitación"],
+    "response": "Necesito más detalles sobre la pena específica que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowProcesosJudiciales": {
+    "keywords": ["proceso", "juicio"],
+    "response": "¿Tienes alguna pregunta sobre procesos judiciales? Puedo ayudarte con temas como tipos de procesos, etapas, etc.",
+    "next": [
+      "flowTiposProcesos",
+      "flowEtapasProcesos",
+      "flowOtrosTemasProcesos"
+    ]
+  },
+  "flowTiposProcesos": {
+    "keywords": ["tipos", "clases", "qué tipos hay"],
+    "response": "Los tipos de procesos judiciales más comunes son: [lista de tipos]. ¿En cuál estás interesado?",
+    "next": "flowProcesoEspecifico"
+  },
+  "flowProcesoEspecifico": {
+    "keywords": ["civil", "penal", "laboral"],
+    "response": "Necesito más detalles sobre el proceso judicial específico que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowEtapasProcesos": {
+    "keywords": ["etapas", "fases", "cómo funciona"],
+    "response": "Un proceso judicial suele tener varias etapas, desde la presentación de la demanda hasta la sentencia. ¿Quieres saber más sobre las etapas de un proceso en particular?",
+    "next": "flowEtapaEspecifica"
+  },
+  "flowEtapaEspecifica": {
+    "keywords": ["demanda", "contestación", "sentencia"],
+    "response": "Necesito más detalles sobre la etapa específica que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowPropiedad": {
+    "keywords": ["propiedad", "inmueble"],
+    "response": "¿Tienes alguna pregunta sobre propiedad? Puedo ayudarte con temas como tipos de propiedad, derechos, etc.",
+    "next": [
+      "flowTiposPropiedad",
+      "flowDerechosPropiedad",
+      "flowOtrosTemasPropiedad"
+    ]
+  },
+  "flowTiposPropiedad": {
+    "keywords": ["tipos", "clases", "qué tipos hay"],
+    "response": "Los tipos de propiedad más comunes son: [lista de tipos]. ¿En cuál estás interesado?",
+    "next": "flowPropiedadEspecifica"
+  },
+  "flowPropiedadEspecifica": {
+    "keywords": ["inmueble", "terreno", "vehículo"],
+    "response": "Necesito más detalles sobre el tipo de propiedad específico que te interesa. Por favor, especifica.",
+    "next": null
+  },
+  "flowDerechosPropiedad": {
+    "keywords": ["derechos", "titularidad", "posesión"],
+    "response": "Los derechos de propiedad son un conjunto de facultades que tiene una persona sobre un bien. ¿Quieres saber más sobre un derecho de propiedad en particular?",
+    "next": "flowDerechoEspecifico"
+  },
+  "flowDerechoEspecifico": {
+    "keywords": ["uso", "disfrute", "disposición"],
+    "response": "Necesito más detalles para proporcionar la información específica que estás buscando. Por favor, especifica el tipo de derecho de propiedad.",
+    "next": null
+  },
+  "flowSucesiones": {
+    "keywords": ["sucesión", "herencia"],
+    "response": "¿Tienes alguna pregunta sobre sucesiones? Puedo ayudarte con temas como tipos de sucesiones, herencia, etc.",
+    "next": [
+      "flowTiposSucesiones",
+      "flowHerencia",
+      "flowOtrosTemasSucesiones"
+    ]
+  },
+  "flowTiposSucesiones": {
+    "keywords": ["tipos", "clases", "qué tipos hay"],
+    "response": "Los tipos de sucesiones más comunes son: [lista de tipos]. ¿Cuál te interesa?",
+    "next": "flowSucesionEspecifica"
+  },
+  "flowSucesionEspecifica": {
+    "keywords": ["testamentaria", "intestada", "legítima"],
+    "response": "Necesito más detalles para proporcionar la información específica que estás buscando. Por favor, especifica el tipo de sucesión.",
+    "next": null
+  },
+  "flowHerencia": {
+    "keywords": ["herencia", "legado"],
+    "response": "La herencia es la transmisión de bienes y derechos de una persona fallecida a sus herederos. ¿Quieres saber más sobre algún aspecto de la herencia?",
+    "next": "flowAspectoHerencia"
+  },
+  "flowAspectoHerencia": {
+    "keywords": ["partición", "aceptación", "renuncia"],
+    "response": "Necesito más detalles para proporcionar la información específica que estás buscando. Por favor, especifica el aspecto de la herencia.",
+    "next": null
+  },
+  "flowDerechoLaboral": {
+    "keywords": ["laboral", "trabajo"],
+    "response": "¿Tienes alguna pregunta sobre derecho laboral? Puedo ayudarte con temas como contratos, salarios, vacaciones, etc.",
+    "next": [
+      "flowContratos",
+      "flowSalarios",
+      "flowVacaciones",
+      "flowDespido",
+      "flowSeguridadSocial",
+      "flowOtrosTemasLaborales"
+    ]
+  },
+  "flowAspectoContrato": {
+    "keywords": ["tipo", "duración", "prórroga"],
+    "response": "Necesito más detalles para proporcionar la información específica que estás buscando. Por favor, especifica el aspecto del contrato laboral.",
+    "next": null
+  },
+  "flowDerechoPenal": {
+    "keywords": ["penal", "crimen", "delito", "ley penal", "código penal"],
+    "response": "¿Tienes alguna pregunta sobre derecho penal? Puedo ayudarte con temas como delitos, penas, procesos judiciales, etc.",
+    "next": [
+      "flowTiposDelitos",
+      "flowPenas",
+      "flowProcesosPenales",
+      "flowConceptosClave",
+      "flowDerechosAcusados",
+      "flowOtrosTemasPenales"
+    ]
+  },
+  "flowDelitosPersonas": {
+    "keywords": ["homicidio", "lesiones", "secuestro"],
+    "response": "Los delitos contra las personas atentan contra la vida, la integridad física o la libertad de las personas. ¿En qué delito en particular estás interesado?",
+    "next": null
+  },
+  "flowProcesosPenales": {
+    "keywords": ["proceso", "juicio"],
+    "response": "Un proceso penal tiene varias etapas, desde la investigación hasta la ejecución de la sentencia. ¿En qué etapa estás interesado?",
+    "next": [
+      "flowInvestigacion",
+      "flowJuicioOral",
+      "flowEjecucionSentencia"
+    ]
+  },
+  "flowConceptosClave": {
+    "keywords": ["imputabilidad", "tipicidad", "antijuridicidad", "culpabilidad"],
+    "response": "¿Qué concepto te gustaría que te explicara? Puedo hablarte sobre imputabilidad, tipicidad, antijuridicidad o culpabilidad.",
+    "next": null
+  },
+  "flowDerechosAcusados": {
+    "keywords": ["derechos", "acusado"],
+    "response": "Los acusados tienen diversos derechos garantizados. ¿Te interesa saber sobre el derecho a la defensa, el derecho a guardar silencio o algún otro?",
+    "next": null
+  },
+  "flowDerechoCivil": {
+    "keywords": ["civil", "propiedad", "contrato", "sucesión"],
+    "response": "¿Tienes alguna pregunta sobre derecho civil? Puedo ayudarte con temas como propiedad, contratos, sucesiones, etc.",
+    "next": [
+      "flowPropiedad",
+      "flowContratos",
+      "flowSucesiones",
+      "flowConceptosClave",
+      "flowOtrosTemasCiviles"
+    ]
+  }
+}
