@@ -1,0 +1,1308 @@
+@font-face {
+    font-family: 'Greek';
+    src: url('assets/greek.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Forever';
+    src: url('assets/batmfa__.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Greek1';
+    src: url('assets/grec.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Greek2';
+    src: url('assets/Roman\ SD.ttf') format('truetype');
+}
+
+ /* */
+
+
+ main {
+    /* Ajusta el ancho máximo según tu diseño */
+    margin: 0 auto; /* Centra el contenido horizontalmente */
+    padding: 20px; /* Agrega un espacio interno alrededor del contenido */
+    text-align: justify; /* Justifica el texto */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, rgba(23, 23, 23, 0.9), rgba(48, 48, 48, 0));
+}
+
+header {
+    background: linear-gradient(to right, #063a5d, #000000);
+    color: #fff; /* Texto blanco */
+    padding: 15px 20px;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5), -5px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.logo img {
+    height: 150px; /* Ajusta el tamaño del logo según sea necesario */
+    align-content: center;
+}
+/* NAVBAR */
+
+nav {
+
+    position: relative; /* Para manejar z-index de los hijos */
+    z-index: 1;
+    color: rgba(3, 56, 96, 0.133);
+    font-size: 5px;
+    font-family: 'Forever';
+    overflow: hidden;
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+ /* Permite que los elementos se ajusten en múltiples líneas en pantallas pequeñas */
+}
+
+ul {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically */
+    flex-wrap: wrap; /* Allow elements to wrap */
+    padding: 0;
+    margin: 0;
+ 
+  }
+  ul li {
+    margin: 0 px;
+    list-style: none;
+    text-align: center;
+  }
+  #ul2 {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap; /* Allow items to wrap */
+}
+
+ /* Estilo para el texto en hover */
+#ul2 li a:hover {
+    color: #5a5d5d; /* Color cian */
+    text-shadow: 0 0 10px rgba(3, 249, 220, 0.5); /* Brillo cian con opacidad */
+}
+
+#ul2 li a {
+    color: #0c5656;
+    text-decoration: none;
+    font-size: 2.5em;
+    padding: 5px 20px;
+    font-weight: 900;
+    position: relative;
+    /* Agregamos text-shadow a la transición */
+}
+
+  #ul2l:hover li a {
+    color: rgba(3, 50, 78, 0.133);
+  }
+  #ul2 li:hover a {
+    color: #03f9dc;
+    background: transparent;
+  }
+  /* Estilos para el círculo */
+  #ul2 li a::before {
+    content: attr(data-text); /* Mostrar el texto del atributo data-text */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    color: rgba(252, 249, 249, 0.1);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    font-weight: 1000;
+    text-transform: uppercase;
+    letter-spacing: 300px;
+    transition: opacity 0.5s, letter-spacing 0.5s, left 0.5s;
+    width: 200px;
+    height: 200px;
+}
+
+
+  #ul2 li a:hover:before {
+    opacity: 0.5;
+    left: 50%;
+    letter-spacing: 0px;
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  #ul2 li:nth-child(6n + 1) a:before,
+  #ul2 li:nth-child(6n + 2) a:before,
+  #ul2 li:nth-child(6n + 3) a:before,
+  #ul2 li:nth-child(6n + 4) a:before,
+  #ul2 li:nth-child(6n + 5) a:before,
+  #ul2 li:nth-child(6n + 6) a:before {
+      background: rgba(16, 15, 15, 0.5);
+      width: 500px;
+      height: 500px; /* Color de fondo con opacidad mayor */
+  }
+
+.navbar:hover ~ #introduction {
+    margin-top: 20px; /* Ajusta este valor según la cantidad que quieras que baje */
+}
+/* Media queries para hacer el diseño responsivo */
+/* Media queries to make the design responsive */
+@media (max-width: 768px) {
+    .logo img {
+        height: 130px; /* Ajusta el tamaño del logo según sea necesario */
+        align-content: center;
+    }
+    nav {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack list items vertically */
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    #ul2 li a {
+        font-size: 1.9em; /* Smaller font size for mobile */
+        padding: 5px 5px; /* Adjust padding */
+    }
+
+    #ul2 li a::before {
+        font-size: 2em; /* Smaller font size for mobile */
+        width: 150px; /* Adjust size for mobile */
+        height: 150px; /* Adjust size for mobile */
+    }
+}
+/* CHECKBOX LANGUAGE*/
+#languageTab {
+    padding: 20px; /* Padding alrededor de la lista */
+    margin: 0; /* Resetear margen */
+ max-height: 100vh;
+   position: relative;
+    align-items: center;
+    width: 100%; /* Asegurarse de que el contenedor use el ancho completo del padre */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total del contenedor */
+}
+
+#languageTab li {
+    display: block; /* Asegurar que cada elemento de la lista esté en su propia línea */
+    margin-top: 30px; /* Margen superior para separar los elementos */
+}
+
+.language-label {
+    animation: blink-animation 1s steps(5, start) infinite; /* Animación de parpadeo */
+    -webkit-animation: blink-animation 1s steps(5, start) infinite; /* Prefijo webkit para navegadores más antiguos */
+    text-align: center; /* Texto centrado */
+    color: rgb(82, 80, 80); /* Color del texto */
+    font-family: 'Greek2';
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden; /* Hace el texto invisible al final de la animación */
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden; /* Versión con prefijo webkit */
+    }
+}
+
+
+/* CHECKBOX */
+
+#myCheckbox {
+    width: 150px; 
+    height: 10px; 
+    border: 2px solid #313431; border-radius: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to top, transparent, gray, black);
+    position: relative;
+  padding: 30px;
+    border-radius: 55px;
+    transform: translate(-80%, -80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 250px; /* Reset margin */
+    margin-top: 30px;
+}
+#myCheckbox::after {
+    font-family: FontAwesome; /* Usar FontAwesome para el icono */
+    content: "\f011"; /* Icono de encendido */
+    color: #414344; /* Color del icono */
+    font-size: 30px; /* Tamaño del icono */
+}
+
+#myCheckbox:hover {
+    color: #02fafa; /* Color del icono */
+    background: linear-gradient(to bottom, transparent, gray, black); /* Degradado más claro al pasar el mouse */
+}
+
+#myCheckbox:checked {
+    background: #08e7fc; /* Fondo cian cuando está marcado */
+    box-shadow: 
+    -10px -10px 15px rgba(1, 240, 248, 0.5),
+    10px 10px 15px rgba(8, 191, 200, 0.12),
+    inset 0 0 20px #08e7fc, /* Efecto de resplandor interior */
+    inset 0 0 80px #08e7fc, /* Efecto de resplandor interior */
+    inset 0 0 60px #08e7fc; /* Efecto de resplandor interior */
+}
+
+#myCheckbox:checked::after {
+    color: #08fae6; /* Cambiar color del icono cuando está marcado */
+}
+
+  
+.hidden {
+    display: none;
+}
+
+.new-section {
+    margin-top: -65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(to top, rgba(51, 51, 51, 1), rgba(51, 51, 51, 0)); /* Degradado de gris oscuro a transparente */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    opacity: 0; /* Inicialmente invisible */
+    transform: translateY(-20px); /* Posición inicial fuera de la vista */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Animación de 3 segundos */
+}
+
+.new-section.visible {
+    opacity: 1; /* Visible */
+    transform: translateY(0); /* Posición final */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.translate-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* Espacio entre la bandera y el toggle */
+}
+
+.translate-container {
+    display: flex;
+    gap: 10px; /* Espacio entre las banderas */
+}
+
+.flag {
+    width: 45px; /* Tamaño deseado para la bandera, ajusta según tu necesidad */
+    height: 45px; /* Hacer la altura igual al ancho para que sea un círculo */
+    border-radius: 150%; /* Hacer que el elemento sea redondo */
+    border: 10px solid #333; /* Borde gris oscuro */
+    background-size: cover; /* Asegurarse de que la imagen cubra todo el elemento */
+    background-position: center; /* Centrar la imagen de fondo */
+    position: relative; /* Necesario para el pseudo-elemento */
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.5); /* Añadir un brillo en la parte superior */
+    overflow: hidden; /* Asegurarse de que la imagen no salga del borde redondeado */
+}
+
+#colombianFlag {
+    background-image: url('./assets/colombia_flags_flag_16986.png'); /* Imagen de fondo para la bandera de Colombia */
+}
+
+#usaFlag {
+    background-image: url('./assets/united_states_flags_flag_17080.png'); /* Imagen de fondo para la bandera de EE.UU. */
+}
+
+.flag::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45px; /* Tamaño deseado para la bandera, ajusta según tu necesidad */
+    height: 45px;
+    border-radius: 50%; /* Asegurar que el brillo también sea redondo */
+    background: radial-gradient(circle at top, rgba(0, 255, 255, 0.5), transparent);
+}
+
+#colombianFlag::before,
+#usaFlag::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* Asegurar que el brillo también sea redondo */
+    background: radial-gradient(circle at top, rgba(0, 255, 255, 0.5), transparent);
+}
+
+.translate-text {
+    font-family: 'Greek', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+.language-label {
+    font-family: 'Greek', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px; /* Espacio entre el texto y las banderas */
+}
+
+
+input[type="checkbox"] {
+    position: relative;
+    display: none;
+}
+
+label[for="btn"] {
+    position: relative;
+    display: block;
+    width: 20px; /* Ajusta el ancho según sea necesario */
+    height: 20px; /* Ajusta la altura según sea necesario */
+    background: linear-gradient(0deg, #121720, #0d1217);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(6, 85, 114, 0.5);
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked + label .thumb {
+    left: calc(100% - 25px); /* Ajusta el desplazamiento horizontal según sea necesario */
+}
+
+input[type="checkbox"]:checked + label .thumb {
+    transform: translateX(26px);
+}
+
+.toggle label {
+    display: block;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.toggle label .thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: rgb(88, 84, 84);
+    border-radius: 50%;
+    transition: left 0.3s;
+}
+
+.toggle input[type="checkbox"]:checked + label .thumb {
+    left: 2px;
+}
+
+.light {
+    position:relative;
+    top: 50%;
+ 
+    top: -20px;
+    left: 50px;
+    width: 16px;
+    height: 16px;
+    transform: translateY(50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: none;
+    background-color: rgb(3, 88, 79);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.toggle input[type="checkbox"]:checked ~ .light {
+    background-color: cyan;
+    box-shadow: 0 0 8px 4px rgba(0, 255, 255, 0.943), 0 0 10px 6px rgba(0, 255, 255, 0.3), 0 0 12px 8px rgba(0, 255, 255, 0.2);
+}
+@media (max-width: 480px) {
+    #languageTab {
+        padding: 10px;
+    }
+
+    #languageTab li {
+        margin-top: 30px;
+    }
+
+    .language-label {
+        font-size: 16px;
+    }
+
+    #myCheckbox {
+        width: 40px; /* Ajusta el tamaño del checkbox */
+        height: 40px;
+        top: 20%; /* Ajusta la posición */
+       
+    }
+
+    #myCheckbox::after {
+        font-size: 20px;
+    }
+
+    .new-section {
+        padding: 20px;
+    }
+
+    .translate-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .flag {
+        width: 45px;
+        height: 40px;
+    }
+
+    .toggle label {
+        width: 30px;
+        height: 15px;
+    }
+
+    .toggle label .thumb {
+        width: 12px;
+        height: 12px;
+    }
+
+    .light {
+        right: 10px;
+        width: 8px;
+        height: 8px;
+    }
+}
+@media (max-width: 768px) {
+    #languageTab {
+        margin-top: 35px;
+        margin-left: 50px;
+        padding: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }   
+
+    .language-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    #myCheckbox {
+        width: 30px; /* Adjust the size of the checkbox */
+        height: 30px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: linear-gradient(to bottom, #606262, rgba(0, 0, 0, 0));
+        position: relative; /* Use absolute positioning */
+        
+       
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin: 0; /* Reset margin */
+
+    }
+
+    #myCheckbox::after {
+        font-size: 25px;
+    }
+
+    .new-section {
+        margin-top: -70px;
+    }
+
+    .translate-container {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .flag {
+        width: 55px;
+        height: 55px;
+    }
+
+    .toggle label {
+        width: 35px;
+        height: 18px;
+    }
+
+    .toggle label .thumb {
+        width: 14px;
+        height: 14px;
+    }
+
+    .light {
+        margin-top: 2px;
+        left: 40px;
+        width: 9px;
+        height: 9px;
+    }
+}
+
+.section-card {
+    z-index: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.1) 75%);
+ /* Black to dark blue gradient */
+    padding: 20px;
+    color: rgb(67, 66, 66); /* Text color */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* INTRODUCTION */
+
+
+/* Estilo para la lista de elementos */
+
+
+.gradiente {
+    /* Degradado más claro al pasar el mouse */
+
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+.gradiente h2 {
+    margin: 0;
+    padding: 10px;
+}
+
+
+
+/* Estilo para las flechas */
+/* Contenedor principal centrado */
+
+
+.center-con {
+    z-index: 10;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Contenedor de la lista */
+.tutela-container {
+    z-index: 10;
+    padding: 10px;
+    position: relative;
+    z-index: 3; /* Ensure tutela-container is above other elements */
+    margin-top: 20px; /* Adjust margin as needed */
+    text-align: center;
+}
+
+.tutela-list {
+    display: flex;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+   
+}
+
+/* Estilo de los elementos de la lista */
+.tutela-list li {
+    z-index: 1;
+    flex-direction: column;
+    margin: 10px;
+    display: none;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+/* Elemento de la lista visible */
+.tutela-list li.visible {
+    display: flex;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+/* Estilo del h3 visible */
+.tutela-list li.visible h3 {
+    z-index: 1;
+    display: flex;
+    color: rgb(252, 248, 248);
+}
+
+/* Estilo del h3 general */
+.tutela-list li h3 {
+    margin-top: 65px; ;
+    z-index: 10;
+    position: relative;
+  
+}
+
+/* Estilos de las flechas */
+.arrow {
+    z-index: 10;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+}
+
+.arrow-right {
+    
+    z-index: 10;
+    margin-top: 160px;
+    transform: rotate(-90deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ justify-content: center;
+}
+
+.arrow-left {
+    margin-top: 160px;
+    z-index: 10;
+    transform: rotate(90deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+.arrow span {
+    z-index: 10;
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    transform: rotate(45deg);
+    margin: 0px;
+    animation: animate 1.5s infinite;
+}
+
+.arrow span:nth-child(2) {
+    animation-delay: -0.2s;
+}
+
+.arrow span:nth-child(3) {
+    animation-delay: -0.4s;
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+        transform: rotate(45deg) translate(-10px, -10px);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: rotate(45deg) translate(10px, 10px);
+    }
+}
+
+/* GLOBAL STYLES */
+
+/* Sección principal */
+
+main h4
+ {
+    margin-top: 20px;
+    font-family: 'Greek2';
+
+}
+
+h2 {
+    z-index: 10;
+    justify-self: normal; /* Ensures the text justification */
+    text-align: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Forever';
+    color: #f0f0f0; /* Cambia a blanco */
+    text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white, 0 0 50px white; /* Efecto de sombra */
+    text-align: center;
+    margin-top: 0;
+    text-shadow: none; /* Sin sombra inicialmente */
+    transition: color 0.3s ease, text-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Forever';
+    color: #f0f0f0; /* Cambia a blanco */
+    text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white, 0 0 50px white; /* Efecto de sombra */
+    text-align: center;
+    margin-top: 0;
+    text-shadow: none; /* Sin sombra inicialmente */
+    transition: color 0.3s ease, text-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+/* Estilos de las secciones */
+
+/* Estilos de la galería gallery2 */
+.gallery2 {
+    overflow: hidden;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 550px;
+    position: relative; /* Required for the pseudo-element */
+    border-radius: 200px; /* Optional: round the corners of the border */
+    padding: 10px; /* Optional: add some space between content and border */
+    background: rgba(14, 14, 14, 0.2);
+    margin: 0 auto; /* Center the .gallery2 element horizontally */
+    background: linear-gradient(to top, #0b0b0b, rgba(212, 219, 219, 0) 70%);
+    z-index: 5;
+}
+
+/* Pseudo-element for the metallic gradient border */
+.gallery2::before {
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    content: "";
+    position: absolute;
+    top: 0px; /* Adjust as needed */
+    left: -20px; /* Adjust as needed */
+    right: -20px; /* Adjust as needed */
+    bottom: 0px; /* Adjust as needed */
+    border-radius: 200px; /* Match the border radius of the .gallery2 element */
+    border: 5px solid #494949;
+    background: linear-gradient(
+        45deg, 
+        black,         /* Start with black */
+        #333333 35%,   /* Transition to dark gray */
+        #bdc3c7 60%,   /* Transition to light gray */
+        rgba(189, 195, 199, 0) 75% /* Transition to transparent */
+    );
+    box-shadow: #161716;
+ 
+}
+
+/* Optional: Add hover effect */
+.gallery2:hover::before {
+ 
+    background: linear-gradient(to top, #01f2ff, rgba(69, 70, 70, 0) 70%);
+}
+
+.gallery2 ul {
+     
+    display: flex;
+    flex-wrap: wrap; /* Asegura que las imágenes se ajusten en múltiples líneas */
+    justify-content: center; /* Centra las imágenes horizontalmente */
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.gallery2 li h3 {
+    padding: 10px;
+}
+
+:root {
+    --lerp-0: 1;
+    --lerp-1: 0.5787037;
+    --lerp-2: 0.2962963;
+    --lerp-3: 0.125;
+    --lerp-4: 0.037037;
+    --lerp-5: 0.0046296;
+    --lerp-6: 0;
+}
+
+
+/* Estilos de las tarjetas de servicio */
+.service-item {
+   
+    display: flex;
+    justify-content: center;
+    position: relative; /* Ensure relative positioning for absolute elements */
+    z-index: 1; /* Set a base z-index */
+    width: 100%;
+    height: 95%;
+    padding: 20px;
+    border-radius: 200px;
+    box-sizing: border-box;
+    background: rgba(252, 248, 248, 0.2);
+   
+}
+.service-item:hover .service-card {
+    z-index: 5; /* Ensure service-card is above service-item on hover */
+    filter: grayscale(0%);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.7); /* White glow effect */
+}
+
+.service-item:hover::after {
+    font-family: 'Forever';
+    content: '';
+    position: absolute;
+    height: 250px;
+    height: 390px;
+    margin-top: 0px;
+    top: 5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: 4; /* Below service-card but above service-item */
+    border-radius: 200px; /* Adjust as needed */
+  
+    background: linear-gradient(to top, rgba(126, 221, 240, 0.8), transparent); /* Light blue to transparent gradient */
+    transition: top 0.3s ease; /* Smooth transition for top position */
+    z-index: 1; /* Above service-item but below service-card */
+    box-shadow: 0 0 20px rgba(126, 221, 240, 0.8); /* Light blue glow */
+}
+.service-item:hover::after {
+    top: 0; /* Move gradient overlay to top on hover */
+}
+.service-card {
+
+
+    position: relative;
+    z-index: 1; /* Ensure service-card is above other elements inside service-item */
+    border-radius: 250px;
+    height: 460px;
+    width: -300px;
+    box-shadow: 0 0 10px rgba(3, 3, 3, 0.5);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    filter: grayscale(100%);
+    transition: filter 0.5s ease-in-out, transform 0.5s ease-in-out, background-position 0.2s ease-in-out;
+}
+
+
+
+.gallery2:hover .sparkle {
+    opacity: 1; /* Show sparkle on hover */
+}
+.service-item:hover .sparkle {
+    opacity: 1; /* Show sparkle on hover */
+}
+
+
+.sparkle {
+    z-index: 1;
+    position: absolute;
+    border-radius: 200px;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.1) 75%);
+    pointer-events: none;
+    opacity: 0; /* Start with sparkle hidden */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.service-item:hover .sparkle {
+    animation: sparkle 1s forwards; /* Trigger animation on hover */
+    opacity: 1;
+}
+
+@keyframes sparkle {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+    25% {
+        opacity: 0.7;
+    }
+    50% {
+        transform: translate(50%, 50%) scale(1);
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translate(150%, 150%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+.service-card h3 {
+    z-index: 2;
+    display: flex;
+    margin-top: 45px;
+    font-family: 'Forever';
+    position: relative;
+    justify-self: normal; /* Ensure text justification */
+    text-align: center; /* Center text horizontally */
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(4, 251, 222, 0.8), 0 0 10px rgba(255, 255, 255, 0.6), 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 20px rgb(5, 255, 247), 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
+    }
+}
+
+.service-card:hover h3 {
+    animation: glowPulse 1s infinite alternate;
+    color: #27d6d3;
+}
+
+.service-card h3::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(224, 234, 234, 0.2);
+    pointer-events: none;
+    z-index: 4;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(9, 241, 245, 0.5);
+    transition: opacity 0.1s ease-in-out;
+}
+
+.gallery2 h3:hover::before {
+    animation: move-diagonal 0.3s forwards;
+}
+
+@keyframes move-diagonal {
+    0% {
+        transform: translate(-100%, -100%);
+    }
+    50% {
+        transform: translate(100%, 100%);
+    }
+    100% {
+        transform: translate(-100%, -100%);
+        opacity: 0;
+    }
+}
+
+.service-card h3::after {
+    z-index: 3;
+    content: 'Click aquí';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #c4f907;
+    font-weight: bold;
+    font-size: 18px;
+    pointer-events: auto;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 10%;
+}
+
+.service-card h3:hover::after {
+    opacity: 1;
+}
+
+.service-card h2 {
+    margin-top: -30px;
+    padding: 10px;
+    position: relative;
+    z-index: 5; /* Ensure h2 is above other elements */
+    background: rgba(0, 0, 0, 0.6);
+    -webkit-background-clip: text; /* Chrome, Safari */
+    -moz-background-clip: text; /* Firefox */
+    background-clip: text; /* Standard property */
+    -webkit-text-fill-color: transparent; /* Transparent text fill for gradient */
+    color: transparent; /* Ensure transparency for unsupported browsers */
+    text-shadow: none; /* Remove text shadow */
+    transition: transform 0.5s ease, color 0.5s ease, text-shadow 0.5s ease; /* Smooth transition for transform, color, and text-shadow properties */
+}
+
+.service-card:hover h2 {
+    display: flex; /* Use flexbox to center vertically */
+    z-index: 20; /* Ensure h2 is above on hover */
+    background: none; /* Remove background to avoid background-clip effect */
+    -webkit-background-clip: initial;
+    -moz-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: initial; /* Ensure white color */
+    color: #fbffff; /* Change to white */
+    transform: translateY(110px); /* Move text up */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                 0 0 20px rgba(255, 255, 255, 0.6), 
+                 0 0 30px rgba(255, 255, 255, 0.4); /* Soft glow effect */
+}
+
+.service-card p { 
+    z-index:0;
+
+    font-family: 'Greek2';
+    position: relative;
+    margin-top: -120px;
+   text-justify: auto;
+    width: 250px; /* Ancho del objeto */
+    height: 500px; /* Alto del objeto */
+    font-size: 15px; /* Tamaño de fuente */
+    color: #f7f3f3; /* Color del texto */
+    text-align:center; /* Alineación justificada del texto */
+    background: linear-gradient(to bottom, #070707, rgba(69, 70, 70, 0) 70%); /* Gradiente de fondo */
+    border-radius: 200px; /* Borde redondeado */
+    padding: 80px; /* Espaciado interno */
+    display: flex; /* Usar flexbox para centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: start; /* Centrar verticalmente */
+}
+
+.p-container {
+    z-index: 1;
+    position: fixed;
+    margin-top: 320px;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer; /* Cambia el cursor al hacer hover */
+    font-size: 20px; /* Tamaño de fuente */
+    color: #b6b2b2; /* Color del texto */
+}
+
+.p-container.hidden p {
+    display: block; /* Usar flexbox para centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: start;
+    transform: translate(-50%, -50%);
+   
+}
+.p-container.hidden {
+    display: none;
+}
+
+.close-btn2 {
+    font-family: 'Greek';
+    z-index: 3;
+    cursor: pointer;
+    color: #9bff05; /* Adjust color as needed */
+    font-size: 20px; /* Adjust font size as needed */
+    position: relative;
+    top: -50px; /* Adjust top position as needed */
+    right: 0px; /* Adjust right position as needed */
+}
+.service-card h3:hover {
+    color: #f6f0f0;
+    text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 40px #ffffff, 0 0 50px #ffffff;
+}
+
+ol {
+    list-style-type: none; /* Quita los números de la lista */
+    padding-left: 0; /* Elimina el espacio izquierdo por defecto */
+}
+
+ol li {
+    margin-bottom: 10px; /* Espacio entre ítems de la lista */
+}
+
+strong {
+    font-family: 'Forever';
+    font-weight: bold;
+    color: #333;
+    text-align: center; /* Centra el texto dentro del elemento */
+    display: block; /* Cambia el comportamiento de línea a bloque para centrar horizontalmente */
+    margin: 0 auto; /* Margen automático para centrar horizontalmente */
+    max-width: 80%; /* Ajusta el ancho máximo para limitar el texto */
+    padding: 10px; /* Añade un espacio interno para mejorar la legibilidad */
+}
+footer {
+    background: linear-gradient(to right, #063a5d, #000000);
+    color: #fff; /* Texto blanco */
+    padding: 15px 20px;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5), -5px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos personalizados para el botón */
+button {
+    margin: 0 auto; /* Centra horizontalmente el botón */
+    position: relative;
+    padding: 0.75em 2em;
+    font: 1.2rem "Orbitron";
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fefafa;
+    text-shadow: 0 5px 20px rgba(246, 246, 245, 0.4), 0 2px 2px rgba(6, 242, 250, 0.4);
+    background-image: radial-gradient(
+        100% 75% at 50% 100%,
+        #1178c1 0%,
+        #4992ca 100%
+    );
+    border: none;
+    border-radius: 100px;
+    box-shadow: inset 0 3px 15px 0 rgb(3, 225, 245),
+                inset 0 -3px 0 0 rgb(3, 98, 129),
+                inset 0 40px 0 0 rgba(254, 210, 98, 0.4),
+                inset 0 20px 20px 0 rgb(248, 250, 251),
+                0 0 0 8px #000,
+                0 9px 0 0 #444,
+                0 0 20px 0 rgba(254, 210, 98, 0.4),
+                0 40px 20px -30px rgba(254, 210, 98, 0.2);
+    display: flex;
+    justify-content: center; /* Centra verticalmente el botón */
+    margin-top: 80px; /* Margen superior */
+    margin-bottom: 80px;
+    flex-wrap: wrap; /* Asegura que las imágenes se ajusten en múltiples líneas */
+}
+   
+   button:before {
+     content: "";
+     position: absolute;
+     z-index: -2;
+     top: -2rem;
+     left: -4rem;
+     right: -4rem;
+     bottom: -2rem;
+     background: linear-gradient(#333, #151515);
+     border-radius: 100px;
+     box-shadow: 0 2px 10px #000, 
+                 inset 0 2px 0 #444;
+   }
+   
+   button:after {
+     content: "";
+     position: absolute;
+     z-index: -1;
+     background: #000;
+     box-shadow: 0 1px 0 #444;
+     height: 10px;
+     left: -4rem;
+     right: -4rem;
+     top: 50%;
+     transform: translateY(-50%);
+   }
+   
+   button:hover {
+     cursor: pointer;
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #06d4ef 0%,
+       #f5f8f8 100%
+     );
+   }
+   
+   button:focus,
+   button:active {
+     outline: none;
+     color: #f9e3bf;
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #00fa57 0%,
+       #f8f4f4 100%
+     );
+     box-shadow: inset 0 0 50px rgba(249, 251, 247, 0.4),
+                 inset 0 0 10px rgb(248, 250, 247), inset 0 3px 15px 0 rgba(174, 32, 0, 1),
+                 inset 0 40px 0 0 rgba(254, 210, 98, 0.3),
+                 inset 0 20px 20px 0 rgba(4, 193, 96, 0.75), 0 0 0 8px #000,
+                 0 9px 0 0 #444;
+   }
+
+   /* Media Queries */
+@media (max-width: 768px) {
+    button {
+        width: 170px;
+        font-size: 1rem; /* Example: Reduce font size for smaller screens */
+        padding: 0.5em 1.5em; /* Example: Adjust padding for smaller screens */
+        margin-top: 40px; /* Example: Adjust margin for smaller screens */
+        margin-bottom: 40px;
+    }
+}
+ 
+/* Footer styles */
+footer {
+    background: linear-gradient(to right, #063a5d, #000000);
+    color: #ffd700; /* Color base dorado */
+    padding: 20px;
+    text-align: center;
+   
+    font-family: 'Arial', sans-serif;
+}
+
+footer p {
+    font-family: 'Forever';
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 204, 255, 0.5), 
+                 0 0 10px rgba(255, 215, 0, 0.3),
+                 0 0 15px rgba(255, 215, 0, 0.1);
+    background: linear-gradient(to bottom, #00e5ff, #00b3ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+}
+
+footer p:hover {
+    animation: golden-shine 1.5s ease-in-out infinite alternate;
+}
+
+.social-media {
+    margin-bottom: 20px;
+}
+
+.social-media a {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.social-media img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-media img:hover {
+    transform: scale(1.2);
+}
+
+@keyframes golden-shine {
+    from {
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5),
+                     0 0 10px rgba(255, 215, 0, 0.3),
+                     0 0 15px rgba(255, 215, 0, 0.1);
+    }
+    to {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
+                     0 0 20px rgba(255, 215, 0, 0.5),
+                     0 0 30px rgba(255, 215, 0, 0.3);
+    }
+}

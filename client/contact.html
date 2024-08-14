@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bufete de Abogados</title>
+  <link rel="stylesheet" href="contact.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="#home" class="logo"><img src="./assets/logo%20abogados%20nordeste%202.png" alt="Logo del Bufete de Abogados"></a>
+      <ul id="ul2">
+        <li><a href="home.html" data-text="Home" data-translate-key="Inicio">Inicio</a></li>
+        <li><a href="services.html" data-text="Services"data-translate-key="Servicios">Servicios</a></li>
+        <li><a href="about.html" data-text="About"data-translate-key="Nosotros">Nosotros</a></li>
+        <li><a href="register.html" data-text="Register"data-translate-key="Registro">Registro</a></li>
+        <li><a href="contact.html" data-text="Contact"data-translate-key="Contacto">Contacto</a></li>
+    </ul>
+    </nav>
+  </header>
+
+  <!-- Etiqueta para el idioma -->
+  <div class="language-label" data-translate-key="Escoga un Idioma"><a>Escoga un Idioma</a></div>
+        
+  <!-- Lista para el checkbox de idioma -->
+  <ul id="languageTab">
+    <input type="checkbox" id="myCheckbox">
+  </ul>
+  
+  <!-- Contenedor oculto de opciones de idioma -->
+  <div id="languageOptions" class="hidden">
+      <section class="new-section">
+          <div class="container">
+              <div class="translate-container">
+                  <!-- Imágenes de banderas -->
+                  <img src="./assets/colflag.png" alt="Bandera de Colombia" class="flag" id="colombianFlag">
+                  <img src="./assets/usaflag.png" alt="USA Flag" class="flag" id="usaFlag" style="display: none;">
+              </div>
+              
+              <!-- Toggle de idioma -->
+              <div class="toggle">
+                  <input type="checkbox" id="btn">
+                  <label for="btn">
+                      <span class="thumb"></span>
+                  </label>
+                  <div class="light"></div>
+              </div>
+              
+              <!-- Texto para traducir -->
+              <span class="translate-text" id="translateText">Translate to English</span>
+          </div>
+    
+  </div>
+
+<!-- Asegúrate de tener esta línea para tu JS -->
+
+    </div>
+
+    <div>
+      <section id="contact" class="contact">
+        <div class="container2">
+          <h2 data-translate-key="Contacto">Contacto</h2>
+            <form id="contact-form" action="/sendContactForm" method="POST">
+              <label for="name" data-translate-key="Nombre">Nombre</label>
+              <input type="text" id="contact-name" name="name" required>
+              <label for="email" data-translate-key="Correo Electrónico">Correo Electrónico</label>
+              <input type="email" id="contact-email" name="email" required>
+              <label for="message" data-translate-key="Mensaje">Mensaje</label>
+              <textarea id="contact-message" name="message" required></textarea>
+              <button type="submit" id="contact-form-button">Submit</button>
+          </form>
+        </div>
+    </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="social-media">
+      <a href="https://www.facebook.com/tu_pagina" target="_blank">
+        <img src="./assets/facebook-logo-circle-black.png" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/tu_pagina" target="_blank">
+        <img src="./assets/logo_ig_transp.png" alt="Instagram">
+      </a>
+      <a href="https://www.linkedin.com/tu_pagina" target="_blank">
+        <img src="./assets/official-linkedin-icon-png-12.jpeg" alt="LinkedIn">
+      </a>
+    </div>
+    <p>Dirección: Av 37 c 61-08, Medellín, Colombia</p>
+    <p>Teléfono Fijo: +57 (4) 4679481</p>
+    <p>Teléfono Celular: +57 310 449 52 44</p>
+    <p>© 2024 MoonDog Studio.</p>
+  </footer>
+
+  <script src="translate.js"></script>
+</body>
+
+</html>

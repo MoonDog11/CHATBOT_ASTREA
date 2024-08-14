@@ -1,0 +1,1885 @@
+
+/* FONTS */
+
+
+@font-face {
+    font-family: 'Greek';
+    src: url('assets/greek.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Forever';
+    src: url('assets/batmfa__.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Greek1';
+    src: url('assets/grec.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Greek2';
+    src: url('assets/Roman\ SD.ttf') format('truetype');
+}
+
+/* TEXT */
+    /* Estilo adicional para el elemento about */
+    #about {
+        padding: 20px;
+        transition: box-shadow 0.5s ease;
+    }
+
+    /* Clase de glow para el elemento about */
+    .glow {
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 1);
+    }
+
+    /* Estilo adicional para el h2 dentro de #about */
+    #about h2 {
+        transition: text-shadow 0.5s ease;
+    }
+
+    /* Clase de glow para el h2 */
+    .glow-text {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+    }
+
+h2{
+    font-family: 'Forever';
+    text-align: center;
+    margin-bottom: 10px;
+    color: #ede9e9; /* Color inicial del texto */
+    transition: text-shadow 0.3s ease, color 0.3s ease;
+   }
+   
+
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
+* {
+  -moz-box-sizing: inherit;
+       box-sizing: inherit;
+  -webkit-transition-property: all;
+          transition-property: all;
+  -webkit-transition-duration: .6s;
+          transition-duration: .6s;
+  -webkit-transition-timing-function: ease;
+          transition-timing-function: ease;
+}
+
+
+.image-container {
+    position: relative;
+}
+
+
+.buttons {
+    display: flex;
+    flex-direction: column; /* Stack buttons in a column */
+    align-items: center; /* Center the buttons horizontally */
+    padding: 10px;
+    margin: 0;
+    z-index: 10;
+    position: relative;
+    text-align: center; /* Ensure text is centered */
+    display: none; /* Hide buttons by default */
+}
+
+.buttons.show {
+    display: flex; /* Show buttons when the 'show' class is added */
+}
+
+.btnfos {
+    color: #fff;
+    cursor: pointer;
+    display: flex; /* Flex display for centering text */
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 45px;
+    max-width: 160px;
+    position: relative;
+    text-transform: uppercase;
+    width: 100%;
+    padding: 0; /* Ensure no padding interferes with centering */
+    margin: 10px 0; /* Add margin between buttons */
+}
+
+@media (min-width: 400px) {
+    .btnfos {
+        max-width: 100%; /* Ensure buttons are responsive */
+    }
+}
+
+@media (min-width: 600px) {
+    .btnfos {
+        max-width: 100%; /* Ensure buttons are responsive */
+    }
+}
+
+.btnfos-1 {
+    z-index:10px;
+    display: inline-block;
+    background: #2c3e50;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.btnfos-1 svg {
+    position: absolute;
+    left: 0;
+    top: 0; /* Adjust to ensure proper positioning */
+    width: 100%;
+    height: 100%;
+}
+
+.btnfos-1 rect {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1;
+    stroke-dasharray: 422, 0;
+}
+
+.btnfos-1:hover {
+    background: rgba(225, 51, 45, 0);
+    letter-spacing: 1px;
+    font-weight: 900;
+}
+
+.btnfos-1:hover rect {
+    stroke-width: 5;
+    stroke-dasharray: 15, 310;
+    stroke-dashoffset: 48;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Additional media queries for proper padding and alignment */
+@media (max-width: 768px) {
+    .buttons {
+        padding: 10px; /* Ensure padding for mobile devices */
+        justify-content: center; /* Center the button */
+    }
+
+    .btnfos {
+        max-width: 100%; /* Adjust width for mobile devices */
+        margin: 0; /* Remove additional margin */
+    }
+}
+
+@media (max-width: 480px) {
+    .buttons {
+        padding: 10px; /* Ensure padding for smaller screens */
+        justify-content: center; /* Center the button */
+    }
+
+    .btnfos {
+        max-width: 100%; /* Adjust width for smaller screens */
+        margin: 0; /* Remove additional margin */
+    }
+}
+
+.hover-text {
+    background: linear-gradient(to bottom, rgba(23, 23, 23, 0.9), rgba(48, 48, 48, 0));
+    z-index: 10;
+    padding: 20px;
+    margin: 20px auto;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10px;
+    text-align: justify;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    color: white;
+    transition: opacity 0.3s ease;
+    display: none; /* Initially hidden */
+  
+    
+}
+
+.result:hover .hover-text {
+    display:block;
+    opacity: 1;
+}
+.close-btn {
+   
+    padding: 0px;
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    color:white;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 10; /* Asegura que esté por encima de otros elementos */
+}
+
+
+
+h1.heading {
+    color: #fff;
+    font-size: 2em;
+    font-weight: 900;
+    margin: 0 0 0.5em;
+}
+
+@media (min-width: 450px) {
+    h1.heading {
+        font-size: 1.75em;
+    }
+}
+
+@media (min-width: 760px) {
+    h1.heading {
+        font-size: 3.25em;
+    }
+}
+
+@media (min-width: 900px) {
+    h1.heading {
+        font-size: 4.25em;
+        margin: 0 0 0.5em;
+    }
+}
+.watermark {
+    font-family: 'Forever';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 109, 132, 0.2); /* Fondo cian con opacidad */
+    color: rgba(249, 254, 254, 0.7); /* Color del texto en cian con opacidad */
+    font-size: 25px; /* Tamaño de fuente */
+    font-weight: bold; /* Fuente en negrita */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+    pointer-events: none; /* Permite interactuar con la imagen debajo */
+    transform-origin: center;
+    opacity: 0; /* Inicialmente oculto */
+    transition: opacity 0.3s ease, text-shadow 0.3s ease; /* Transición suave */
+}
+
+.result:hover .watermark {
+    margin-top: 0px;
+    opacity: 1; /* Muestra la marca de agua al hacer hover */
+    text-shadow: 0 0 10px rgba(248, 250, 250, 0.8), /* Primer brillo */
+                 0 0 20px rgba(244, 247, 247, 0.6), /* Segundo brillo */
+                 0 0 30px rgba(206, 209, 209, 0.4); /* Tercer brillo */
+}
+
+.image-info-section {
+    border-radius: 10px;
+    background: linear-gradient(to bottom, rgb(63, 62, 62), rgba(0, 0, 0, 0));
+    z-index: 1;
+    text-shadow: 0 0 10px rgba(40, 39, 39, 0.8); /* Glow blanco */
+    padding: 20px;
+    max-width: 1500px;
+    margin: 20px auto;
+    font-family: 'Forever';
+    font-size: 24px;
+    display: none; /* Oculto inicialmente */
+    text-align: justify;
+    
+}
+
+.image-info-section h3 {
+    text-align:center;
+    margin-top: 0;
+    font-size: 24px;
+    color: #fff; /* Texto blanco */
+    z-index: 1;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Glow blanco */
+}
+
+
+.image-info-section p {
+    font-family: 'Greek2';
+    font-size: 10px;
+    color: #fcf6f6;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+
+
+@media (max-width: 768px) {
+    .result {
+        flex: 1 1 calc(50% - 20px);
+    }
+
+    .image-info-section {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .result {
+        flex: 1 1 100%;
+    }
+}
+
+/**/
+
+main {
+    /* Ajusta el ancho máximo según tu diseño */
+    margin: 0 auto; /* Centra el contenido horizontalmente */
+    padding: 20px; /* Agrega un espacio interno alrededor del contenido */
+    text-align: justify; /* Justifica el texto */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, rgba(23, 23, 23, 0.9), rgba(48, 48, 48, 0));
+}
+
+header {
+    background: linear-gradient(to right, #063a5d, #000000);
+    color: #fff; /* Texto blanco */
+    padding: 15px 20px;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5), -5px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo img {
+    height: 150px; /* Ajusta el tamaño del logo según sea necesario */
+    align-content: center;
+}
+
+/* NAVBAR */
+
+nav {
+
+    position: relative; /* Para manejar z-index de los hijos */
+    z-index: 1;
+    color: rgba(3, 56, 96, 0.133);
+    font-size: 5px;
+    font-family: 'Forever';
+    overflow: hidden;
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+ /* Permite que los elementos se ajusten en múltiples líneas en pantallas pequeñas */
+}
+
+ul {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically */
+    flex-wrap: wrap; /* Allow elements to wrap */
+    padding: 0;
+    margin: 0;
+ 
+  }
+  ul li {
+    margin: 0 px;
+    list-style: none;
+    text-align: center;
+  }
+  #ul2 {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap; /* Allow items to wrap */
+}
+
+ /* Estilo para el texto en hover */
+#ul2 li a:hover {
+    color: #5a5d5d; /* Color cian */
+    text-shadow: 0 0 10px rgba(3, 249, 220, 0.5); /* Brillo cian con opacidad */
+}
+
+#ul2 li a {
+    color: #0c5656;
+    text-decoration: none;
+    font-size: 2.5em;
+    padding: 5px 20px;
+    font-weight: 900;
+    position: relative;
+    /* Agregamos text-shadow a la transición */
+}
+
+  #ul2l:hover li a {
+    color: rgba(3, 50, 78, 0.133);
+  }
+  #ul2 li:hover a {
+    color: #03f9dc;
+    background: transparent;
+  }
+  /* Estilos para el círculo */
+  #ul2 li a::before {
+    content: attr(data-text); /* Mostrar el texto del atributo data-text */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    color: rgba(252, 249, 249, 0.1);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    font-weight: 1000;
+    text-transform: uppercase;
+    letter-spacing: 300px;
+    transition: opacity 0.5s, letter-spacing 0.5s, left 0.5s;
+    width: 200px;
+    height: 200px;
+}
+
+
+  #ul2 li a:hover:before {
+    opacity: 0.5;
+    left: 50%;
+    letter-spacing: 0px;
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  #ul2 li:nth-child(6n + 1) a:before,
+  #ul2 li:nth-child(6n + 2) a:before,
+  #ul2 li:nth-child(6n + 3) a:before,
+  #ul2 li:nth-child(6n + 4) a:before,
+  #ul2 li:nth-child(6n + 5) a:before,
+  #ul2 li:nth-child(6n + 6) a:before {
+      background: rgba(16, 15, 15, 0.5);
+      width: 500px;
+      height: 500px; /* Color de fondo con opacidad mayor */
+  }
+
+.navbar:hover ~ #introduction {
+    margin-top: 20px; /* Ajusta este valor según la cantidad que quieras que baje */
+}
+/* Media queries para hacer el diseño responsivo */
+/* Media queries to make the design responsive */
+@media (max-width: 768px) {
+    .logo img {
+        height: 130px; /* Ajusta el tamaño del logo según sea necesario */
+        align-content: center;
+    }
+    nav {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack list items vertically */
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    #ul2 li a {
+        font-size: 1.9em; /* Smaller font size for mobile */
+        padding: 5px 5px; /* Adjust padding */
+    }
+
+    #ul2 li a::before {
+        font-size: 2em; /* Smaller font size for mobile */
+        width: 150px; /* Adjust size for mobile */
+        height: 150px; /* Adjust size for mobile */
+    }
+}
+/* CHECKBOX LANGUAGE*/
+#languageTab {
+    padding: 20px; /* Padding alrededor de la lista */
+    margin: 0; /* Resetear margen */
+ max-height: 100vh;
+   position: relative;
+    align-items: center;
+    width: 100%; /* Asegurarse de que el contenedor use el ancho completo del padre */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total del contenedor */
+}
+
+#languageTab li {
+    display: block; /* Asegurar que cada elemento de la lista esté en su propia línea */
+    margin-top: 30px; /* Margen superior para separar los elementos */
+}
+
+.language-label {
+    animation: blink-animation 1s steps(5, start) infinite; /* Animación de parpadeo */
+    -webkit-animation: blink-animation 1s steps(5, start) infinite; /* Prefijo webkit para navegadores más antiguos */
+    text-align: center; /* Texto centrado */
+    color: rgb(82, 80, 80); /* Color del texto */
+    font-family: 'Greek2';
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden; /* Hace el texto invisible al final de la animación */
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden; /* Versión con prefijo webkit */
+    }
+}
+
+
+/* CHECKBOX */
+
+#myCheckbox {
+    width: 150px; 
+    height: 10px; 
+    border: 2px solid #313431; border-radius: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to top, transparent, gray, black);
+    position: relative;
+  padding: 30px;
+    border-radius: 55px;
+    transform: translate(-80%, -80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 250px; /* Reset margin */
+    margin-top: 30px;
+}
+#myCheckbox::after {
+    font-family: FontAwesome; /* Usar FontAwesome para el icono */
+    content: "\f011"; /* Icono de encendido */
+    color: #414344; /* Color del icono */
+    font-size: 30px; /* Tamaño del icono */
+}
+
+#myCheckbox:hover {
+    color: #02fafa; /* Color del icono */
+    background: linear-gradient(to bottom, transparent, gray, black); /* Degradado más claro al pasar el mouse */
+}
+
+#myCheckbox:checked {
+    background: #08e7fc; /* Fondo cian cuando está marcado */
+    box-shadow: 
+    -10px -10px 15px rgba(1, 240, 248, 0.5),
+    10px 10px 15px rgba(8, 191, 200, 0.12),
+    inset 0 0 20px #08e7fc, /* Efecto de resplandor interior */
+    inset 0 0 80px #08e7fc, /* Efecto de resplandor interior */
+    inset 0 0 60px #08e7fc; /* Efecto de resplandor interior */
+}
+
+#myCheckbox:checked::after {
+    color: #08fae6; /* Cambiar color del icono cuando está marcado */
+}
+
+  
+.hidden {
+    display: none;
+}
+
+.new-section {
+    margin-top: -65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(to top, rgba(51, 51, 51, 1), rgba(51, 51, 51, 0)); /* Degradado de gris oscuro a transparente */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    opacity: 0; /* Inicialmente invisible */
+    transform: translateY(-20px); /* Posición inicial fuera de la vista */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Animación de 3 segundos */
+}
+
+.new-section.visible {
+    opacity: 1; /* Visible */
+    transform: translateY(0); /* Posición final */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.translate-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* Espacio entre la bandera y el toggle */
+}
+
+.translate-container {
+    display: flex;
+    gap: 10px; /* Espacio entre las banderas */
+}
+
+.flag {
+    width: 65px; /* Tamaño deseado para la bandera, ajusta según tu necesidad */
+    height: 65px; /* Hacer la altura igual al ancho para que sea un círculo */
+    border-radius: 150%; /* Hacer que el elemento sea redondo */
+    border: 10px solid #333; /* Borde gris oscuro */
+    background-size: cover; /* Asegurarse de que la imagen cubra todo el elemento */
+    background-position: center; /* Centrar la imagen de fondo */
+    position: relative; /* Necesario para el pseudo-elemento */
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.5); /* Añadir un brillo en la parte superior */
+    overflow: hidden; /* Asegurarse de que la imagen no salga del borde redondeado */
+}
+
+#colombianFlag {
+    background-image: url('./assets/colombia_flags_flag_16986.png'); /* Imagen de fondo para la bandera de Colombia */
+}
+
+#usaFlag {
+    background-image: url('./assets/united_states_flags_flag_17080.png'); /* Imagen de fondo para la bandera de EE.UU. */
+}
+
+.flag::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 55px; /* Tamaño deseado para la bandera, ajusta según tu necesidad */
+    height: 45px;
+    border-radius: 50%; /* Asegurar que el brillo también sea redondo */
+    background: radial-gradient(circle at top, rgba(0, 255, 255, 0.5), transparent);
+}
+
+#colombianFlag::before,
+#usaFlag::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* Asegurar que el brillo también sea redondo */
+    background: radial-gradient(circle at top, rgba(0, 255, 255, 0.5), transparent);
+}
+
+.translate-text {
+    font-family: 'Greek', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 20px;
+}
+
+.language-label {
+    font-family: 'Greek', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 10px;
+    margin-top: 10px; /* Espacio entre el texto y las banderas */
+}
+
+
+input[type="checkbox"] {
+    
+    position: relative;
+    display: none;
+}
+
+label[for="btn"] {
+  
+    position: relative;
+    display: block;
+    width: 20px; /* Ajusta el ancho según sea necesario */
+    height: 20px; /* Ajusta la altura según sea necesario */
+    background: linear-gradient(0deg, #121720, #0d1217);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(6, 85, 114, 0.5);
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked + label .thumb {
+    left: calc(100% - 25px); /* Ajusta el desplazamiento horizontal según sea necesario */
+}
+
+input[type="checkbox"]:checked + label .thumb {
+    transform: translateX(26px);
+}
+
+.toggle label {
+    display: block;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.toggle label .thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: rgb(88, 84, 84);
+    border-radius: 50%;
+    transition: left 0.3s;
+}
+
+.toggle input[type="checkbox"]:checked + label .thumb {
+    left: 2px;
+}
+
+.light {
+    position:relative;
+    top: 50%;
+ 
+    top: -20px;
+    left: 50px;
+    width: 16px;
+    height: 16px;
+    transform: translateY(50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: none;
+    background-color: rgb(3, 88, 79);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.toggle input[type="checkbox"]:checked ~ .light {
+    background-color: cyan;
+    box-shadow: 0 0 8px 4px rgba(0, 255, 255, 0.943), 0 0 10px 6px rgba(0, 255, 255, 0.3), 0 0 12px 8px rgba(0, 255, 255, 0.2);
+}
+@media (max-width: 480px) {
+    #languageTab {
+        padding: 10px;
+    }
+
+    #languageTab li {
+        margin-top: 30px;
+    }
+
+    .language-label {
+        font-size: 16px;
+    }
+
+    #myCheckbox {
+        width: 40px; /* Ajusta el tamaño del checkbox */
+        height: 40px;
+        top: 20%; /* Ajusta la posición */
+       
+    }
+
+    #myCheckbox::after {
+        font-size: 20px;
+    }
+
+    .new-section {
+        padding: 20px;
+    }
+
+    .translate-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .flag {
+        width: 45px;
+        height: 40px;
+    }
+
+    .toggle label {
+        width: 30px;
+        height: 15px;
+    }
+
+    .toggle label .thumb {
+        width: 12px;
+        height: 12px;
+    }
+
+    .light {
+        right: 10px;
+        width: 8px;
+        height: 8px;
+    }
+}
+@media (max-width: 768px) {
+    #languageTab {
+        margin-top: 35px;
+        margin-left: 50px;
+        padding: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }   
+
+    .language-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    #myCheckbox {
+        width: 30px; /* Adjust the size of the checkbox */
+        height: 30px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: linear-gradient(to bottom, #606262, rgba(0, 0, 0, 0));
+        position: relative; /* Use absolute positioning */
+        
+       
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin: 0; /* Reset margin */
+
+    }
+
+    #myCheckbox::after {
+        font-size: 25px;
+    }
+
+    .new-section {
+        margin-top: -70px;
+    }
+
+    .translate-container {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .flag {
+        width: 55px;
+        height: 55px;
+    }
+
+    .toggle label {
+        width: 35px;
+        height: 18px;
+    }
+
+    .toggle label .thumb {
+        width: 14px;
+        height: 14px;
+    }
+
+    .light {
+        margin-top: 2px;
+        left: 40px;
+        width: 9px;
+        height: 9px;
+    }
+}
+
+
+/*INTRODUCTION*/
+
+.intro-box {
+    position: relative;
+    overflow: hidden;
+  
+  
+  }
+  
+  .intro-box::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 0;
+    right: 0;
+    bottom: -10%;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.5) 10%, rgba(255, 255, 255, 0) 70%);
+    transform-origin: bottom;
+    transform: scaleY(0.1); /* Escala inicial de 0.1 para que parezca un triángulo */
+    animation: sparkle 1s linear forwards; /* Cambiado a forwards para que se quede en el estado final */
+    opacity: 0; /* Inicialmente oculto */
+    transition: opacity 0.3s ease-in-out; /* Transición suave de opacidad */
+  }
+  
+  .intro-box:hover::before {
+    animation-play-state: running; /* Asegura que la animación se active al hacer hover */
+    opacity: 1; /* Mostrar el brillo al hacer hover */
+  }
+  
+  @keyframes sparkle {
+    0% {
+      transform: scaleY(0.1); /* Escala inicial de 0.1 para empezar pequeño */
+    }
+    100% {
+      transform: scaleY(1); /* Escala completa para crecer hasta el tamaño completo */
+    }
+  }
+.introduction {
+    margin: 0;
+    background: linear-gradient(to top, #333333, rgba(0, 0, 0, 0));
+  
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el contenido de introducción */
+.intro-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+/* Estilos para cada caja de introducción */
+.intro-box {
+    background: linear-gradient(to top, #5c5b5b, rgba(93, 91, 91, 0));
+    border-radius: 10px;
+    padding: 80px;
+    width: 300px;
+    margin: 10px; /* Añadir espacio entre las cajas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Añadir transición para el resplandor */
+}
+
+/* Efecto de transformación y resplandor al hacer hover sobre la caja */
+.intro-box:hover {
+    transform: translateY(-10px);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.8); /* Resplandor interior blanco */
+}
+
+/* Estilos para el texto "Bienvenidos" */
+.introduction h2 {
+    text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white, 0 0 50px ;
+    color: rgb(252, 249, 249); /* Color de texto inicial */
+    transition: text-shadow 0.3s ease; /* Transición para el efecto de resplandor */
+    
+}
+
+/* Estilos para el texto "Visión" y "Misión" */
+.intro-box h3 {
+    font-family: 'Forever';
+    color: grey; /* Color de texto inicial */
+    transition: text-shadow 0.3s ease; /* Transición para el efecto de resplandor */
+}
+
+/* Estilos para el efecto glow en el texto "Bienvenidos" al hacer hover sobre la caja */
+.intro-box:hover ~ h2 {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), /* Resplandor principal */
+                 0 0 20px rgba(255, 255, 255, 0.5), /* Resplandor medio */
+                 0 0 30px rgba(255, 255, 255, 0.5); /* Resplandor exterior */
+}
+
+/* Estilos para el efecto glow en el texto "Visión" y "Misión" al hacer hover sobre la caja */
+.intro-box:hover h3 {
+    
+    color: rgb(251, 248, 248);
+    text-shadow: 0 0 10px rgba(250, 242, 242, 0.5), /* Resplandor principal */
+                 0 0 20px rgba(255, 255, 255, 0.5), /* Resplandor medio */
+                 0 0 30px rgba(255, 255, 255, 0.5); /* Resplandor exterior */
+}
+
+/* Clase de glow para el texto */
+.glow-text {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+}
+
+/* Estilo adicional para el elemento #introduction */
+#introduction {
+    padding: 20px;
+    transition: box-shadow 0.5s ease;
+}
+
+/* Clase de glow para el elemento #introduction */
+.glow {
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 1);
+}
+
+/* Estilo adicional para el h2 dentro de #introduction */
+#introduction h2 {
+    transition: text-shadow 0.5s ease;
+}
+
+/* Estilos para los párrafos dentro de las cajas */
+.intro-box p {
+    margin: 0;
+    font-size: 1em;
+}
+
+/* ABOUT US*/
+
+.about {
+    background: linear-gradient(to bottom, rgba(45, 46, 46, 0.8), transparent); /* Fondo con degradado de azul oscuro a transparente */
+    padding: 50px 0; /* Espaciado interno superior e inferior */
+    
+}
+
+.about-content {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about-image {
+    z-index: -1;
+    left: 300px;
+    width: 400px; /* Tamaño deseado para las imágenes */
+    height: auto;
+    margin-bottom: 200px; /* Espacio inferior entre las imágenes y el texto */
+}
+
+.about-content p {
+    z-index: 10;
+    margin-bottom: 0px; /* Espacio inferior entre los párrafos */
+}
+
+.image-container {
+    position: relative;
+    background-color: #333336;
+    transition: box-shadow 0.3s ease, border 0.3s ease; /* Transición suave para box-shadow y border */
+}
+
+.image-container img {
+  
+    object-fit: cover; /* Cubrir el contenedor sin distorsionar la imagen */
+}
+
+.image-container::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+
+    transition: border-color 0.5s ease, box-shadow 1s ease-in-out;
+    pointer-events: none; /* Para que no afecte a los eventos del contenido */
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); /* Inicialmente sin sombra */
+}
+
+.image-container:hover::before {
+    border-color: rgba(252, 254, 255, 0.7);
+    animation: glowTransition 1s ease-in-out forwards, permanentGlow 1s ease-in-out 1s infinite;
+}
+
+@keyframes glowTransition {
+    0% {
+        box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0);
+    }
+    33% {
+        box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.5);
+    }
+    66% {
+        box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 20px 7px rgba(255, 255, 255, 1);
+    }
+}
+
+@keyframes permanentGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px 7px rgba(255, 255, 255, 1);
+    }
+    50% {
+        box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.9);
+    }
+}
+
+.result img {
+    max-width: 100%;
+    width: 100%;
+
+    filter: grayscale(100%); /* Aplica escala de grises a las imágenes */
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.result:hover img {
+    filter: grayscale(0); /* Remueve la escala de grises al hacer hover */
+    transform: scale(1.1); /* Aumenta el tamaño de la imagen */
+}
+
+.result:hover {
+    z-index: 10; /* Trae la imagen al frente */
+}
+
+.result::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    bottom: -2rem; /* Asegura que el texto esté justo debajo de la galería */
+    width: 100%;
+    color: black;
+    font-size: 1.2rem;
+    background-color: rgba(88, 90, 93, 0.9);
+    padding: 5px 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center; /* Centra el texto */
+}
+
+/* Nuevos estilos específicos para la galería 2 */
+.gallery2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px; /* Ajusta según tus necesidades */
+    border: 2px solid transparent; /* Borde inicial transparente */
+    transition: border-color 0.5s ease;
+    border-radius: 10px; /* Opcional: redondear las esquinas del borde */
+    padding: 10px; /* Opcional: añadir un poco de espacio entre el contenido y el borde */
+    background: linear-gradient(to bottom, black, #333); /* Degradado de negro a gris oscuro */
+
+    overflow: hidden; /* Para ocultar el pseudo-elemento fuera del contenedor */
+}
+
+.gallery2 ul {
+    display: flex;
+    flex-wrap: wrap; /* Asegura que las imágenes se ajusten en múltiples líneas */
+    justify-content: center; /* Centra las imágenes horizontalmente */
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    max-width: 1200px; /* Limita el ancho máximo de la galería */
+    width: 100%;
+}
+
+.gallery2 li {
+    padding: 0;
+}
+
+.gallery2 img {
+    max-width: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: all 0.2s ease;
+}
+
+:root {
+    --lerp-0: 1;
+    --lerp-1: 0.5787037;
+    --lerp-2: 0.2962963;
+    --lerp-3: 0.125;
+    --lerp-4: 0.037037;
+    --lerp-5: 0.0046296;
+    --lerp-6: 0;
+}
+
+.gallery2 li {
+    flex: calc(0.1 + (var(--active-lerp, 0) * 1));
+    transition: flex 0.2s ease;
+    
+}
+
+.gallery2 li:is(:hover, :focus-within) {
+    --active-lerp: var(--lerp-0);
+    z-index: 7;
+}
+
+.gallery2 li:has(+ li:is(:hover, :focus-within)),
+.gallery2 li:is(:hover, :focus-within) + li {
+    --active-lerp: var(--lerp-1);
+    z-index: 6;
+}
+
+.gallery2 li:has(+ li + li:is(:hover, :focus-within)),
+.gallery2 li:is(:hover, :focus-within) + li + li {
+    --active-lerp: var(--lerp-2);
+    z-index: 5;
+}
+
+.gallery2 li:has(+ li + li + li:is(:hover, :focus-within)),
+.gallery2 li:is(:hover, :focus-within) + li + li + li {
+    --active-lerp: var(--lerp-3);
+    z-index: 4;
+}
+
+.gallery2 li:has(+ li + li + li + li:is(:hover, :focus-within)),
+.gallery2 li:is(:hover, :focus-within) + li + li + li {
+    --active-lerp: var(--lerp-4);
+    z-index: 3;
+}
+
+.gallery2 li:has(+ li + li + li + li + li:is(:hover, :focus-within)),
+.gallery2 li:is(:hover, :focus-within) + li + li + li + li {
+    --active-lerp: var(--lerp-5);
+    z-index: 2;
+}
+
+.gallery2 li:has(+ li + li + li + li + li + li:is(:hover, :focus-within)),
+.gallery2 li:is(:hover, :focus-within) + li + li + li + li + li {
+    --active-lerp: var(--lerp-6);
+    z-index: 1;
+}
+/* Media query para dispositivos móviles (por ejemplo, anchura máxima de 768px) */
+@media (max-width: 768px) {
+    .gallery2 {
+        flex-direction: column; /* Cambia a disposición vertical */
+        height: auto; /* Altura automática para ajustarse al contenido */
+    }
+
+    .gallery2 li {
+        flex-basis: 100%; /* Ocupa todo el ancho en vertical */
+    }
+}
+
+/* CARD ABOGADOS*/
+
+.gallery {
+    display: flex;
+  
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 50%;
+    flex-direction: row;
+    align-items: center;
+    
+}
+
+.gallery-item {
+    background-image: url('./assets/card_2_nordeste.jpg');
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center; 
+    position: relative;
+    width: 400px;
+    height: 700px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(240, 236, 236, 0.1);
+    transition: transform 0.3s ease;
+    
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(251, 248, 248, 0.4);
+    transform: skewY(-30deg);
+    transition: top 0.5s ease;
+}
+
+.gallery-item:hover::before {
+    top: 100%;
+}
+.gallery-logo {
+    position: absolute;
+    bottom: 10px; /* Ajusta según sea necesario */
+    right: 10px; /* Ajusta según sea necesario */
+    width: 20px; /* Ajusta el tamaño según sea necesario */
+    height: 20px; /* Ajusta el tamaño según sea necesario */
+    opacity: 5;
+    transition: opacity 0.5s ease, filter 0.5s ease;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+}
+
+.gallery-item:hover .gallery-logo {
+    position: absolute;
+    bottom: 10px; /* Ajusta según sea necesario */
+    right: 10px; /* Ajusta según sea necesario */
+    width: 50px; /* Ajusta el tamaño según sea necesario */
+    height: 50px; /* Ajusta el tamaño según sea necesario */
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1));
+}
+.gallery-item img{
+    object-fit: cover;
+    right: -70px;
+    margin-top: 50px;
+    position:relative;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 250px;
+    height: 400px;
+    border-radius: 200px;
+    filter: grayscale(100%); /* Aplica escala de grises por defecto */
+    transition: filter 0.3s ease, transform 0.3s ease;
+    
+}
+
+.gallery-item:hover .gallery-photo {
+    filter: grayscale(0); /* Remueve la escala de grises al hacer hover */
+    transform: scale(1.1); /* Aumenta el tamaño de la imagen al hacer hover */
+}
+
+.gallery-item::after {
+    z-index: 3;
+    content: url('/assets/logo\ abogados\ nordeste\ blanco.png'); /* Ruta del logo */
+    position: absolute;
+    bottom: 10px; /* Ajusta según sea necesario */
+    right: 10px; /* Ajusta según sea necesario */
+    width: 10px; /* Ajusta el tamaño según sea necesario */
+    height: 10px; /* Ajusta el tamaño según sea necesario */
+    opacity: 0;
+    transition: opacity 0.5s ease, filter 0.5s ease;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    animation: blink 2s infinite; /* Aplica la animación */
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+.gallery-item:hover::after {
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1));
+}
+
+
+.gallery-info {
+    margin-top: 50px;
+    width: 100%;
+    padding: 25px;
+    background-color: #474444;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-info {
+    opacity: 1;
+}
+
+.gallery-info h3 {
+    font-family: 'Forever';
+    margin: 10px 0;
+    font-size: 18px;
+    color: #fffdfd;
+}
+
+.gallery-info p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    .gallery-item {
+        width: 45%;
+        height: 600px;
+    }
+
+    .gallery-item img {
+        left: 30px;
+        width: 250px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .gallery-item {
+        width: 90%;
+        height: 550px;
+    }
+
+    .gallery-item img {
+        width: 200px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-item {
+        height: 500px;
+    }
+
+    .gallery-item img {
+        width: 180px;
+        height: 250px;
+    }
+
+    .gallery-info h3 {
+        font-size: 16px;
+    }
+
+    .gallery-info p {
+        font-size: 12px;
+    }
+}
+
+/* SERVICES*/
+.service-text {
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+    color: rgb(70, 67, 67);
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Estilos base para ambos botones */
+#services button,
+#register-button {
+    display: inline-block;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Estilos específicos para el botón de servicios */
+#services button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+/* Estilos específicos para el botón de registro */
+#register-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+/* Media Queries */
+@media screen and (max-width: 480px) {
+    #services button,
+    #register-button {
+        width: 65%;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    #services button,
+    #register-button {
+        width: 60%;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    #services button,
+    #register-button {
+        width: 50%;
+        max-width: 300px;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    #services button,
+    #register-button {
+        width: fit-content;
+        max-width: 300px;
+    }
+}
+.service-item {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.service-image {
+    width: 100%;
+    height: auto;
+    max-width: 300px; /* Adjust this size as needed */
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+.service-icon {
+    width: 50px;  /* Ajusta el tamaño según tus necesidades */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
+/* JOIN US */
+
+
+/* Estilo de los encabezados */
+.join-us {
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos hijos estén en columna */
+    align-items: center; /* Centra los elementos hijos horizontalmente */
+}
+
+.join-us p {
+    font-size: 1.2em;
+    margin-bottom: -10px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Efecto glow en el texto */
+    text-align: justify; /* Justifica el texto */
+    line-height: 1.5; /* Interlineado */
+    width: 100%; /* Asegura que el párrafo ocupe todo el ancho del contenedor */
+    max-width: 600px; /* Puedes ajustar este valor según tus necesidades */
+}
+
+
+
+
+
+
+/* CONTACTO */
+
+.contact {
+   
+    position: relative;
+    padding: 20px 20px;
+    background-color: #7b7878; /* Fondo gris claro */
+    background-size: cover;
+    color: #fff; /* Texto blanco para mejor contraste */
+}
+
+.contact h2 {
+    font-family: 'Forever';
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #fff; /* Texto blanco */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para destacar el texto */
+}
+
+.container2 {
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mayor legibilidad del contenido */
+    padding: 50px;
+    border-radius: 10px;
+    position: relative;
+    display: flex; /* Utiliza Flexbox para centrar el contenido */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container3 {
+    width: 100%;
+    height: 100%; /* Ancho máximo para evitar que se agrande demasiado en pantallas grandes */
+   
+    margin: 10px auto; /* Centra el contenedor horizontalmente y agrega margen superior/inferior */
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mayor legibilidad del contenido */
+    padding: 20px; /* Reduce el padding para que se ajuste mejor */
+    border-radius: 40px;
+    position: relative;
+    display: flex; /* Utiliza Flexbox para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+.container4 {
+    padding: 20px;
+    height: 100px; /* Asegura que la sección ocupe toda la altura de la ventana */
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mayor legibilidad del contenido */
+    display: flex;
+    position: relative;
+    justify-content: center;
+   
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+form label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+form input, form textarea {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    color: #fff; /* Texto blanco */
+    font-size: 16px;
+}
+
+/* Estilos personalizados para el botón */
+button {
+    margin-bottom: 10px;
+     position: relative;
+     padding: 0.75em 2em;
+     font: 1.2rem "Orbitron";
+     letter-spacing: 2px;
+     text-transform: uppercase;
+     color: #fefafa;
+     text-shadow: 0 5px 20px rgba(246, 246, 245, 0.4), 0 2px 2px rgba(6, 242, 250, 0.4);
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #1178c1 0%,
+       #4992ca 100%
+     );
+     border: none;
+     border-radius: 100px;
+     box-shadow: inset 0 3px 15px 0 rgb(3, 225, 245),
+                 inset 0 -3px 0 0 rgb(3, 98, 129),
+                 inset 0 40px 0 0 rgba(254, 210, 98, 0.4),
+                 inset 0 20px 20px 0 rgb(248, 250, 251),
+                 0 0 0 8px #000, 
+                 0 9px 0 0 #444,
+                 0 0 20px 0 rgba(254, 210, 98, 0.4),
+                 0 40px 20px -30px rgba(254, 210, 98, 0.2);
+     margin: 20px 0; /* Agregar margen para separación */
+   }
+   
+   button:before {
+     content: "";
+     position: absolute;
+     z-index: -2;
+     top: -2rem;
+     left: -4rem;
+     right: -4rem;
+     bottom: -2rem;
+     background: linear-gradient(#333, #151515);
+     border-radius: 100px;
+     box-shadow: 0 2px 10px #000, 
+                 inset 0 2px 0 #444;
+   }
+   
+   button:after {
+     content: "";
+     position: absolute;
+     z-index: -1;
+     background: #000;
+     box-shadow: 0 1px 0 #444;
+     height: 10px;
+     left: -4rem;
+     right: -4rem;
+     top: 50%;
+     transform: translateY(-50%);
+   }
+   
+   button:hover {
+     cursor: pointer;
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #06d4ef 0%,
+       #f5f8f8 100%
+     );
+   }
+   
+   button:focus,
+   button:active {
+     outline: none;
+     color: #f9e3bf;
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #00fa57 0%,
+       #f8f4f4 100%
+     );
+     box-shadow: inset 0 0 50px rgba(249, 251, 247, 0.4),
+                 inset 0 0 10px rgb(248, 250, 247), inset 0 3px 15px 0 rgba(174, 32, 0, 1),
+                 inset 0 40px 0 0 rgba(254, 210, 98, 0.3),
+                 inset 0 20px 20px 0 rgba(4, 193, 96, 0.75), 0 0 0 8px #000,
+                 0 9px 0 0 #444;
+   }
+   
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container3 {
+        width: 90%; /* Ajusta el ancho al 90% del contenedor principal en pantallas más pequeñas */
+        padding: 10px; /* Reduce el padding en pantallas más pequeñas */
+    }
+
+    .btn img,
+    .bg {
+        width: 40px; /* Ajusta el tamaño de la imagen según sea necesario en pantallas más pequeñas */
+        height: 40px; /* Ajusta el tamaño de la imagen según sea necesario en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .container3 {
+        width: 100%; /* Ajusta el ancho al 100% del contenedor principal en pantallas muy pequeñas */
+        padding: 5px; /* Reduce aún más el padding en pantallas muy pequeñas */
+    }
+
+    .btn img,
+    .bg {
+        width: 300px; /* Ajusta el tamaño de la imagen según sea necesario en pantallas muy pequeñas */
+        height: 30px; /* Ajusta el tamaño de la imagen según sea necesario en pantallas muy pequeñas */
+    }
+}
+footer {
+    background: linear-gradient(to right, #063a5d, #000000);
+    color: #ffd700; /* Color base dorado */
+    padding: 20px;
+    text-align: center;
+   
+    font-family: 'Arial', sans-serif;
+}
+
+footer p {
+    font-family: 'Forever';
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 204, 255, 0.5), 
+                 0 0 10px rgba(255, 215, 0, 0.3),
+                 0 0 15px rgba(255, 215, 0, 0.1);
+    background: linear-gradient(to bottom, #00e5ff, #00b3ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+}
+
+footer p:hover {
+    animation: golden-shine 1.5s ease-in-out infinite alternate;
+}
+
+.social-media {
+    margin-bottom: 20px;
+}
+
+.social-media a {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.social-media img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-media img:hover {
+    transform: scale(1.2);
+}
+
+@keyframes golden-shine {
+    from {
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5),
+                     0 0 10px rgba(255, 215, 0, 0.3),
+                     0 0 15px rgba(255, 215, 0, 0.1);
+    }
+    to {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
+                     0 0 20px rgba(255, 215, 0, 0.5),
+                     0 0 30px rgba(255, 215, 0, 0.3);
+    }
+}
+
+/* Estilos generales */
+
+.bot-info h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #00ffff; /* cyan color */
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* initial glow */
+  transition: text-shadow 0.5s; /* animation duration */
+}
+
+.bot-info h2.glow {
+  text-shadow: 0 0 20px rgba(0, 255, 255, 1); /* increased glow */
+}
+
+.bot-info h2.glow-out {
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* decreased glow */
+}
+.glowing-text {
+  color: cyan;
+  text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 30px cyan, 0 0 40px cyan;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 30px cyan, 0 0 40px cyan;
+  }
+  50% {
+    text-shadow: 0 0 20px cyan, 0 0 30px cyan, 0 0 40px cyan, 0 0 50px cyan;
+  }
+  100% {
+    text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 30px cyan, 0 0 40px cyan;
+  }
+}
+.bot-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  .bot-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+  .bot-info {
+    margin-top: 10px;
+  }
+  .chat-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .chat-button:hover {
+    background-color: #3e8e41;
+  }
+
+  .astrea-chatbot-title {
+    color: #00ffff; /* cyan color */
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* initial glow */
+    transition: text-shadow 0.5s; /* animation duration */
+  }
+  
+  .astrea-chatbot-title.glow {
+    text-shadow: 0 0 20px rgba(0, 255, 255, 1); /* increased glow */
+  }
+  
+  .astrea-chatbot-title.glow-out {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* decreased glow */
+  }
+  #iframe-container.active {
+    box-shadow: 0 0 10px rgba(6, 225, 249, 0.5); /* glow blanco */
+    border-bottom: 2px solid rgba(6, 247, 239, 0.5); /* borde inferior blanco */
+  }

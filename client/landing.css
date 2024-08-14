@@ -1,0 +1,207 @@
+/* Importar la fuente Orbitron */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap");
+@font-face {
+    font-family: 'Forever';
+    src: url('assets/batmfa__.ttf') format('truetype');
+}
+
+/* Estilos para centrar el contenido */
+body {
+  background: linear-gradient(to top,#4b4b4b, #151515);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.landing-container {
+  background: linear-gradient(to top, #063a5d, #000000);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+.landing-page {
+  background: linear-gradient(to bottom, rgba(3, 37, 81, 0.9), rgba(15, 15, 15, 0));
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid linear-gradient(to top,#fcf8f8, #151515);
+}
+
+.landing-page:before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.5) 80%, rgba(255, 255, 255, 0) 85%);
+  animation: sparkle 8s linear forwards;
+}
+
+@keyframes sparkle {
+  0% {
+      transform: translate(-50%, -50%);
+  }
+  100% {
+      transform: translate(150%, 150%);
+  }
+}
+/* Estilos para la imagen del logo */
+.logo {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+/* Estilos para el título */
+h2 {
+    font-family: 'Forever';
+  margin-bottom: 0px;
+  color: #faf7f7;
+}
+
+/* Estilos para las etiquetas de los formularios */
+label {
+  display: block;
+  margin: 20px 0 1px;
+
+  border-radius: 200px;
+}
+
+/* Estilos para los campos de entrada */
+input[type="text"],
+input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 40px;
+  background: linear-gradient(to bottom, rgba(24, 24, 24, 0.9), rgba(15, 15, 15, 0));
+
+  border-radius: 200px;
+}
+
+/* Estilos personalizados para el botón */
+button {
+ margin-bottom: 10px;
+  position: relative;
+  padding: 0.75em 2em;
+  font: 1.2rem "Orbitron";
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fefafa;
+  text-shadow: 0 5px 20px rgba(246, 246, 245, 0.4), 0 2px 2px rgba(6, 242, 250, 0.4);
+  background-image: radial-gradient(
+    100% 75% at 50% 100%,
+    #1178c1 0%,
+    #4992ca 100%
+  );
+  border: none;
+  border-radius: 100px;
+  box-shadow: inset 0 3px 15px 0 rgb(3, 225, 245),
+              inset 0 -3px 0 0 rgb(3, 98, 129),
+              inset 0 40px 0 0 rgba(254, 210, 98, 0.4),
+              inset 0 20px 20px 0 rgb(248, 250, 251),
+              0 0 0 8px #000, 
+              0 9px 0 0 #444,
+              0 0 20px 0 rgba(254, 210, 98, 0.4),
+              0 40px 20px -30px rgba(254, 210, 98, 0.2);
+  margin: 20px 0; /* Agregar margen para separación */
+}
+
+button:before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  top: -2rem;
+  left: -4rem;
+  right: -4rem;
+  bottom: -2rem;
+  background: linear-gradient(#333, #151515);
+  border-radius: 100px;
+  box-shadow: 0 2px 10px #000, 
+              inset 0 2px 0 #444;
+}
+
+button:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: #000;
+  box-shadow: 0 1px 0 #444;
+  height: 10px;
+  left: -4rem;
+  right: -4rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+button:hover {
+  cursor: pointer;
+  background-image: radial-gradient(
+    100% 75% at 50% 100%,
+    #06d4ef 0%,
+    #f5f8f8 100%
+  );
+}
+
+button:focus,
+button:active {
+  outline: none;
+  color: #f9e3bf;
+  background-image: radial-gradient(
+    100% 75% at 50% 100%,
+    #00fa57 0%,
+    #f8f4f4 100%
+  );
+  box-shadow: inset 0 0 50px rgba(249, 251, 247, 0.4),
+              inset 0 0 10px rgb(248, 250, 247), inset 0 3px 15px 0 rgba(174, 32, 0, 1),
+              inset 0 40px 0 0 rgba(254, 210, 98, 0.3),
+              inset 0 20px 20px 0 rgba(4, 193, 96, 0.75), 0 0 0 8px #000,
+              0 9px 0 0 #444;
+}
+
+/* Estilos para los enlaces de redes sociales */
+.social-media {
+  margin-top: 20px;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; 
+}
+
+.social-media a {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.social-media img {
+  width: 40px; /* Ajusta el tamaño de las imágenes según sea necesario */
+  height: 40px; /* Ajusta el tamaño de las imágenes según sea necesario */
+  transition: transform 0.3s;
+}
+
+.social-media img:hover {
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el ratón */
+}

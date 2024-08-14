@@ -1,0 +1,851 @@
+@font-face {
+    font-family: 'Greek';
+    src: url('assets/greek.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Forever';
+    src: url('assets/batmfa__.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Greek1';
+    src: url('assets/grec.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Greek2';
+    src: url('assets/Roman\ SD.ttf') format('truetype');
+}
+
+/**/
+main {
+    align-items: center;
+    max-width: 800px; /* Ajusta el ancho máximo según tu diseño */
+    min-height: 100px; 
+    background: linear-gradient(to top, #333 0%, #eee 100%);
+    text-align: justify; /* Justifica el texto */
+    margin: 0 auto; /* Centra el contenido horizontalmente */
+    padding: 20px; /* Agrega un espacio interno alrededor del contenido */
+    text-align: justify; /* Justifica el texto */
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+header {
+    background: linear-gradient(to right, #063a5d, #000000);
+    color: #fff; /* Texto blanco */
+    padding: 15px 20px;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5), -5px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo img {
+    height: 150px; /* Ajusta el tamaño del logo según sea necesario */
+    align-content: center;
+}
+
+/* NAVBAR */
+
+nav {
+
+    position: relative; /* Para manejar z-index de los hijos */
+    z-index: 1;
+    color: rgba(3, 56, 96, 0.133);
+    font-size: 5px;
+    font-family: 'Forever';
+    overflow: hidden;
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+ /* Permite que los elementos se ajusten en múltiples líneas en pantallas pequeñas */
+}
+
+ul {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically */
+    flex-wrap: wrap; /* Allow elements to wrap */
+    padding: 0;
+    margin: 0;
+ 
+  }
+  ul li {
+    margin: 0 px;
+    list-style: none;
+    text-align: center;
+  }
+  #ul2 {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap; /* Allow items to wrap */
+}
+
+ /* Estilo para el texto en hover */
+#ul2 li a:hover {
+    color: #5a5d5d; /* Color cian */
+    text-shadow: 0 0 10px rgba(3, 249, 220, 0.5); /* Brillo cian con opacidad */
+}
+
+#ul2 li a {
+    color: #0c5656;
+    text-decoration: none;
+    font-size: 2.5em;
+    padding: 5px 20px;
+    font-weight: 900;
+    position: relative;
+    /* Agregamos text-shadow a la transición */
+}
+
+  #ul2l:hover li a {
+    color: rgba(3, 50, 78, 0.133);
+  }
+  #ul2 li:hover a {
+    color: #03f9dc;
+    background: transparent;
+  }
+  /* Estilos para el círculo */
+  #ul2 li a::before {
+    content: attr(data-text); /* Mostrar el texto del atributo data-text */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    color: rgba(252, 249, 249, 0.1);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    font-weight: 1000;
+    text-transform: uppercase;
+    letter-spacing: 300px;
+    transition: opacity 0.5s, letter-spacing 0.5s, left 0.5s;
+    width: 200px;
+    height: 200px;
+}
+
+
+  #ul2 li a:hover:before {
+    opacity: 0.5;
+    left: 50%;
+    letter-spacing: 0px;
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  #ul2 li:nth-child(6n + 1) a:before,
+  #ul2 li:nth-child(6n + 2) a:before,
+  #ul2 li:nth-child(6n + 3) a:before,
+  #ul2 li:nth-child(6n + 4) a:before,
+  #ul2 li:nth-child(6n + 5) a:before,
+  #ul2 li:nth-child(6n + 6) a:before {
+      background: rgba(16, 15, 15, 0.5);
+      width: 500px;
+      height: 500px; /* Color de fondo con opacidad mayor */
+  }
+
+.navbar:hover ~ #introduction {
+    margin-top: 20px; /* Ajusta este valor según la cantidad que quieras que baje */
+}
+/* Media queries para hacer el diseño responsivo */
+/* Media queries to make the design responsive */
+@media (max-width: 768px) {
+    .logo img {
+        height: 130px; /* Ajusta el tamaño del logo según sea necesario */
+        align-content: center;
+    }
+    nav {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack list items vertically */
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    #ul2 li a {
+        font-size: 1.9em; /* Smaller font size for mobile */
+        padding: 5px 5px; /* Adjust padding */
+    }
+
+    #ul2 li a::before {
+        font-size: 2em; /* Smaller font size for mobile */
+        width: 150px; /* Adjust size for mobile */
+        height: 150px; /* Adjust size for mobile */
+    }
+}
+/* CHECKBOX LANGUAGE*/
+#languageTab {
+    padding: 20px; /* Padding alrededor de la lista */
+    margin: 0; /* Resetear margen */
+ max-height: 100vh;
+   position: relative;
+    align-items: center;
+    width: 100%; /* Asegurarse de que el contenedor use el ancho completo del padre */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total del contenedor */
+}
+
+#languageTab li {
+    display: block; /* Asegurar que cada elemento de la lista esté en su propia línea */
+    margin-top: 30px; /* Margen superior para separar los elementos */
+}
+
+.language-label {
+    padding: 10px;
+    animation: blink-animation 1s steps(5, start) infinite; /* Animación de parpadeo */
+    -webkit-animation: blink-animation 1s steps(5, start) infinite; /* Prefijo webkit para navegadores más antiguos */
+    text-align: center; /* Texto centrado */
+    color: rgb(82, 80, 80); /* Color del texto */
+    font-family: 'Greek2';
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden; /* Hace el texto invisible al final de la animación */
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden; /* Versión con prefijo webkit */
+    }
+}
+
+
+/* CHECKBOX */
+
+#myCheckbox {
+    width: 150px; 
+    height: 10px; 
+    border: 2px solid #313431; border-radius: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to top, transparent, gray, black);
+    position: relative;
+  padding: 30px;
+    border-radius: 55px;
+    transform: translate(-80%, -80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 250px; /* Reset margin */
+    margin-top: 30px;
+}
+#myCheckbox::after {
+    font-family: FontAwesome; /* Usar FontAwesome para el icono */
+    content: "\f011"; /* Icono de encendido */
+    color: #414344; /* Color del icono */
+    font-size: 30px; /* Tamaño del icono */
+}
+
+#myCheckbox:hover {
+    color: #02fafa; /* Color del icono */
+    background: linear-gradient(to bottom, transparent, gray, black); /* Degradado más claro al pasar el mouse */
+}
+
+#myCheckbox:checked {
+    background: #08e7fc; /* Fondo cian cuando está marcado */
+    box-shadow: 
+    -10px -10px 15px rgba(1, 240, 248, 0.5),
+    10px 10px 15px rgba(8, 191, 200, 0.12),
+    inset 0 0 20px #08e7fc, /* Efecto de resplandor interior */
+    inset 0 0 80px #08e7fc, /* Efecto de resplandor interior */
+    inset 0 0 60px #08e7fc; /* Efecto de resplandor interior */
+}
+
+#myCheckbox:checked::after {
+    color: #08fae6; /* Cambiar color del icono cuando está marcado */
+}
+
+
+
+.new-section {
+    margin-top: -85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(to top, rgba(51, 51, 51, 1), rgba(51, 51, 51, 0)); /* Degradado de gris oscuro a transparente */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    opacity: 0; /* Inicialmente invisible */
+    transform: translateY(-20px); /* Posición inicial fuera de la vista */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Animación de 3 segundos */
+}
+
+.new-section.visible {
+    opacity: 1; /* Visible */
+    transform: translateY(0); /* Posición final */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.translate-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* Espacio entre la bandera y el toggle */
+}
+
+.translate-container {
+    display: flex;
+    gap: 10px; /* Espacio entre las banderas */
+}
+
+.flag {
+    width: 35px; /* Tamaño deseado para la bandera, ajusta según tu necesidad */
+    height: 35px; /* Hacer la altura igual al ancho para que sea un círculo */
+    border-radius: 150%; /* Hacer que el elemento sea redondo */
+    border: 10px solid #333; /* Borde gris oscuro */
+    background-size: cover; /* Asegurarse de que la imagen cubra todo el elemento */
+    background-position: center; /* Centrar la imagen de fondo */
+    position: relative; /* Necesario para el pseudo-elemento */
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.5); /* Añadir un brillo en la parte superior */
+    overflow: hidden; /* Asegurarse de que la imagen no salga del borde redondeado */
+}
+
+#colombianFlag {
+    background-image: url('./assets/colombia_flags_flag_16986.png'); /* Imagen de fondo para la bandera de Colombia */
+}
+
+#usaFlag {
+    background-image: url('./assets/united_states_flags_flag_17080.png'); /* Imagen de fondo para la bandera de EE.UU. */
+}
+
+.flag::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45px; /* Tamaño deseado para la bandera, ajusta según tu necesidad */
+    height: 45px;
+    border-radius: 50%; /* Asegurar que el brillo también sea redondo */
+    background: radial-gradient(circle at top, rgba(0, 255, 255, 0.5), transparent);
+}
+
+#colombianFlag::before,
+#usaFlag::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* Asegurar que el brillo también sea redondo */
+    background: radial-gradient(circle at top, rgba(0, 255, 255, 0.5), transparent);
+}
+
+.translate-text {
+    font-family: 'Greek', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+.language-label {
+    font-family: 'Greek', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px; /* Espacio entre el texto y las banderas */
+}
+
+
+input[type="checkbox"] {
+    position: relative;
+    display: none;
+}
+input[type="checkbox"] {
+    position: relative;
+   
+ 
+}
+
+label[for="btn"] {
+    position: relative;
+    display: block;
+    width: 20px; /* Ajusta el ancho según sea necesario */
+    height: 20px; /* Ajusta la altura según sea necesario */
+    background: linear-gradient(0deg, #121720, #0d1217);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(6, 85, 114, 0.5);
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked + label .thumb {
+    left: calc(100% - 25px); /* Ajusta el desplazamiento horizontal según sea necesario */
+}
+
+input[type="checkbox"]:checked + label .thumb {
+    transform: translateX(26px);
+}
+
+.toggle label {
+    display: block;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.toggle label .thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: rgb(88, 84, 84);
+    border-radius: 50%;
+    transition: left 0.3s;
+}
+
+.toggle input[type="checkbox"]:checked + label .thumb {
+    left: 2px;
+}
+
+.light {
+    position:relative;
+    top: 50%;
+ 
+    top: -27px;
+    left: 50px;
+    width: 16px;
+    height: 16px;
+    transform: translateY(50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: none;
+    background-color: rgb(3, 88, 79);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.toggle input[type="checkbox"]:checked ~ .light {
+    background-color: cyan;
+    box-shadow: 0 0 8px 4px rgba(0, 255, 255, 0.943), 0 0 10px 6px rgba(0, 255, 255, 0.3), 0 0 12px 8px rgba(0, 255, 255, 0.2);
+}
+@media (max-width: 480px) {
+    #languageTab {
+        padding: 10px;
+    }
+
+    #languageTab li {
+        margin-top: 30px;
+    }
+
+    .language-label {
+        font-size: 16px;
+    }
+
+    #myCheckbox {
+        width: 40px; /* Ajusta el tamaño del checkbox */
+        height: 40px;
+        top: 20%; /* Ajusta la posición */
+       
+    }
+
+    #myCheckbox::after {
+        font-size: 20px;
+    }
+
+    .new-section {
+        padding: 20px;
+    }
+
+    .translate-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .flag {
+        width: 45px;
+        height: 40px;
+    }
+
+    .toggle label {
+        width: 30px;
+        height: 15px;
+    }
+
+    .toggle label .thumb {
+        width: 12px;
+        height: 12px;
+    }
+
+    .light {
+        right: 10px;
+        width: 8px;
+        height: 8px;
+    }
+}
+@media (max-width: 768px) {
+    #languageTab {
+        margin-top: 35px;
+        margin-left: 50px;
+        padding: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }   
+
+    .language-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    #myCheckbox {
+        width: 30px; /* Adjust the size of the checkbox */
+        height: 30px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: linear-gradient(to bottom, #606262, rgba(0, 0, 0, 0));
+        position: relative; /* Use absolute positioning */
+        
+       
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin: 0; /* Reset margin */
+
+    }
+
+    #myCheckbox::after {
+        font-size: 25px;
+    }
+
+    .new-section {
+        margin-top: -70px;
+    }
+
+    .translate-container {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .flag {
+        width: 55px;
+        height: 55px;
+    }
+
+    .toggle label {
+        width: 35px;
+        height: 18px;
+    }
+
+    .toggle label .thumb {
+        width: 14px;
+        height: 14px;
+    }
+
+    .light {
+        margin-top: 2px;
+        left: 40px;
+        width: 9px;
+        height: 9px;
+    }
+}
+.consent-section {
+    display: flex;
+    align-items: center;
+    justify-content: row;
+    z-index: 1;
+    width: 9px;
+    height: 9px;
+    margin-bottom: 100px;
+
+    /* Add your consent checkbox styles here */
+}
+
+.container2 input[type="checkbox"] {
+    color: #02fafa;
+    background-color: #02fafa;
+    padding:70px;
+    right: -93px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    position: relative;
+    width: 20px; /* Set the width of the checkbox */
+    height: 20px; /* Set the height of the checkbox */
+    cursor: pointer; /* Change cursor to pointer on hover */
+
+}
+#consentchechkbox {
+    left: 0px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: auto; /* Ajusta el ancho según sea necesario */
+}
+.container2 label {
+    font-family: 'Greek', sans-serif; /* Set font family */
+    font-size: 16px; /* Set font size */
+    color: #05abf2; /* Set text color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+
+.container2 input[type="checkbox"]:checked + label::before {
+    align-content: center;
+    content: "\2713"; /* Unicode checkmark symbol */
+    font-family: FontAwesome; /* Use FontAwesome for the checkmark */
+    font-size: 14px; /* Set size of checkmark */
+    color: #08e7fc; /* Set color of checkmark */
+    margin-right: 5px; /* Adjust spacing between checkbox and checkmark */
+}
+.register h2 {
+    position: relative;
+    color: #373939;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Forever';
+    padding: 40px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   
+    
+    
+    box-sizing: border-box;
+}
+
+form {
+    position: relative;
+    background: linear-gradient(to top, #063a5d, #000000);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    margin-bottom: 50px;
+
+}
+
+label {
+    color: #02fafa;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="file"] {
+    margin-bottom: 15px;
+    padding: 10px;
+    color: #02fafa;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+
+/* Info section */
+.info-section {
+    padding: 40px 20px;
+    margin-bottom: 15px;
+}
+
+.info-section p {
+    margin: 0;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+
+
+.image-info-section h3 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #fff;
+    z-index: 1;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.image-info-section p {
+    font-size: 16px;
+    color: #fcf6f6;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+
+/* Estilos personalizados para el botón */
+button {
+justify-content: center;
+    margin-bottom: 10px;
+     position: relative;
+     padding: 0.75em 2em;
+     font: 1.2rem "Orbitron";
+     letter-spacing: 2px;
+     text-transform: uppercase;
+     color: #fefafa;
+     text-shadow: 0 5px 20px rgba(246, 246, 245, 0.4), 0 2px 2px rgba(6, 242, 250, 0.4);
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #1178c1 0%,
+       #4992ca 100%
+     );
+     border: none;
+     border-radius: 100px;
+     box-shadow: inset 0 3px 15px 0 rgb(3, 225, 245),
+                 inset 0 -3px 0 0 rgb(3, 98, 129),
+                 inset 0 40px 0 0 rgba(254, 210, 98, 0.4),
+                 inset 0 20px 20px 0 rgb(248, 250, 251),
+                 0 0 0 8px #000, 
+                 0 9px 0 0 #444,
+                 0 0 20px 0 rgba(254, 210, 98, 0.4),
+                 0 40px 20px -30px rgba(254, 210, 98, 0.2);
+     margin: 20px 0; /* Agregar margen para separación */
+   }
+   
+   button:before {
+     content: "";
+     position: absolute;
+     z-index: -1;
+     top: -2rem;
+     left: -4rem;
+     right: -4rem;
+     bottom: -2rem;
+     background: linear-gradient(#333, #151515);
+     border-radius: 100px;
+     box-shadow: 0 2px 10px #000, 
+                 inset 0 2px 0 #444;
+   }
+   
+   button:after {
+     content: "";
+     position: absolute;
+     z-index: -1;
+     background: #000;
+     box-shadow: 0 1px 0 #444;
+     height: 10px;
+     left: -4rem;
+     right: -4rem;
+     top: 50%;
+     transform: translateY(-50%);
+   }
+   
+   button:hover {
+     cursor: pointer;
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #06d4ef 0%,
+       #f5f8f8 100%
+     );
+   }
+   
+   button:focus,
+   button:active {
+     outline: none;
+     color: #f9e3bf;
+     background-image: radial-gradient(
+       100% 75% at 50% 100%,
+       #00fa57 0%,
+       #f8f4f4 100%
+     );
+     box-shadow: inset 0 0 50px rgba(249, 251, 247, 0.4),
+                 inset 0 0 10px rgb(248, 250, 247), inset 0 3px 15px 0 rgba(174, 32, 0, 1),
+                 inset 0 40px 0 0 rgba(254, 210, 98, 0.3),
+                 inset 0 20px 20px 0 rgba(4, 193, 96, 0.75), 0 0 0 8px #000,
+                 0 9px 0 0 #444;
+   }
+   
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+footer {
+    background: linear-gradient(to right, #063a5d, #000000);
+    color: #ffd700; /* Color base dorado */
+    padding: 20px;
+    text-align: center;
+   
+    font-family: 'Arial', sans-serif;
+}
+
+footer p {
+    font-family: 'Forever';
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 204, 255, 0.5), 
+                 0 0 10px rgba(255, 215, 0, 0.3),
+                 0 0 15px rgba(255, 215, 0, 0.1);
+    background: linear-gradient(to bottom, #00e5ff, #00b3ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+}
+
+footer p:hover {
+    animation: golden-shine 1.5s ease-in-out infinite alternate;
+}
+
+.social-media {
+    margin-bottom: 20px;
+}
+
+.social-media a {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.social-media img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-media img:hover {
+    transform: scale(1.2);
+}
+
+@keyframes golden-shine {
+    from {
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5),
+                     0 0 10px rgba(255, 215, 0, 0.3),
+                     0 0 15px rgba(255, 215, 0, 0.1);
+    }
+    to {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
+                     0 0 20px rgba(255, 215, 0, 0.5),
+                     0 0 30px rgba(255, 215, 0, 0.3);
+    }
+}

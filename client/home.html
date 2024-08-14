@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bufete de Abogados</title>
+        <link rel="stylesheet" href="./home.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-GK+y4mJ5PlQuoX2P2B+U/eOs+4tYUnbk0lKPUcXHt0F0PJtf6dmXoebVIkSqoJbC3kMTgbERUuRv3FtVeSmKZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#home" class="logo">
+                <img src="./assets/logo abogados nordeste 2.png" alt="Logo del Bufete de Abogados">
+            </a>
+            <ul id="ul2">
+                <li><a href="home.html" data-text="Home" data-translate-key="Inicio">Inicio</a></li>
+                <li><a href="services.html" data-text="Services"data-translate-key="Servicios">Servicios</a></li>
+                <li><a href="about.html" data-text="About"data-translate-key="Nosotros">Nosotros</a></li>
+                <li><a href="register.html" data-text="Register"data-translate-key="Registro">Registro</a></li>
+                <li><a href="contact.html" data-text="Contact"data-translate-key="Contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+  
+        <!-- Etiqueta para el idioma -->
+        <div class="language-label" data-translate-key="Escoga un Idioma"><a>Escoga un Idioma</a></div>
+        
+        <!-- Lista para el checkbox de idioma -->
+        <ul id="languageTab">
+            <input type="checkbox" id="myCheckbox">
+        </ul>
+        
+        <!-- Contenedor oculto de opciones de idioma -->
+        <div id="languageOptions" class="hidden">
+            <section class="new-section">
+                <div class="container">
+                    <div class="translate-container">
+                        <!-- Imágenes de banderas -->
+                        <img src="./assets/colflag.png" alt="Bandera de Colombia" class="flag" id="colombianFlag">
+                        <img src="./assets/usaflag.png" alt="USA Flag" class="flag" id="usaFlag" style="display: none;">
+                    </div>
+                    
+                    <!-- Toggle de idioma -->
+                    <div class="toggle">
+                        <input type="checkbox" id="btn">
+                        <label for="btn">
+                            <span class="thumb"></span>
+                        </label>
+                        <div class="light"></div>
+                    </div>
+                    
+                    <!-- Texto para traducir -->
+                    <span class="translate-text" id="translateText">Translate to English</span>
+                </div>
+            </section>
+        </div>
+
+
+        
+     <!-- Nueva Sección Introductoria -->
+     <section id="introduction" class="introduction">
+        <h2 data-translate-key="Bienvenidos">Bienvenidos</h2>
+        <div class="intro-content">
+            <div class="intro-box sparkle-effect">
+                <div class="h3-container">
+                    <h3 data-translate-key="mision">Misión</h3>
+                </div>
+                <p data-translate-key="intro3">Proporcionar representación legal de calidad, basada en la integridad y la excelencia profesional, para proteger los derechos e intereses de nuestros clientes y promover la justicia.</p>
+            </div>
+            
+    
+            <div class="intro-box sparkle-effect">
+                <div class="image-container1"></div>
+                <div class="h3-container">
+                    <h3 data-translate-key="quienessomos">Quiénes Somos</h3>
+                </div>
+                <p data-translate-key="intro1">Somos Un buffete de abogado especializados en atender casos en el nordeste de Antioquia y el area metropolitana de Medellín. Apoyamos a trabajadores del sector minero y agroindustrial, asi como a los extranjeros que llegan al país y necesitan asistencia jurídica.</p>
+            </div>
+            <div class="intro-box sparkle-effect">
+                <div class="h3-container">
+                    <h3 data-translate-key="vision">Visión</h3>
+                </div>
+                <p data-translate-key="intro2">Guiar a nuestros clientes hacia soluciones legales efectivas y éticas, contribuyendo a la construcción de una sociedad justa y equitativa.</p>
+            </div>
+        </div>
+    </section>
+   
+
+    <section id="about" class="about">
+        <h2 data-translate-key="Sobre Nosotros">Sobre Nosotros</h2>
+        <div id="gallery2" class="gallery2">
+            <li class="result" id="result1">
+                <div class="image-container">
+                    <div class="watermark" data-translate-key="Educación">Educación</div>
+                    <a href="#" onclick="toggleButtons('result1');" data-translate-key= "Escoga un Idioma">
+                        <img src="./assets/1.jpeg" width="700" height="500" alt="Facultad de Derecho">
+                    </a>
+                    <section class="buttons" id="buttons-result1">
+
+                        <div class="hover-text" id="hover-text-result1" data-translate-key="Result1">
+                            <p>Nuestros abogados, formados en la prestigiosa Institución Universitaria Visión de las Américas, se distinguen por su excelencia académica y valores éticos. Este bufete, compuesto por profesionales experimentados, enfrenta desafíos legales complejos con alta calidad y personalización, destacándose por su empatía, integridad y dedicación a la justicia. Nos comprometemos a ofrecer soluciones legales eficientes y éticas, asegurando la tranquilidad y confianza de nuestros clientes.</p>
+                        </div>
+                        <a class="close-btn" onclick="toggleButtons('result1', 'close')" data-translate-key= "Cerrar">X</a>
+                        <a data-translate-key="" class="btnfos btnfos-1" href="about.html" id="btnfos-1">
+                            <svg>
+                                <rect x="0" y="0" fill="none" width="100%" height="100%" />
+                            </svg>
+                            Ver Mas
+                        </a>
+                    </section>
+                    
+                </div>
+            </li>
+
+            <li class="result" id="result2">
+                <div class="image-container">
+                    <div class="watermark" data-translate-key="Valores">Valores</div>
+                    <a href="#" onclick="toggleButtons('result2');" data-translate-key="Escoga un Idioma">
+                        <img src="./assets/black-female-lawyers.jpeg" width="700" height="500" alt="Estudiantes de Derecho">
+                    </a>
+                    
+                    <section class="buttons" id="buttons-result2">
+                        <div class="hover-text" id="hover-text-result2" data-translate-key="Result2">
+                            <p>En nuestro bufete de abogados, nos comprometemos a actuar con integridad, honestidad y dedicación. Respetamos y defendemos la Constitución y las leyes de nuestro país, y nos esforzamos por promover la justicia y proteger los derechos de nuestros clientes. Mantenemos la confidencialidad de la información y evitamos cualquier conducta que desacredite nuestra profesión. Con este compromiso, brindamos representación legal de calidad, basada en la ética y la transparencia, construyendo relaciones de confianza duraderas con nuestros clientes.</p>
+                        </div>
+                        <a class="close-btn" onclick="toggleButtons('result2', 'close')" data-translate-key="Cerrar">X</a>
+                        <a class="btnfos btnfos-1" href="about.html">
+                            <svg>
+                                <rect x="0" y="0" fill="none" width="100%" height="100%" />
+                            </svg>
+                            Ver Mas
+                        </a>
+                    </section>
+                </div>
+            </li>
+
+            <li class="result" id="result3">
+                <div class="image-container">
+                    <div class="watermark" data-translate-key="Abogadas">Abogadas</div>
+                    <a href="#" onclick="toggleButtons('result3');">
+                        <img src="./assets/stock-photo-themis-figurine-pile-books-table-blurred-female-lawyer-background.jpeg" width="500" height="500" alt="Abogadas en sala de juicio">
+                    </a>
+                    
+                    <section class="buttons" id="buttons-result3">
+                        <div class="hover-text" id="hover-text-result3" data-translate-key="Result3">
+                            <p>En nuestro bufete, estamos orgullosos de contar con un equipo diverso y talentoso, donde las mujeres abogadas desempeñan un papel crucial e indispensable. En la actualidad, las mujeres representan una parte fundamental en el campo legal, aportando no solo su conocimiento y habilidades, sino también una perspectiva única y valiosa que enriquece nuestra práctica. Creemos firmemente en la igualdad de oportunidades y en el poder transformador de la inclusión. Las abogadas de nuestro equipo son líderes dedicadas y apasionadas, comprometidas con la justicia y la defensa de los derechos de nuestros clientes. Su influencia y contribución son esenciales para nuestro éxito y para la construcción de una sociedad más equitativa y justa.</p>
+                        </div>
+                        <a class="close-btn" onclick="toggleButtons('result3', 'close')" data-translate-key="Cerrar">X</a>
+                        <a class="btnfos btnfos-1" href="about.html">
+                            <svg>
+                                <rect x="0" y="0" fill="none" width="100%" height="100%" />
+                            </svg>
+                            Ver Mas
+                        </a>
+                    </section>
+                </div>
+            </li>
+
+            <li class="result" id="result4">
+                <div class="image-container">
+                    <div class="watermark" data-translate-key="Asociados">Asociados</div>
+                    <a href="#" onclick="toggleButtons('result4');">
+                        <img src="./assets/385-586x446.jpeg" width="500" height="500" alt="Abogados mejor pagados">
+                    </a>
+                    
+                    <section class="buttons" id="buttons-result4">
+                        <div class="hover-text" id="hover-text-result4" data-translate-key="Result4">
+                            <p>En nuestro bufete de abogados, valoramos el talento, la dedicación y la diversidad. Estamos comprometidos con la inclusión y creemos firmemente en la importancia de contar con un equipo diverso que represente una amplia gama de perspectivas y experiencias. Por ello, estamos siempre abiertos a recibir nuevas solicitudes para asociados. Si eres un abogado apasionado y estás interesado en unirte a nuestro equipo, te invitamos a llenar la solicitud disponible en la barra del menú bajo la opción trabaja con nosotros. Esperamos contar contigo para seguir construyendo un entorno de trabajo inclusivo y colaborativo.</p>
+                        </div>
+                        <a class="close-btn" onclick="toggleButtons('result4', 'close')" data-translate-key="Cerrar">X</a>
+                        <a class="btnfos btnfos-1" href="register.html">
+                            <svg>
+                                <rect x="0" y="0" fill="none" width="100%" height="100%" />
+                            </svg>
+                            Ver Mas
+                        </a>
+                    </section>
+                </div>
+            </li>
+
+            <li class="result" id="result5">
+                <div class="image-container">
+                    <div class="watermark" data-translate-key="Nuestras Raices">Nuestras Raíces</div>
+                    <a href="#" onclick="toggleButtons('result5');">
+                        <img src="./assets/medellin-182328_1280.jpeg" width="500" height="500" alt="Vista de Medellín">
+                    </a>
+                    
+                    <section class="buttons" id="buttons-result5">
+                        <div class="hover-text" id="hover-text-result5" data-translate-key="Result5">
+                            <p>En nuestro bufete de abogados, nos sentimos profundamente orgullosos de nuestras raíces colombianas y antioqueñas, reflejadas en nuestros valores y en la dedicación con la que servimos a nuestros clientes. Desde nuestra sede principal en Medellín, un símbolo de innovación y progreso, hasta nuestra presencia en el nordeste antioqueño, en el municipio de Segovia, llevamos nuestros servicios con el mismo compromiso y pasión. Nuestra identidad colombiana y antioqueña se manifiesta en la calidez y amabilidad en el trato con nuestros clientes, así como en la integridad y excelencia profesional que caracterizan nuestros servicios legales. Valoramos la historia y cultura de nuestra región y nos esforzamos por contribuir al desarrollo y bienestar de nuestra comunidad, inspirados por una tierra llena de talento, esfuerzo y esperanza.</p>
+                        </div>
+                        <a class="close-btn" onclick="toggleButtons('result5', 'close')" data-translate-key="Cerrar">X</a>
+                        <a class="btnfos btnfos-1" href="about.html">
+                            <svg>
+                                <rect x="0" y="0" fill="none" width="100%" height="100%" />
+                            </svg>
+                            Ver Mas
+                        </a>
+                    </section>
+                </div>
+            </li>
+
+            <li class="result" id="result6">
+                <div class="image-container">
+                    <div class="watermark" data-translate-key="Ambito Laboral">Ámbito Laboral</div>
+                    <a href="#" onclick="toggleButtons('result6');">
+                        <img src="./assets/laboral.jpeg" width="500" height="500" alt="Abogados en ámbito laboral">
+                    </a>
+                    
+                    <section class="buttons" id="buttons-result6">
+                        <div class="hover-text" id="hover-text-result6" data-translate-key="Result6">
+                            <p>En nuestro bufete de abogados, nos especializamos en el ámbito laboral, ofreciendo una representación legal integral y personalizada. Nos esforzamos por defender los derechos de los trabajadores y empleadores, brindando asesoría en áreas como contratos laborales, despidos, acoso laboral, y condiciones de trabajo. Con un profundo conocimiento de la legislación laboral y una sólida experiencia en la resolución de conflictos, nuestro equipo de abogados está comprometido con la justicia laboral y con la protección de los derechos y beneficios de nuestros clientes. Ya sea que necesite asesoramiento preventivo o representación en litigios, estamos aquí para apoyarlo en cada paso del proceso.</p>
+                        </div>
+                        <a class="close-btn" onclick="toggleButtons('result6', 'close')" data-translate-key="Cerrar">X</a>
+                        <a class="btnfos btnfos-1" href="register.html">
+                            <svg>
+                                <rect x="0" y="0" fill="none" width="100%" height="100%" />
+                            </svg>
+                            Ver Mas
+                        </a>
+                    </section>
+                </div>
+            </li>
+    
+                <li class="result" id="result7">
+                    <div class="image-container">
+                        <div class="watermark" data-translate-key="Ambito Civil">Ámbito Civil</div>
+                        <a href="#" onclick="toggleButtons('result7');">
+                            <img src="./assets/familia.jpeg" height="500" alt="Viaje en familia">
+                        </a>
+                        
+                        <section class="buttons" id="buttons-result7">
+                            <div class="hover-text" id="hover-text-result7" data-translate-key="Result7">
+                                <p>En el derecho civil, abarcamos una amplia gama de asuntos, incluyendo contratos, propiedad, familia y sucesiones, asegurando que los intereses de nuestros clientes estén siempre resguardados. En cuanto al derecho público, nos enfocamos en la relación entre individuos y entidades gubernamentales, ofreciendo asesoría en áreas como la administración pública y el derecho constitucional. Además, en el ámbito laboral, defendemos los derechos tanto de empleados como de empleadores, proporcionando soluciones justas y equilibradas en conflictos laborales. Nuestra experiencia y dedicación en estos campos legales garantizan una representación sólida y eficaz.</p>
+                            </div>
+                            <a class="close-btn" onclick="toggleButtons('result7', 'close')" data-translate-key="Cerrar">X</a>
+                            <a class="btnfos btnfos-1" href="services.html">
+                                <svg>
+                                    <rect x="0" y="0" fill="none" width="100%" height="100%"/>
+                                </svg>
+                                Ver Mas
+                            </a>
+                        </section>
+                    </div>
+                </li>
+    
+                <li class="result" id="result8">
+                    <div class="image-container">
+                        <div class="watermark" data-translate-key="Seguros y Asesoramiento">Seguros y Asesoramiento</div>
+                        <a href="#" onclick="toggleButtons('result8');">
+                            <img src="./assets/best-home-and-auto-insurance_Shutterstock_REDPIXEL.jpeg" width="500" height="500" alt="Seguro y asesoramiento legal">
+                        </a>
+                        
+                        <section class="buttons" id="buttons-result8">
+                            <div class="hover-text" id="hover-text-result8" data-translate-key="Result8">
+                                <p>Nuestro bufete de abogados se enorgullece de su profundo conocimiento y experiencia en el derecho civil, público y laboral. Estos tres pilares del derecho son fundamentales para brindar una protección integral y una defensa efectiva de los derechos e intereses de nuestros clientes. En el derecho civil, abarcamos una amplia gama de asuntos, incluyendo contratos, propiedad, familia y sucesiones, asegurando que los intereses de nuestros clientes estén siempre resguardados. En cuanto al derecho público, nos enfocamos en la relación entre individuos y entidades gubernamentales, ofreciendo asesoría en áreas como la administración pública y el derecho constitucional. Además, en el ámbito laboral, defendemos los derechos tanto de empleados como de empleadores, proporcionando soluciones justas y equilibradas en conflictos laborales. Nuestra experiencia y dedicación en estos campos legales garantizan una representación sólida y eficaz.</p>
+                            </div>
+                            <a class="close-btn" onclick="toggleButtons('result8', 'close')" data-translate-key="Cerrar">X</a>
+                            <a class="btnfos btnfos-1" href="services.html">
+                                <svg>
+                                    <rect x="0" y="0" fill="none" width="100%" height="100%"/>
+                                </svg>
+                                Ver Mas
+                            </a>
+                        </section>
+                    </div>
+                </li>
+    
+                <li class="result" id="result9">
+                    <div class="image-container">
+                        <div class="watermark" data-translate-key="Turismo & Extranjeros">Turismo & Extranjeros</div>
+                        <a href="#" onclick="toggleButtons('result9');">
+                            <img src="./assets/back-view-of-young-man-with-travel-bag-at-airport-travel-concept-male-tourist-walking-in-an-airport-with-luggage-top-section-cropped-side-view-ai-generated-free-photo.jpeg" width="500" height="500" alt="Panorámica de Medellín">
+                        </a>
+                        
+                        <section class="buttons" id="buttons-result9">
+                            <div class="hover-text" id="hover-text-result9" data-translate-key="Result9">
+                                <p>Somos un bufete de abogados bilingüe especializado en proporcionar servicios legales integrales. Nos dedicamos a asistir tanto a clientes locales como a personas extranjeras. Nuestro enfoque incluye servicios de traducción y documentación para garantizar que nuestros clientes extranjeros comprendan completamente los procedimientos legales en los que están involucrados. Estamos comprometidos a ofrecer soluciones legales efectivas y de alta calidad que satisfagan las necesidades individuales de cada cliente.</p>
+                            </div>
+                            <a class="close-btn" onclick="toggleButtons('result9', 'close')" data-translate-key="Cerrar">X</a>
+                            <a class="btnfos btnfos-1" href="services.html">
+                                <svg>
+                                    <rect x="0" y="0" fill="none" width="100%" height="100%"/>
+                                </svg>
+                                Ver Mas
+                            </a>
+                        </section>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+        </div>
+    </section>
+
+<section id="about" class="about">
+    <div id="gallery" class="gallery">
+        <div class="gallery-item">
+            <h2 data-translate-key="Nuestro Equipo">Nuestro Equipo</h2>
+            <a href="about.html">
+                <img src="./assets/foto_car0.jpeg" alt="Carolina Herrera" class="gallery-photo">
+            </a>
+            <div class="gallery-info">
+                <h3 data-translate-key="Carolina Herrera">Carolina Herrera</h3>
+                <p data-translate-key="Abogada titulada de la Universidad Institución Universitaria Visión de las Américas, Medellín, Colombia. Bilingüe y con 6 años de experiencia en contratación estatal.">
+                    Abogada titulada de la Universidad Institución Universitaria Visión de las Américas, Medellín, Colombia. Bilingüe y con 6 años de experiencia en contratación estatal.
+                </p>
+                <img src="./assets/logo abogados nordeste blanco.png" alt="Logo" class="gallery-logo">
+            </div>
+        </div>
+        <div class="gallery-item">
+            <h2 data-translate-key="Nuestro Equipo">Nuestro Equipo</h2>
+            <a href="about.html">
+                <img src="./assets/vivi.png" alt="Viviana Areiza" class="gallery-photo">
+            </a>
+            <div class="gallery-info">
+                <h3 data-translate-key="Viviana Areiza">Viviana Areiza</h3>
+                <p data-translate-key="Abogada titulada de la Universidad Institución Universitaria Visión de las Américas, Medellín, Colombia. Bilingüe y con 6 años de experiencia en contratación estatal.">
+                    Abogada titulada de la Universidad Institución Universitaria Visión de las Américas, Medellín, Colombia. Bilingüe y con 6 años de experiencia en contratación estatal.
+                </p>
+            </div>
+            <img src="./assets/logo abogados nordeste blanco.png" alt="Logo" class="gallery-logo">
+        </div>
+    </div>
+</section>
+<section id="services" class="services">
+    <h2 data-translate-key="Nuestros Servicios">Nuestros Servicios</h2>
+    <div class="service-item">
+        <img src="./assets/auction_783196.png" alt="Tutelas" class="service-image service-icon">
+        <h3 data-translate-key="Tutelas">Tutelas</h3>
+        <p data-translate-key="Asesoría y presentación de acciones de tutela.">Asesoría y presentación de acciones de tutela.</p>
+    </div>
+    <div class="service-item">
+        <img src="./assets/balance_924954.png" alt="Derechos de Petición" class="service-image service-icon">
+        <h3 data-translate-key="Derechos de Petición">Derechos de Petición</h3>
+        <p data-translate-key="Elaboración y seguimiento de derechos de petición.">Elaboración y seguimiento de derechos de petición.</p>
+    </div>
+    <div class="service-item">
+        <img src="./assets/lawyer.png" alt="Demandas" class="service-image service-icon">
+        <h3 data-translate-key="Demandas">Demandas</h3>
+        <p data-translate-key="Demandas en áreas Civil, Familia, Público y Laboral.">Demandas en áreas Civil, Familia, Público y Laboral.</p>
+    </div>
+    <div class="service-item">
+        <img src="./assets/3076636.png" alt="Reclamaciones de Seguros" class="service-image service-icon">
+        <h3 data-translate-key="Reclamaciones de Seguros">Reclamaciones de Seguros</h3>
+        <p data-translate-key="Asesoría y representación en reclamaciones de seguros.">Asesoría y representación en reclamaciones de seguros.</p>
+    </div>
+    <div >
+       <button id="services-button">
+        <a href="services.html" data-translate-key="VerTodosLosServicios" class="button">Servicios</a>
+    </button>
+    </div>
+</section>
+  
+
+<section id="join-us" class="join-us">
+    <h2 data-translate-key="Trabaja con Nosotros">Trabaja con Nosotros</h2>
+    <p data-translate-key="Estamos buscando abogados talentosos y apasionados para unirse a nuestro equipo. En nuestro bufete, valoramos la colaboración, el crecimiento profesional y el compromiso con la excelencia. Ofrecemos un ambiente de trabajo dinámico y apoyo continuo para que puedas desarrollar tu carrera al máximo. Si estás listo para dar el siguiente paso en tu carrera profesional, nos encantaría conocerte.">
+        Estamos buscando abogados talentosos y apasionados para unirse a nuestro equipo. En nuestro bufete, valoramos la colaboración, el crecimiento profesional y el compromiso con la excelencia. Ofrecemos un ambiente de trabajo dinámico y apoyo continuo para que puedas desarrollar tu carrera al máximo. Si estás listo para dar el siguiente paso en tu carrera profesional, nos encantaría conocerte.
+    </p>
+    <div>
+    <button id="register-button">
+        <a href="register.html" data-translate-key="Trabaja con Nosotros" class="button">Trabaja con Nosotros</a>
+    </button>
+</div>
+    
+        
+</section>
+    
+<section id="contact" class="contact">
+    <div class="container2">
+        <h2 data-translate-key="Contacto">Contacto</h2>
+        <form id="contact-form" action="/sendContactForm" method="POST">
+            <label for="name" data-translate-key="Nombre">Nombre</label>
+            <input type="text" id="contact-name" name="name" required>
+            <label for="email" data-translate-key="Correo Electrónico">Correo Electrónico</label>
+            <input type="email" id="contact-email" name="email" required>
+            <label for="message" data-translate-key="Mensaje">Mensaje</label>
+            <textarea id="contact-message" name="message" required></textarea>
+            <button type="submit" id="contact-form-button">Submit</button>
+        </form>
+    </div>
+</section>
+
+
+<!-- Contenedor del chatbot -->
+<div class="bot-preview">
+    <img src="./assets/ASTREA_1.jpeg" alt="Bot Profile Image" class="bot-image">
+    <div class="bot-info">
+      <h2>ASTREA CHATBOT</h2>
+      <p>Chatea con nuestro asisitente virtual.</p>
+    </div>
+    <div id="iframe-container" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out;">
+      <iframe src="" frameborder="0" width="100%" height="700" id="chat-iframe"></iframe>
+    </div>
+    <button class="chat-button" id="chat-btn">Chat</button>
+  </div>
+  
+  
+  <script>
+    let iframeVisible = false;
+  
+    document.getElementById('chat-btn').addEventListener('click', function() {
+      const iframe = document.getElementById('chat-iframe');
+      const iframeContainer = document.getElementById('iframe-container');
+      const chatBtn = document.getElementById('chat-btn');
+  
+      if (!iframeVisible) {
+        iframe.src = 'http://localhost:3002';
+        iframeContainer.style.maxHeight = '700px'; // altura máxima del contenedor
+        chatBtn.textContent = 'Cerrar';
+        iframeVisible = true;
+      } else {
+        iframeContainer.style.maxHeight = '0'; // ocultar el contenedor
+        chatBtn.textContent = 'Chat';
+        iframeVisible = false;
+      }
+    });
+  </script>
+
+
+</main>
+
+    <footer>
+
+        <div class="social-media">
+            <a href="https://www.facebook.com/tu_pagina" target="_blank">
+                <img src="./assets/facebook-logo-circle-black.png" alt="Facebook">
+
+            <a href="https://www.instagram.com/tu_pagina" target="_blank">
+                <img src="./assets/logo_ig_transp.png" alt="Instagram">
+            </a>
+            <a href="https://www.linkedin.com/tu_pagina" target="_blank">
+                <img src="./assets/official-linkedin-icon-png-12.jpeg" alt="LinkedIn">
+            </a>
+        </div>
+    </div>
+        
+    <p data-text="Dirección: Av 37 c 61-08, Medellín, Colombia">Dirección: Av 37 c 61-08, Medellín, Colombia</p>
+    <p data-text="Teléfono Fijo: +57 (4) 4679481">Teléfono Fijo: +57 (4) 4679481</p>
+    <p data-text="Teléfono Celular: +57 310 449 52 44">Teléfono Celular: +57 310 449 52 44</p>
+    <p data-text="© 2024 MoonDog Studio.">© 2024 MoonDog Studio.</p>
+        
+    </footer>
+
+    <script src="translate.js"></script>
+   
+
+   
+</body>
+</html>

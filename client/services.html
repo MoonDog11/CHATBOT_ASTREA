@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bufete de Abogados</title>
+    <link rel="stylesheet" href="services.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-GK+y4mJ5PlQuoX2P2B+U/eOs+4tYUnbk0lKPUcXHt0F0PJtf6dmXoebVIkSqoJbC3kMTgbERUuRv3FtVeSmKZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    /> 
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#home" class="logo">
+                <img src="./assets/logo abogados nordeste 2.png" alt="Logo del Bufete de Abogados">
+            </a>
+            <ul id="ul2">
+                <li><a href="home.html" data-text="Home" data-translate-key="Inicio">Inicio</a></li>
+                <li><a href="services.html" data-text="Services"data-translate-key="Servicios">Servicios</a></li>
+                <li><a href="about.html" data-text="About"data-translate-key="Nosotros">Nosotros</a></li>
+                <li><a href="register.html" data-text="Register"data-translate-key="Registro">Registro</a></li>
+                <li><a href="contact.html" data-text="Contact"data-translate-key="Contacto">Contacto</a></li>
+            </ul>
+          </nav>
+    </header>
+    <main>
+          <!-- Etiqueta para el idioma -->
+          <div class="language-label" data-translate-key="Escoga un Idioma"><a>Escoga un Idioma</a></div>
+        
+          <!-- Lista para el checkbox de idioma -->
+          <ul id="languageTab">
+            <input type="checkbox" id="myCheckbox">
+          </ul>
+          
+          <!-- Contenedor oculto de opciones de idioma -->
+          <div id="languageOptions" class="hidden">
+              <section class="new-section">
+                  <div class="container">
+                      <div class="translate-container">
+                          <!-- Imágenes de banderas -->
+                          <img src="./assets/colflag.png" alt="Bandera de Colombia" class="flag" id="colombianFlag">
+                          <img src="./assets/usaflag.png" alt="USA Flag" class="flag" id="usaFlag" style="display: none;">
+                      </div>
+                      
+                      <!-- Toggle de idioma -->
+                      <div class="toggle">
+                          <input type="checkbox" id="btn">
+                          <label for="btn">
+                              <span class="thumb"></span>
+                          </label>
+                          <div class="light"></div>
+                      </div>
+                      
+                      <!-- Texto para traducir -->
+                      <span class="translate-text" id="translateText">Translate to English</span>
+                  </div>
+              </section>
+          </div>
+    
+   <!-- Asegúrate de tener esta línea para tu JS -->
+<div class="gradiente">
+    <h2 data-translate-key="Tutelas">Nuestros Servicios</h2>
+</div>
+
+
+<section>
+    <section id="services" class="gallery2">
+        <div class="service-item">
+            <div class="center-con">
+                <div class="arrow-left arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="./assets/tutela.jpeg" alt="Tutelas" width="200" height="200"
+                            style="border-radius: 300px; padding: 10px; margin-bottom: -120px; margin-top: 50px; border: 2px solid #8b8787; transition: transform 0.1s ease, filter 0.5s ease; position: relative; top: 0; left: 0; z-index: -2;">
+                        <div class="sparkle"></div>
+                    </div>
+                    
+                    <div class="tutela-container">
+                        <h2 id="h2_2" data-translate-key="Tutelas">Tutelas</h2>
+                        <ul class="tutela-list">
+                            <li class="visible">
+                                <h3 data-translate-key="TutelaSalud" class="toggle-btn">Salud</h3>
+                                <div class="p-container hidden">
+                                    <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                    <p data-translate-key="TutelaSaludDescripcion">
+                                        Para casos donde una entidad de salud (EPS, IPS) no autoriza, demora o niega un tratamiento, medicamento o procedimiento necesario para la salud y vida del paciente. 
+                                    </p>
+                
+                                </div>
+                            </li>
+                            <li>
+                                <h3 data-translate-key="TutelaEducacion" class="toggle-btn">Educación</h3>
+                                <div class="p-container hidden">
+                                    <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                    <p data-translate-key="TutelaEducacionDescripcion">
+                                        Utilizada cuando se vulnera el derecho a la educación, por ejemplo, si una institución educativa niega la matrícula o el acceso a programas educativos sin justificación válida.
+
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 data-translate-key="TutelaLaboral" class="toggle-btn">Laboral</h3>
+                                <div class="p-container hidden">
+                                    <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                    <p data-translate-key="TutelaLaboralDescripcion">
+                                        Cuando un trabajador considera que sus derechos fundamentales en el ámbito laboral están siendo vulnerados, por ejemplo, por despido injusto, falta de pago de salarios, acoso laboral, entre otros.
+                                        
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 data-translate-key="TutelaNinos" class="toggle-btn">Infantiles</h3>
+                                <div class="p-container hidden">
+                                    <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                    <p data-translate-key="TutelaNinosDescripcion">
+                                        Se interpone cuando se vulneran los derechos fundamentales de los niños, como el derecho a la alimentación, a la salud, a la educación, o a un ambiente familiar adecuado.
+                                       
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 data-translate-key="TutelaPrivados" class="toggle-btn">Libertad</h3>
+                                <div class="p-container hidden">
+                                    <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                    <p data-translate-key="TutelaPrivadosDescripcion">
+                                        Los reclusos pueden interponer tutelas para reclamar sus derechos fundamentales, como el derecho a la salud, a condiciones dignas de reclusión, entre otros.
+                                        
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 data-translate-key="TutelaDiscapacidad" class="toggle-btn">Discapacidad</h3>
+                                <div class="p-container hidden">
+                                    <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                    <p data-translate-key="TutelaDiscapacidadDescripcion">
+                                        Cuando se vulneran los derechos de las personas con discapacidad, por ejemplo, en el acceso a servicios, a la educación, al trabajo, o a la salud.
+                                      
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <h3 data-translate-key="TutelaVivienda" class="toggle-btn">Vivienda</h3>
+                                <div class="p-container hidden">
+                                    <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                    <p data-translate-key="TutelaViviendaDescripcion">
+                                        Se interpone cuando se amenaza o vulnera el derecho a una vivienda digna, por ejemplo, en casos de desalojo sin justa causa o condiciones insalubres de vivienda proporcionada por el estado.
+                                       
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="arrow-right arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+        
+<section class="section-card">
+    <div >
+        <h1 data-translate-key="ProcedimientoTutela">Procedimiento para interponer una acción de tutela:</h1>
+        <ol>
+            <li>
+                <strong data-translate-key="RedactarSolicitud">Redactar la solicitud:</strong>
+                <p data-translate-key="RedactarSolicitudDescripcion">Escribir una solicitud clara y concisa donde se explique cuál derecho fundamental se considera vulnerado, los hechos que llevaron a esa vulneración y la autoridad o particular responsable.</p>
+            </li>
+            <li>
+                <strong data-translate-key="PresentarSolicitud">Presentar la solicitud:</strong>
+                <p data-translate-key="PresentarSolicitudDescripcion">La tutela se puede presentar ante cualquier juez competente. No se necesita abogado, aunque puede ser útil.</p>
+            </li>
+            <li>
+                <strong data-translate-key="Tramite">Trámite:</strong>
+                <p data-translate-key="TramiteDescripcion">Una vez recibida, el juez debe decidir en un plazo de 10 días hábiles. El juez puede ordenar medidas provisionales para proteger el derecho mientras se decide sobre la tutela.</p>
+            </li>
+            <li>
+                <strong data-translate-key="Fallo">Fallo:</strong>
+                <p data-translate-key="FalloDescripcion">El juez emite un fallo que puede ser impugnado por las partes involucradas. En caso de impugnación, el caso se revisa por un juez de mayor jerarquía.</p>
+            </li>
+        </ol>
+    </div>
+    <button id="expert-button">
+        <a href="contact.html" data-translate-key="ContactaExperto" class="button">Contacta un Experto</a>
+    </button>
+        
+</section>
+
+
+<section id="services" class="gallery2">
+    <div class="service-item">
+        <div class="center-con">
+            <div class="arrow-left arrow">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        <div class="service-card"> 
+            <div class="sparkle"></div>
+            <img src="./assets/derecho de peticion.jpeg" width="200" height="200"
+            style="border-radius: 300px; padding: 10px; margin-bottom: -120px; margin-top: 50px; border: 2px solid #8b8787; transition: transform 0.1s ease, filter 0.5s ease; position: relative; top: 0; left: 0; z-index: -2;">
+            <div class="tutela-container">
+                <h2 id="derechos-de-peticion-title">Derechos de Petición</h2>
+                <ul class="tutela-list">
+                    <div class="center-con">
+                        <li class="visible">
+                            <h3 class="toggle-btn">Información</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p id="informacion-peticion-description">
+                                    Permite a cualquier persona solicitar información específica que esté en poder de entidades públicas o privadas que cumplan funciones públicas. Ejemplo: Solicitar a una alcaldía información sobre el presupuesto destinado a la construcción de un parque.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 id="interes-general-peticion-title" class="toggle-btn">Interés General</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p id="interes-general-peticion-description">
+                                    Se utiliza para hacer solicitudes que afectan a una comunidad o grupo de personas. Ejemplo: Pedir a una entidad de salud mejoras en la atención de un hospital que afecta a toda una comunidad.
+                                   
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 id="interes-particular-peticion-title" class="toggle-btn">Interés Particular</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p id="interes-particular-peticion-description">
+                                    Permite a una persona hacer solicitudes que afectan directamente a su situación personal. Ejemplo: Solicitar a una universidad la revisión de una nota en un examen.
+                                   
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 id="consulta-peticion-title" class="toggle-btn">Consulta</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p id="consulta-peticion-description">
+                                    Permite pedir una opinión o concepto a una autoridad sobre un tema específico. Ejemplo: Consultar a un ministerio sobre la interpretación de una norma específica.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                    </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="arrow-right arrow">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</section>
+
+<section class="section-card">
+<div>
+    <h1 data-translate-key="Procedimiento para Presentar un Derecho de Petición">Procedimiento para Presentar un Derecho de Petición:</h1>
+    <ol>
+        <li>
+            <strong  data-translate-key="RedactarSolicitud">Redactar la Solicitud:</strong >
+            <p data-translate-key="RedactarSolicitudDescripcion">La solicitud debe ser clara y precisa, indicando el derecho que se pretende ejercer, la información solicitada o la acción requerida, y los fundamentos de la petición.</p>
+        </li>
+        <li>
+            <strong  data-translate-key="PresentarSolicitud">Presentar la Solicitud:</strong >
+            <p data-translate-key="PresentarSolicitudDescripcion">La solicitud puede ser entregada de diversas maneras, como físicamente en la oficina de la entidad, por correo electrónico, o a través de plataformas virtuales habilitadas por la entidad.</p>
+        </li>
+        <li>
+            <strong  data-translate-key="RecepciónRespuesta">Recepción y Respuesta:</strong >
+            <p data-translate-key="RecepcionRespuestaDescripcion">La entidad tiene un plazo para responder, generalmente de 15 días hábiles, y debe responder de manera clara y completa. Si no se recibe respuesta, se pueden tomar acciones legales adicionales.</p>
+        </li>
+    </ol>
+</div>
+<button id="expert-button">
+    <a href="contact.html" data-translate-key="ContactaExperto" class="button">Contacta un Experto</a>
+</button>
+</section>
+
+
+
+<section id="services" class="gallery2">
+    <div class="service-item">
+        <div class="center-con">
+            <div class="arrow-left arrow" style="position: absolute; left: 0;">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="service-card">
+                <div class="sparkle"></div> 
+                <img src="./assets/demanda.png" alt="Demandas" width="200" height="200"
+                style="border-radius: 200px; padding: 10px; margin-bottom: -120px; margin-top: 50px; border: 2px solid #8b8787; transition: transform 0.1s ease, filter 0.5s ease; position: relative; top: 0; left: 0; z-index: -2;">
+                <div class="tutela-container">
+                    <h2 data-translate-key="Demandas">Demandas</h2>
+                    <ul class="tutela-list">
+                        <li class="visible">
+                            <h3 data-translate-key="DemandasCivil" class="toggle-btn">Civiles</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="DemandasCivilDescripcion">
+                                    Se refiere a litigios relacionados con disputas entre individuos o entidades, como casos de incumplimiento de contrato, daños y perjuicios, propiedad, etc.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 data-translate-key="DemandasFamilia" class="toggle-btn">Familiares</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="DemandasFamiliaDescripcion">
+                                    Involucran asuntos relacionados con el derecho de familia, como divorcios, custodia de hijos, manutención infantil, adopción, entre otros.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 data-translate-key="DemandasPublico" class="toggle-btn">Derecho Público</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="DemandasPublicoDescripcion">
+                                    Abordan cuestiones que afectan al interés público, como asuntos administrativos, constitucionales, tributarios, entre otros.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 data-translate-key="DemandasLaboral" class="toggle-btn">Laborales</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="DemandasLaboralDescripcion">
+                                    Se relacionan con conflictos en el ámbito laboral, como despidos injustificados, discriminación laboral, incumplimiento de contratos laborales, entre otros.
+                                 
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="arrow-right arrow" style="position: absolute; right: 0;">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</section>
+</section>
+
+<section class="section-card">
+<div>
+    <h1 data-translate-key="ProcedimientoDemandas">Procedimiento para Presentar una Demanda:</h1>
+    <ol>
+        <li>
+            <strong  data-translate-key="RedactarDemanda">Redactar la Demanda:</strong >
+            <p data-translate-key="RedactarDemandaDescripcion">La demanda debe ser clara y detallada, presentando los hechos, las leyes aplicables y la petición específica al tribunal.</p>
+        </li>
+        <li>
+            <strong  data-translate-key="PresentarDemanda">Presentar la Demanda:</strong >
+            <p data-translate-key="PresentarDemandaDescripcion">La demanda se presenta ante el tribunal competente, siguiendo los procedimientos establecidos por la jurisdicción correspondiente.</p>
+        </li>
+        <li>
+            <strong  data-translate-key="NotificarParteDemandada">Notificar a la Parte Demandada:</strong >
+            <p data-translate-key="NotificarParteDemandadaDescripcion">Una vez presentada la demanda, se debe notificar oficialmente a la parte demandada para que pueda responder ante el tribunal.</p>
+        </li>
+        <li>
+            <strong  data-translate-key="AudienciaPreliminar">Audiencia Preliminar:</strong >
+            <p data-translate-key="AudienciaPreliminarDescripcion">El tribunal puede programar una audiencia preliminar para discutir los asuntos iniciales y establecer un calendario procesal.</p>
+        </li>
+        <li>
+            <strong  data-translate-key="Juicio">Juicio:</strong >
+            <p data-translate-key="JuicioDescripcion">Si no se resuelve la disputa de manera extrajudicial, el caso procede a juicio, donde se presentan pruebas y se argumenta ante el tribunal.</p>
+        </li>
+        <li>
+            <strong  data-translate-key="FalloJudicial">Fallo Judicial:</strong >
+            <p data-translate-key="FalloJudicialDescripcion">Finalmente, el tribunal emite un fallo que puede ser a favor de una de las partes, y en caso de desacuerdo, se pueden presentar recursos de apelación.</p>
+        </li>
+    </ol>
+</div>
+<button id="expert-button">
+    <a href="contact.html" data-translate-key="ContactaExperto" class="button">Contacta un Experto</a>
+</button>
+</section>
+
+
+
+
+<section id="services" class="gallery2">
+    <div class="service-item">
+        <div class="arrow-left arrow">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="service-card">
+            <div class="sparkle"></div>
+            <img src="./assets/turismo-colombia.jpeg" alt="Servicios para Extranjeros" width="200" height="200"
+                style="border-radius: 200px; padding: 10px; margin-bottom: -120px; margin-top: 50px; border: 2px solid #8b8787; transition: transform 0.1s ease, filter 0.5s ease; position: relative; top: 0; left: 0; z-index: -2;">
+            <div class="tutela-container">
+                <h2 data-translate-key="ServiciosExtranjeros">Extranjeros</h2>
+                <ul class="tutela-list">
+                    <div class="center-con">
+                        <li class="visible">
+                            <h3 data-translate-key="TraduccionDocumentos" class="toggle-btn">Traducción</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="TraduccionDocumentosDescripcion">
+                                    Proporcionamos servicios de traducción certificada de documentos legales, tales como contratos, actas, y otros documentos importantes, garantizando la precisión y confidencialidad.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 data-translate-key="ProcedimientoTraduccion" class="toggle-btn">Documentos</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="ProcedimientoTraduccionDescripcion">
+                                    El proceso para traducir documentos legales incluye la presentación de los documentos originales, la traducción certificada por un traductor autorizado, y la entrega de los documentos traducidos con sello y firma oficial.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 data-translate-key="ServicioPaqueteria" class="toggle-btn">Paquetería</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="ServicioPaqueteriaDescripcion">
+                                    Facilitamos el envío seguro y confiable de documentos legales y otros materiales a nivel local e internacional, asegurándonos de que tu correspondencia llegue a su destino de manera oportuna y en perfectas condiciones.
+                                    
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <h3  style="margin-right: -200px" data-translate-key="AsesoramientoLegal" class="toggle-btn">Legal</h3>
+                            <div class="p-container hidden">
+                                <a style="border-radius: 300px"class="close-btn2" onclick="togglePContainer(this)"data-translate-key="Cerrar">Cerrar</a>
+                                <p data-translate-key="AsesoramientoLegalDescripcion">
+                                    Ofrecemos asesoramiento legal personalizado en áreas como inmigración, contratos internacionales, residencia legal, y otros aspectos legales relevantes para personas extranjeras.
+                                    
+                                </p>
+                            </div>
+                        </li>
+
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="arrow-right arrow">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</section>
+
+
+<section class="section-card">
+    <div>
+        <h1 data-translate-key="ProcedimientosParaTuristas">Procedimientos para Turistas para Acceder a Servicios Legales:</h1>
+        <ol>
+            <li>
+                <strong data-translate-key="PrepararDocumentacion">Preparar Documentación:</strong>
+                <p data-translate-key="PrepararDocumentacionDescripcion">Los turistas deben preparar documentos de identificación y viaje necesarios.</p>
+            </li>
+            <li>
+                <strong data-translate-key="ProgramarConsulta">Programar una Consulta:</strong>
+                <p data-translate-key="ProgramarConsultaDescripcion">Concertar una cita con nuestro equipo legal para discutir sus necesidades específicas.</p>
+            </li>
+            <li>
+                <strong data-translate-key="ValoracionLegal">Valoración Legal:</strong>
+                <p data-translate-key="ValoracionLegalDescripcion">Nuestros expertos evaluarán su situación legal y proporcionarán orientación sobre los servicios disponibles.</p>
+            </li>
+            <li>
+                <strong data-translate-key="AcuerdoDeServicio">Acuerdo de Servicio:</strong>
+                <p data-translate-key="AcuerdoDeServicioDescripcion">Una vez acordados los términos, formalice el acuerdo de servicio con nuestro bufete de abogados.</p>
+            </li>
+            <li>
+                <strong data-translate-key="ImplementacionDeServicios">Implementación de Servicios:</strong>
+                <p data-translate-key="ImplementacionDeServiciosDescripcion">Procedemos a proporcionar los servicios legales acordados y el apoyo correspondiente.</p>
+            </li>
+            <li>
+                <strong data-translate-key="RetroalimentacionYSeguimiento">Retroalimentación y Seguimiento:</strong>
+                <p data-translate-key="RetroalimentacionYSeguimientoDescripcion">Agradecemos sus comentarios y brindamos cualquier asistencia de seguimiento necesaria.</p>
+            </li>
+        </ol>
+    </div>
+    <button id="expert-button">
+        <a href="contact.html" data-translate-key="ContactaExperto" class="button">Contacta un Experto</a>
+    </button>
+</section>
+</section>
+
+
+        <!-- Useful Tips Section -->
+        <section class="useful-tips">
+            <strong data-translate-key="Consejos Útiles">Consejos Útiles</strong >
+            <div class="tip-item">
+                <strong  data-translate-key="Documentación">Documentación</strong >
+                <p data-translate-key="Asegúrate de tener toda la documentación necesaria antes de iniciar cualquier proceso legal. Esto incluye contratos, correos electrónicos y cualquier otro tipo de comunicación relevante.">Asegúrate de tener toda la documentación necesaria antes de iniciar cualquier proceso legal. Esto incluye contratos, correos electrónicos y cualquier otro tipo de comunicación relevante.</p>
+            </div>
+            <div class="tip-item">
+                <strong  data-translate-key="Plazos Legales">Plazos Legales</strong >
+                <p data-translate-key="Cumple con todos los plazos legales para evitar que tu caso sea desestimado o pierdas derechos importantes.">Cumple con todos los plazos legales para evitar que tu caso sea desestimado o pierdas derechos importantes.</p>
+            </div>
+            <div class="tip-item">
+                <p data-translate-key="Siempre es recomendable consultar con un abogado especializado para recibir el mejor asesoramiento legal posible.">Siempre es recomendable consultar con un abogado especializado para recibir el mejor asesoramiento legal posible.</p>
+            </div>
+        </section>
+
+           
+
+
+    </main>
+    <footer>
+        <div class="social-media">
+            <a href="https://www.facebook.com/tu_pagina" target="_blank">
+                <img src="./assets/facebook-logo-circle-black.png" alt="Facebook">
+
+            <a href="https://www.instagram.com/tu_pagina" target="_blank">
+                <img src="./assets/logo_ig_transp.png" alt="Instagram">
+            </a>
+            <a href="https://www.linkedin.com/tu_pagina" target="_blank">
+                <img src="./assets/official-linkedin-icon-png-12.jpeg" alt="LinkedIn">
+            </a>
+        </div>
+    </div>
+        
+        <p>Dirección: Av 37 c 61-08, Medellín, Colombia</p>
+        <p>Teléfono Fijo: +57 (4) 4679481</p>
+        <p>Teléfono Celular: +57 310 449 52 44</p>
+        <p>&copy; 2024 MoonDog Studio.</p>
+        
+    </footer>
+    <script src="translate.js"></script>
+</body>
+</html>

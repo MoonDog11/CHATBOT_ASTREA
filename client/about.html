@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bufete de Abogados</title>
+    <link rel="stylesheet" href="./about.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-GK+y4mJ5PlQuoX2P2B+U/eOs+4tYUnbk0lKPUcXHt0F0PJtf6dmXoebVIkSqoJbC3kMTgbERUuRv3FtVeSmKZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#home" class="logo">
+                <img src="./assets/logo abogados nordeste 2.png" alt="Logo del Bufete de Abogados">
+            </a>
+            <ul id="ul2">
+                <li><a href="home.html" data-text="Home" data-translate-key="Inicio">Inicio</a></li>
+                <li><a href="services.html" data-text="Services" data-translate-key="Servicios">Servicios</a></li>
+                <li><a href="about.html" data-text="About" data-translate-key="Nosotros">Nosotros</a></li>
+                <li><a href="register.html" data-text="Register" data-translate-key="Registro">Registro</a></li>
+                <li><a href="contact.html" data-text="Contact" data-translate-key="Contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="language-label" data-translate-key="Escoga un Idioma">
+            <a>Escoga un Idioma</a>
+        </div>
+
+        <ul id="languageTab">
+            <input type="checkbox" id="myCheckbox">
+        </ul>
+
+        <div id="languageOptions" class="hidden">
+            <section class="new-section">
+                <div class="container">
+                    <div class="translate-container">
+                        <img src="./assets/colflag.png" alt="Bandera de Colombia" class="flag" id="colombianFlag">
+                        <img src="./assets/usaflag.png" alt="USA Flag" class="flag" id="usaFlag" style="display: none;">
+                    </div>
+
+                    <div class="toggle">
+                        <input type="checkbox" id="btn">
+                        <label for="btn">
+                            <span class="thumb"></span>
+                        </label>
+                        <div class="light"></div>
+                    </div>
+
+                    <span class="translate-text" id="translateText">Translate to English</span>
+                </div>
+            </section>
+        </div>
+
+        <section class="intro">
+            <h1 data-translate-key="Sobre Nosotros">Sobre Nosotros</h1>
+            <p data-translate-key="Somos un bufete de abogados">Somos un bufete de abogados dedicado a proporcionar servicios legales de alta calidad. Nuestro equipo está compuesto por profesionales experimentados que están comprometidos con la defensa de los derechos e intereses de nuestros clientes.</p>
+        </section>
+
+        <section id="team" class="team">
+            <h2 data-translate-key="Nuestro Equipo">Nuestro Equipo</h2>
+            <div class="infocardContainer">
+                <div id="main">
+                    <img src="./assets/foto_car0.jpeg" alt="Foto de Carolina Herrera">
+                </div>
+                <div class="arrow-right arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div id="textbois">
+                    <h2>Carolina Herrera</h2>
+                    <h4>Especialista Comercial</h4>
+                    <a href="mailto:limecicila@gmail.com">limecicila@gmail.com</a>
+                    <div id="hotlinks">
+                        <a href="https://codepen.io/LIMESTA" target="_blank">
+                            <img class="codepenio" src="./assets/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones.png">
+                        </a>
+                        <a href="https://codepen.io/LIMESTA" target="_blank">
+                            <img class="codepenio" src="./assets/1200px-Linkedin_icon.svg.png">
+                        </a>
+                        <a href="https://codepen.io/LIMESTA" target="_blank">
+                            <img class="codepenio" src="./assets/X_icon_2.svg.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="infocardContainer">
+                <div id="main">
+                    <img src="./assets/vivi.png" alt="Foto de Viviana Areiza">
+                </div>
+                <div id="textbois">
+                    <h2>Viviana Areiza</h2>
+                    <h4>Especialista Comercial</h4>
+                    <a href="mailto:limecicila@gmail.com">limecicila@gmail.com</a>
+                    <div id="hotlinks">
+                        <a href="https://codepen.io/LIMESTA" target="_blank">
+                            <img class="codepenio" src="./assets/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones.png">
+                        </a>
+                        <a href="https://codepen.io/LIMESTA" target="_blank">
+                            <img class="codepenio" src="./assets/1200px-Linkedin_icon.svg.png">
+                        </a>
+                        <a href="https://codepen.io/LIMESTA" target="_blank">
+                            <img class="codepenio" src="./assets/X_icon_2.svg.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="call-to-action">
+            <button id="expert-button">
+                <a href="contact.html" data-translate-key="ContactaExperto" class="button">Contacta un Experto</a>
+            </button>
+        </section>
+  
+
+    <footer>
+        <div class="social-media">
+            <a href="https://www.facebook.com/tu_pagina" target="_blank">
+                <img src="./assets/facebook-logo-circle-black.png" alt="Facebook">
+            </a>
+            <a href="https://www.instagram.com/tu_pagina" target="_blank">
+                <img src="./assets/logo_ig_transp.png" alt="Instagram">
+            </a>
+            <a href="https://www.linkedin.com/tu_pagina" target="_blank">
+                <img src="./assets/official-linkedin-icon-png-12.jpeg" alt="LinkedIn">
+            </a>
+        </div>
+
+        <p data-text="Dirección: Av 37 c 61-08, Medellín, Colombia">Dirección: Av 37 c 61-08, Medellín, Colombia</p>
+        <p data-text="Teléfono Fijo: +57 (4) 4679481">Teléfono Fijo: +57 (4) 4679481</p>
+        <p data-text="Teléfono Celular: +57 310 449 52 44">Teléfono Celular: +57 310 449 52 44</p>
+        <p data-text="© 2024 MoonDog Studio.">© 2024 MoonDog Studio.</p>
+    </footer>
+
+    <script src="translate.js"></script>
+</body>
+</html>

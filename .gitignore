@@ -5,7 +5,7 @@
 node_modules/
 *.log
 
-# Ignorar archivos y directorios de la configuración del servidor
+# Ignorar archivos y directorios de la configuración del servidor, excepto los necesarios
 server/node_modules/
 server/package-lock.json
 server/package.json
@@ -16,15 +16,6 @@ server/uploads/
 server/node_modules/@ffmpeg-installer/darwin-x64/ffmpeg
 base-baileys-postgres/node_modules/@ffmpeg-installer/darwin-x64/ffmpeg
 
-# Ignorar archivos de configuración y de proyecto en la raíz
-package-lock.json
-README.md
-
-# Ignorar directorios y archivos específicos
-base-baileys-postgres/
-client/
-server/
-
 # Ignorar archivos generados y temporales
 *.pdf
 *.md
@@ -34,3 +25,10 @@ server/
 # Ignorar archivos de ejemplo y prueba
 *.example
 *.test.js
+
+# Incluir archivos y directorios necesarios para el chat bot
+!server/
+!base-baileys-postgres/
+!client/
+!package.json
+!package-lock.json
