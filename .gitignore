@@ -12,6 +12,10 @@ server/package.json
 server/routes/
 server/uploads/
 
+# Ignorar binarios grandes de FFmpeg
+server/node_modules/@ffmpeg-installer/darwin-x64/ffmpeg
+base-baileys-postgres/node_modules/@ffmpeg-installer/darwin-x64/ffmpeg
+
 # Ignorar archivos de configuración y de proyecto en la raíz
 package-lock.json
 README.md
