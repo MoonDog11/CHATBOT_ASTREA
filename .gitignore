@@ -1,0 +1,32 @@
+# Ignorar archivos y directorios específicos de macOS
+.DS_Store
+
+# Ignorar archivos de Node.js específicos
+node_modules/
+*.log
+
+# Ignorar archivos y directorios de la configuración del servidor
+server/node_modules/
+server/package-lock.json
+server/package.json
+server/routes/
+server/uploads/
+
+# Ignorar archivos de configuración y de proyecto en la raíz
+package-lock.json
+README.md
+
+# Ignorar directorios y archivos específicos
+base-baileys-postgres/
+client/
+server/
+
+# Ignorar archivos generados y temporales
+*.pdf
+*.md
+*.json
+*.js
+
+# Ignorar archivos de ejemplo y prueba
+*.example
+*.test.js
