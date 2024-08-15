@@ -1,5 +1,30 @@
 version: '1'
-build:
-  path: .
-runtime:
-  - nodejs
+app:
+  # Aquí defines cómo construir el cliente
+  - name: client
+    path: ./client
+    build:
+      # Ejemplo para una aplicación React
+      build_command: npm install && npm run build
+    start:
+      command: npm start
+
+  # Aquí defines cómo construir el servidor
+  - name: server
+    path: ./server
+    build:
+      # Ejemplo para una aplicación Node.js
+      build_command: npm install
+    start:
+      command: npm start
+
+  # Aquí defines cómo construir la base
+  - name: base
+    path: ./base-baileys-postgres
+    build:
+      # Aquí puedes definir cómo construir o preparar la base
+      # Por ejemplo, podrías tener un script específico para configurar la base de datos
+      build_command: ./setup-database.sh
+    start:
+      # Si necesitas ejecutar algún comando para preparar la base de datos, lo puedes colocar aquí
+      command: ./start-database.sh
