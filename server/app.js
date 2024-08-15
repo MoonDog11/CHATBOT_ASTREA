@@ -8,7 +8,8 @@ const multer = require('multer');
 require('dotenv').config();
 const FormData = require('form-data'); // Asegúrate de instalar este paquete
 const fetch = require('node-fetch'); // Asegúrate de instalar este paquete
-const flows = require('../server/flow.json');
+const flows = require('./flow.json');
+
 
 const usuariosRutas = require('./routes/routes_users');
 const { UsuarioAbogado } = require('./controllers/users_controllers');
