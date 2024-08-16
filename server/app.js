@@ -11,7 +11,7 @@ const fetch = require('node-fetch'); // Asegúrate de instalar este paquete
 const flows = require('./flow.json');
 
 
-const usuariosRutas = require('./routes/routes_users');
+const usuariosRutas = require('./routes_users');
 const { UsuarioAbogado } = require('./controllers/users_controllers');
 
 const app = express();
