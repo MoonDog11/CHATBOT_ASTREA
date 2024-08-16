@@ -1,7 +1,7 @@
 // servidor/rutas/usuarios.js
 const express = require('express');
 const router = express.Router();
-const { registrarUsuario, autenticarUsuario,UsuarioAbogado } = require('../controllers/users_controllers');
+const { registrarUsuario, autenticarUsuario,UsuarioAbogado } = require('./controllers/users_controllers');
 
 // Ruta para registrar un nuevo usuario
 router.post('/registro', registrarUsuario);
