@@ -8,9 +8,7 @@ const pool = new Pool({
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  url: process.env..DATABASE_URL,
-  
-
+  connectionString: process.env.DATABASE_URL // Usar 'connectionString' en lugar de 'url'
 });
 
 // Agregar un console.log para verificar la conexión
