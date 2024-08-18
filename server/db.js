@@ -14,9 +14,12 @@ const pool = new Pool({
 // Agregar un console.log para verificar la conexión
 pool.connect((err, client, release) => {
   if (err) {
-    return console.error('Error al conectar a la base de datos:', err.message);
+    console.error('Error al conectar a la base de datos:', err.message);
+    return;
   }
   console.log('Conexión exitosa a la base de datos');
+  console.log('Usuario conectado:', client.user); // Añade el usuario conectado
+  console.log('Versión del servidor PostgreSQL:', client.serverVersion); // Añade la versión del servidor
   release();
 });
 
