@@ -35,11 +35,16 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// Manejo de errores de conexión a la base de datos
-pool.on('error', (err, client) => {
-  console.error('Error inesperado en la conexión de la base de datos:', err);
-  process.exit(-1);
+// Agregar un log para verificar el estado de la conexión a la base de datos
+pool.connect((err, client, release) => {
+  if (err) {
+    console.error('Error al conectar a la base de datos:', err.message);
+    return;
+  }
+  console.log('Conexión exitosa a la base de datos');
+  release();
 });
+
 
 // Log para verificar las variables de entorno
 console.log('Variables de Entorno:');
