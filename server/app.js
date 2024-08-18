@@ -30,6 +30,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
+// Configuración de la conexión a la base de datos
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
@@ -40,6 +41,7 @@ pool.on('error', (err, client) => {
   process.exit(-1);
 });
 
+// Log para verificar las variables de entorno
 console.log('Variables de Entorno:');
 console.log('DB_USER:', process.env.DB_USER);
 console.log('DB_HOST:', process.env.DB_HOST);
