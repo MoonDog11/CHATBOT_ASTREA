@@ -8,7 +8,7 @@ const pool = new Pool({
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  connectionString: process.env.URL_DATABASE // Usar 'connectionString' en lugar de 'url'
+  connectionString: process.env.DATABASE_URL // Usar 'connectionString' en lugar de 'url'
 });
 
 // Agregar un console.log para verificar la conexión
@@ -24,11 +24,11 @@ pool.connect((err, client, release) => {
 });
 
 
-const urlDatabase = process.env.URL_DATABASE;
+const urlDatabase = process.env.DATABASE_URL;
 
 // Verificar si la variable está configurada y tiene un valor
 if (urlDatabase) {
-  console.log(`URL_DATABASE configurada correctamente: ${urlDatabase}`);
+  console.log(`DATABASE_URL configurada correctamente: ${urlDatabase}`);
 } else {
-  console.log('URL_DATABASE no está configurada correctamente o está vacía.');
+  console.log('DATABASE_URL no está configurada correctamente o está vacía.');
 }
