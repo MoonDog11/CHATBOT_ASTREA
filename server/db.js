@@ -1,12 +1,14 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Configurar la conexión a la base de datos usando DATABASE_URL
+// Configurar la conexión a la base de datos
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false // Añadido para permitir conexiones seguras
-  }
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  connectionString: process.env.URL_DATABASE // Usar 'connectionString' en lugar de 'url'
 });
 
 // Agregar un console.log para verificar la conexión
@@ -21,13 +23,14 @@ pool.connect((err, client, release) => {
   release();
 });
 
-const urlDatabase = process.env.DATABASE_URL; // Usa DATABASE_URL aquí
+
+const urlDatabase = process.env.URL_DATABASE;
 
 // Verificar si la variable está configurada y tiene un valor
 if (urlDatabase) {
-  console.log(`DATABASE_URL configurada correctamente: ${urlDatabase}`);
+  console.log(URL_DATABASE configurada correctamente: ${urlDatabase});
 } else {
-  console.log('DATABASE_URL no está configurada correctamente o está vacía.');
+  console.log('URL_DATABASE no está configurada correctamente o está vacía.');
 }
 
-module.exports = pool;
+module.exports = pool; 
