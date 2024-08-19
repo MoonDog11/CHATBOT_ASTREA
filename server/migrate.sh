@@ -14,6 +14,10 @@ _YELLOW=$(tput setaf 3)
 _RESET=$(tput sgr0)
 _BOLD=$(tput bold)
 
+# Cargar variables de entorno
+export $(grep -v '^#' .env | xargs)
+
+# Función para imprimir mensajes de error y salir
 error_exit() {
     printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
     exit 1
@@ -52,12 +56,14 @@ printf "${_RESET}\n"
 
 section "Validating environment variables"
 
+# Validar que PLUGIN_URL existe
 if [ -z "$PLUGIN_URL" ]; then
     error_exit "PLUGIN_URL environment variable is not set."
 fi
 
 write_ok "PLUGIN_URL correctly set"
 
+# Validar que DATABASE_URL existe
 if [ -z "$DATABASE_URL" ]; then
     error_exit "DATABASE_URL environment variable is not set."
 fi
@@ -66,7 +72,18 @@ write_ok "DATABASE_URL correctly set"
 
 section "Checking if DATABASE_URL is empty"
 
-query="SELECT count(*) FROM information_schema.tables WHERE table_schema NOT IN ('information_schema', 'pg_catalog');"
+# Consulta para verificar si hay tablas en la nueva base de datos
+query="SELECT count(*)
+FROM information_schema.tables t
+WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
+  AND NOT EXISTS (
+    SELECT 1
+    FROM pg_depend d
+    JOIN pg_extension e ON d.refobjid = e.oid
+    JOIN pg_class c ON d.objid = c.oid
+    WHERE c.relname = t.table_name
+      AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
+  );"
 table_count=$(psql "$DATABASE_URL" -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
@@ -118,6 +135,7 @@ remove_timescale_commands() {
   write_ok "Successfully removed TimescaleDB specific commands from $dump_file"
 }
 
+# Obtener lista de bases de datos, excluyendo bases de datos del sistema
 databases=$(psql -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
@@ -128,16 +146,17 @@ for db in $databases; do
   dump_database "$db"
 done
 
-trap - ERR # Temporary disable error trap to avoid exiting on error
+trap - ERR # Deshabilitar temporalmente el manejo de errores para evitar salir en caso de error
 psql "$DATABASE_URL" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
 if [ $timescaledb_exists -ne 0 ]; then
-  write_warn "TimescaleDB extension not found in target database. Ignoring TimescaleDB specific commands."
-  write_warn "If you are using TimescaleDB, please install the extension in the target database and run the migration again."
+    write_warn "TimescaleDB extension not found in target database. Ignoring TimescaleDB specific commands."
+    write_warn "If you are using TimescaleDB, please install the extension in the target database and run the migration again."
 fi
 
+# Eliminar la fila _timescaledb_catalog.metadata que contiene exported_uuid para evitar conflictos
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
@@ -154,12 +173,17 @@ remove_timescale_catalog_metadata() {
   "
 }
 
+# Crear la base de datos en la URL proporcionada si no existe
 ensure_database_exists() {
   local db_url=$1
 
+  # Extraer el nombre de la base de datos de DATABASE_URL
   local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
+
+  # Extraer otros componentes de DATABASE_URL para el comando psql
   local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
+  # Verificar si la base de datos existe
   if ! psql $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
       write_ok "Database $db_name does not exist. Creating..."
       psql $psql_url -c "CREATE DATABASE \"$db_name\""
@@ -168,6 +192,7 @@ ensure_database_exists() {
   fi
 }
 
+# Restaurar la base de datos en DATABASE_URL
 restore_database() {
   section "Restoring database: $db"
 
@@ -182,9 +207,9 @@ restore_database() {
   remove_timescale_catalog_metadata "$db_url"
 
   psql $db_url -v ON_ERROR_STOP=1 --echo-errors \
-    -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to NEW_URL."
+    -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to DATABASE_URL."
 
-  write_ok "Successfully restored $db to NEW_URL"
+  write_ok "Successfully restored $db to DATABASE_URL"
 }
 
 for db in $databases; do
