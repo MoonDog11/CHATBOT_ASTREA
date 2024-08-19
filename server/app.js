@@ -9,7 +9,7 @@ require('dotenv').config();
 const FormData = require('form-data'); // Asegúrate de instalar este paquete
 const fetch = require('node-fetch'); // Asegúrate de instalar este paquete
 const flows = require('./flow.json');
-const { Pool } = require('pg'); // Importar Pool desde pg
+
 
 const usuariosRutas = require('./routes_users');
 const { UsuarioAbogado } = require('./controllers/users_controllers');
@@ -28,24 +28,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Configuración de la conexión a la base de datos
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-// Agregar un log para verificar el estado de la conexión a la base de datos
-pool.connect((err, client, release) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos:', err.message);
-    return;
-  }
-  console.log('Conexión exitosa a la base de datos');
-  release();
-});
-
-// Log para verificar las variables de entorno
-console.log('Variables de Entorno:');
-console.log('DATABASE_URL', process.env.DATABASE_URL);
 
 // Middleware
 app.use(
