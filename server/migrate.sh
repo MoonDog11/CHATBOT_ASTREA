@@ -14,9 +14,6 @@ _YELLOW=$(tput setaf 3)
 _RESET=$(tput sgr0)
 _BOLD=$(tput bold)
 
-# Cargar variables de entorno
-export $(grep -v '^#' .env | xargs)
-
 # Función para imprimir mensajes de error y salir
 error_exit() {
     printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
@@ -55,10 +52,6 @@ echo "If you run into any issues, please reach out to us on Discord: https://dis
 printf "${_RESET}\n"
 
 section "Validating environment variables"
-
-# Imprimir variables de entorno para depuración
-echo "PLUGIN_URL: $PLUGIN_URL"
-echo "DATABASE_URL: $DATABASE_URL"
 
 # Validar que PLUGIN_URL existe
 if [ -z "$PLUGIN_URL" ]; then
@@ -114,7 +107,7 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  PGPASSWORD=$(echo $PLUGIN_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') pg_dump -d "$db_url" \
+  PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$db_url" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
@@ -140,7 +133,7 @@ remove_timescale_commands() {
 }
 
 # Obtener lista de bases de datos, excluyendo bases de datos del sistema
-databases=$(PGPASSWORD=$(echo $PLUGIN_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 for db in $databases; do
@@ -148,12 +141,6 @@ for db in $databases; do
 done
 
 trap - ERR # Deshabilitar temporalmente el manejo de errores para evitar salir en caso de error
-
-# Verificar conectividad a la base de datos destino
-echo "Checking connectivity to target database..."
-PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql "$DATABASE_URL" -c "SELECT 1;" || error_exit "Failed to connect to the target database."
-
-# Verificar si TimescaleDB está presente
 PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql "$DATABASE_URL" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
@@ -167,7 +154,7 @@ fi
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
-  PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql $db_url -c "
+  PGPASSWORD=$DB_PASSWORD psql -h $(echo $DATABASE_URL | sed -n 's/.*:\/\/[^:]*:[^@]*@\(.*\):[0-9]*\/.*/\1/p') -U $DB_USER -p $DB_PORT -d $db_url -c "
     DO \$\$
     BEGIN
       IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
@@ -191,9 +178,9 @@ ensure_database_exists() {
   local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   # Verificar si la base de datos existe
-  if ! PGPASSWORD=$(echo $db_url | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
+  if ! PGPASSWORD=$DB_PASSWORD psql -h $(echo $db_url | sed -n 's/.*:\/\/[^:]*:[^@]*@\(.*\):[0-9]*\/.*/\1/p') -U $DB_USER -p $DB_PORT -d $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
       write_ok "Database $db_name does not exist. Creating..."
-      PGPASSWORD=$(echo $db_url | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql $psql_url -c "CREATE DATABASE \"$db_name\""
+      PGPASSWORD=$DB_PASSWORD psql -h $(echo $db_url | sed -n 's/.*:\/\/[^:]*:[^@]*@\(.*\):[0-9]*\/.*/\1/p') -U $DB_USER -p $DB_PORT -d $psql_url -c "CREATE DATABASE \"$db_name\""
   else
       write_info "Database $db_name exists."
   fi
@@ -213,24 +200,14 @@ restore_database() {
   ensure_database_exists "$db_url"
   remove_timescale_catalog_metadata "$db_url"
 
-  PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql $db_url -v ON_ERROR_STOP=1 --echo-errors \
-    -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to DATABASE_URL."
-
-  write_ok "Successfully restored $db to DATABASE_URL"
+  PGPASSWORD=$DB_PASSWORD psql -h $(echo $DATABASE_URL | sed -n 's/.*:\/\/[^:]*:[^@]*@\(.*\):[0-9]*\/.*/\1/p') -U $DB_USER -p $DB_PORT -d $db_url -v ON_ERROR_STOP=1 --echo-errors \
+    -f "$dump_dir/$db.sql" || error_exit "Failed to restore database $db."
+  
+  write_ok "Successfully restored database $db from dump"
 }
 
 for db in $databases; do
   restore_database "$db"
 done
 
-printf "${_RESET}\n"
-printf "${_RESET}\n"
-echo "${_BOLD}${_GREEN}Migration completed successfully${_RESET}"
-printf "${_RESET}\n"
-echo "Next steps..."
-echo "1. Update your application's DATABASE_URL environment variable to point to the new database."
-echo '  - You can use variable references to do this. For example `${{ Postgres.DATABASE_URL }}`'
-echo "2. Verify that your application is working as expected."
-echo "3. Remove the legacy plugin and this service from your Railway project."
-
-printf "${_RESET}\n"
+echo "Migration completed successfully."
