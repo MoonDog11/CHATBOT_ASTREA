@@ -136,7 +136,7 @@ remove_timescale_commands() {
 }
 
 # Obtener lista de bases de datos, excluyendo bases de datos del sistema
-databases=$(psql -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(psql "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 dump_dir="plugin_dump"
@@ -160,7 +160,7 @@ fi
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
-  psql $db_url -c "
+  psql "$db_url" -c "
     DO \$\$
     BEGIN
       IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
@@ -184,9 +184,9 @@ ensure_database_exists() {
   local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   # Verificar si la base de datos existe
-  if ! psql $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
+  if ! psql "$psql_url" -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
       write_ok "Database $db_name does not exist. Creating..."
-      psql $psql_url -c "CREATE DATABASE \"$db_name\""
+      psql "$psql_url" -c "CREATE DATABASE \"$db_name\""
   else
       write_info "Database $db_name exists."
   fi
@@ -206,7 +206,7 @@ restore_database() {
   ensure_database_exists "$db_url"
   remove_timescale_catalog_metadata "$db_url"
 
-  psql $db_url -v ON_ERROR_STOP=1 --echo-errors \
+  psql "$db_url" -v ON_ERROR_STOP=1 --echo-errors \
     -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to DATABASE_URL."
 
   write_ok "Successfully restored $db to DATABASE_URL"
