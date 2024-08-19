@@ -30,7 +30,7 @@ const upload = multer({ storage });
 
 // Configuración de la conexión a la base de datos
 const pool = new Pool({
-  connectionString: process.env.URL_DATABASE,
+  connectionString: process.env.DATABASE_URL,
 });
 
 // Agregar un log para verificar el estado de la conexión a la base de datos
@@ -45,7 +45,7 @@ pool.connect((err, client, release) => {
 
 // Log para verificar las variables de entorno
 console.log('Variables de Entorno:');
-console.log('URL_DATABASE:', process.env.URL_DATABASE);
+console.log('DATABASE_URL', process.env.DATABASE_URL);
 
 // Middleware
 app.use(
