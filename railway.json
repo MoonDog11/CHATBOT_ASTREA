@@ -1,12 +1,14 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "NIXPACKS",
+    "buildCommand": "echo \"no-build\""
   },
   "deploy": {
-    "runtime": "V2",
     "numReplicas": 1,
-    "sleepApplication": false,
+    "startCommand": "sleep 10 && cd apps/xxxx && pnpm tsx server",
+    "healthcheckPath": "/",
+    "sleepApplication": true,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
