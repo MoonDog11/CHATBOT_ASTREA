@@ -45,7 +45,7 @@ pool.connect((err, client, release) => {
 
 // Log para verificar las variables de entorno
 console.log('Variables de Entorno:');
-console.log('DATABASE_URL:', process.env.URL_DATABASE);
+console.log('URL_DATABASE:', process.env.URL_DATABASE);
 
 // Middleware
 app.use(
