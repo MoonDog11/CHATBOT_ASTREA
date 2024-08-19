@@ -32,3 +32,12 @@ if (urlDatabase) {
 } else {
   console.log('DATABASE_URL no está configurada correctamente o está vacía.');
 }
+
+pool.query('SELECT version()', (err, res) => {
+  if (err) {
+    console.error('Error al consultar la versión del servidor:', err.message);
+  } else {
+    console.log('Versión del servidor PostgreSQL:', res.rows[0].version);
+  }
+  pool.end();
+});
