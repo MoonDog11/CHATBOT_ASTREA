@@ -28,9 +28,7 @@ const urlDatabase = process.env.URL_DATABASE;
 
 // Verificar si la variable está configurada y tiene un valor
 if (urlDatabase) {
-  console.log(URL_DATABASE configurada correctamente: ${urlDatabase});
+  console.log(`URL_DATABASE configurada correctamente: ${urlDatabase}`);
 } else {
   console.log('URL_DATABASE no está configurada correctamente o está vacía.');
 }
-
-module.exports = pool; 
