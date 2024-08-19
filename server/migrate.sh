@@ -56,6 +56,10 @@ printf "${_RESET}\n"
 
 section "Validating environment variables"
 
+# Imprimir variables de entorno para depuración
+echo "PLUGIN_URL: $PLUGIN_URL"
+echo "DATABASE_URL: $DATABASE_URL"
+
 # Validar que PLUGIN_URL existe
 if [ -z "$PLUGIN_URL" ]; then
     error_exit "PLUGIN_URL environment variable is not set."
@@ -144,6 +148,12 @@ for db in $databases; do
 done
 
 trap - ERR # Deshabilitar temporalmente el manejo de errores para evitar salir en caso de error
+
+# Verificar conectividad a la base de datos destino
+echo "Checking connectivity to target database..."
+PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql "$DATABASE_URL" -c "SELECT 1;" || error_exit "Failed to connect to the target database."
+
+# Verificar si TimescaleDB está presente
 PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:[^@]*@[^:]*:[0-9]*\/\([^?]*\).*/\1/p') psql "$DATABASE_URL" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
