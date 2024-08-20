@@ -148,3 +148,8 @@ for db in $databases; do
 done
 
 echo "Migration completed successfully."
+
+# Start the server
+section "Starting the server"
+node app.js || error_exit "Failed to start the server."
+write_ok "Server started successfully."
