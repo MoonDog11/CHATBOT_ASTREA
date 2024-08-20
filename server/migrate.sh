@@ -77,23 +77,13 @@ export DB_NAME=$(echo $DATABASE_URL | sed -n 's/.*\/\([^?]*\).*/\1/p')
 section "Checking if DATABASE_URL is empty"
 
 # Consulta para verificar si hay tablas en la nueva base de datos
-query="SELECT count(*)
-FROM information_schema.tables t
-WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
-  AND NOT EXISTS (
-    SELECT 1
-    FROM pg_depend d
-    JOIN pg_extension e ON d.refobjid = e.oid
-    JOIN pg_class c ON d.objid = c.oid
-    WHERE c.relname = t.table_name
-      AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
-  );"
+query="SELECT count(*) FROM information_schema.tables WHERE table_schema NOT IN ('information_schema', 'pg_catalog');"
 table_count=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
   write_ok "The new database is empty. Proceeding with restore."
 else
-  echo "table count: $table_count"
+  echo "Table count: $table_count"
   if [ -z "$OVERWRITE_DATABASE" ]; then
     error_exit "The new database is not empty. Aborting migration.\nSet the OVERWRITE_DATABASE environment variable to overwrite the new database."
   fi
@@ -114,7 +104,7 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$db_url" \
+  PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$database" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
@@ -140,7 +130,7 @@ remove_timescale_commands() {
 }
 
 # Obtener lista de bases de datos, excluyendo bases de datos del sistema
-databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 for db in $databases; do
