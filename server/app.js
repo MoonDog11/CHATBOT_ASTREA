@@ -10,7 +10,6 @@ const FormData = require('form-data'); // Asegúrate de instalar este paquete
 const fetch = require('node-fetch'); // Asegúrate de instalar este paquete
 const flows = require('./flow.json');
 
-
 const usuariosRutas = require('./routes_users');
 const { UsuarioAbogado } = require('./controllers/users_controllers');
 
@@ -28,7 +27,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-
 // Middleware
 app.use(
   helmet.contentSecurityPolicy({
@@ -45,6 +43,9 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'client')));
 
 // Endpoint para manejar la solicitud del formulario de contacto
 app.post('/sendContactForm', async (req, res) => {
@@ -70,36 +71,26 @@ app.post('/sendContactForm', async (req, res) => {
   }
 });
 
-// Servir archivos estáticos
-app.use(express.static(path.join(__dirname, 'assets')));
-app.use(express.static(path.join(__dirname, '../client')));
-
 // Rutas
 app.use('/api', usuariosRutas);
 app.post('/submit_registration', upload.single('cv'), UsuarioAbogado);
 
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
-  const landingFilePath = path.join(__dirname, '../client/landing.html');
-  res.sendFile(landingFilePath);
+  const landingFilePath = path.join(__dirname, 'client', 'landing.html');
+  res.sendFile(landingFilePath, (err) => {
+    if (err) {
+      console.error('Error al enviar el archivo:', err);
+      res.status(500).send('Error al enviar el archivo');
+    }
+  });
 });
-
-app.use(express.json());
 
 app.get('/bot/data', (req, res) => {
   res.json(flows);
 });
 
-// Configuración de Content Security Policy (CSP)
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      frameSrc: ["http://localhost:3002"],
-    },
-  })
-);
-
+// Inicia el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
