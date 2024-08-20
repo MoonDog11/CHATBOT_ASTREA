@@ -6,8 +6,9 @@ const helmet = require('helmet');
 const path = require('path');
 const multer = require('multer');
 require('dotenv').config();
-const FormData = require('form-data'); // Asegúrate de instalar este paquete
-const fetch = require('node-fetch'); // Asegúrate de instalar este paquete
+const FormData = require('form-data');
+const fetch = require('node-fetch');
+const fs = require('fs'); // Añadido para verificar archivos
 const flows = require('./flow.json');
 
 const usuariosRutas = require('./routes_users');
@@ -19,7 +20,7 @@ const PORT = process.env.PORT || 8080;
 // Configuración de multer para almacenar archivos en disco
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'uploads/')); // Asegúrate de que este directorio exista
+    cb(null, path.join(__dirname, 'uploads/'));
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
@@ -44,7 +45,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Servir archivos estáticos
+// Servir archivos estáticos desde el directorio 'client' dentro de 'server'
 app.use(express.static(path.join(__dirname, 'client')));
 
 // Endpoint para manejar la solicitud del formulario de contacto
@@ -59,7 +60,7 @@ app.post('/sendContactForm', async (req, res) => {
       method: 'POST',
       body: form,
       headers: {
-        ...form.getHeaders(), // Añade los encabezados necesarios para FormData
+        ...form.getHeaders(),
         'Accept': 'application/json',
       }
     });
@@ -78,10 +79,17 @@ app.post('/submit_registration', upload.single('cv'), UsuarioAbogado);
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
   const landingFilePath = path.join(__dirname, 'client', 'landing.html');
-  res.sendFile(landingFilePath, (err) => {
+  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
     if (err) {
-      console.error('Error al enviar el archivo:', err);
-      res.status(500).send('Error al enviar el archivo');
+      console.error('Error al encontrar el archivo:', err);
+      res.status(404).send('Archivo no encontrado');
+    } else {
+      res.sendFile(landingFilePath, (err) => {
+        if (err) {
+          console.error('Error al enviar el archivo:', err);
+          res.status(500).send('Error al enviar el archivo');
+        }
+      });
     }
   });
 });
