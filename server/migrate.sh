@@ -147,4 +147,19 @@ for db in $databases; do
   restore_database "$db"
 done
 
+# Inicio del servidor PostgreSQL (si es necesario)
+section "Starting PostgreSQL Server"
+
+# Ajusta el comando según la forma en que se inicia PostgreSQL en tu contenedor o entorno
+# Por ejemplo, en muchos entornos Docker se usa:
+pg_ctl -D /var/lib/postgresql/data start
+
+# Esperar un momento para que el servidor se inicie completamente
+sleep 10
+
+# Mostrar los logs del servidor PostgreSQL
+section "Displaying PostgreSQL Logs"
+# Ajusta la ubicación del archivo de log según la configuración de PostgreSQL
+tail -f /var/log/postgresql/postgresql.log || error_exit "Failed to display PostgreSQL logs."
+
 echo "Migration completed successfully."
