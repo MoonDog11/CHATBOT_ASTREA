@@ -14,7 +14,7 @@ const usuariosRutas = require('./routes_users');
 const { UsuarioAbogado } = require('./controllers/users_controllers');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 
 // Configuración de multer para almacenar archivos en disco
 const storage = multer.diskStorage({
