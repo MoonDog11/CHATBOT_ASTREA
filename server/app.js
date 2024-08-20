@@ -48,6 +48,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Servir archivos estáticos desde el directorio 'client' dentro de 'server'
 app.use(express.static(path.join(__dirname, 'client')));
 
+// Ruta para la página de inicio
+app.get('/', (req, res) => {
+  const landingFilePath = path.join(__dirname, 'client', 'landing.html');
+  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('Error al encontrar el archivo:', err);
+      res.status(404).send('Archivo no encontrado');
+    } else {
+      res.sendFile(landingFilePath, (err) => {
+        if (err) {
+          console.error('Error al enviar el archivo:', err);
+          res.status(500).send('Error al enviar el archivo');
+        }
+      });
+    }
+  });
+});
+
+
 // Endpoint para manejar la solicitud del formulario de contacto
 app.post('/sendContactForm', async (req, res) => {
   const form = new FormData();
@@ -76,23 +95,6 @@ app.post('/sendContactForm', async (req, res) => {
 app.use('/api', usuariosRutas);
 app.post('/submit_registration', upload.single('cv'), UsuarioAbogado);
 
-// Ruta para la página de inicio
-app.get('/', (req, res) => {
-  const landingFilePath = path.join(__dirname, 'client', 'landing.html');
-  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.error('Error al encontrar el archivo:', err);
-      res.status(404).send('Archivo no encontrado');
-    } else {
-      res.sendFile(landingFilePath, (err) => {
-        if (err) {
-          console.error('Error al enviar el archivo:', err);
-          res.status(500).send('Error al enviar el archivo');
-        }
-      });
-    }
-  });
-});
 
 app.get('/bot/data', (req, res) => {
   res.json(flows);
