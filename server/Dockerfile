@@ -6,22 +6,13 @@ RUN apt-get update && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-# Install postgresql-client-16 and other dependencies
+# Install postgresql-client-16
 RUN apt-get update && \
-    apt-get install -y postgresql-client-16 bash ncurses-bin curl && \
+    apt-get install -y postgresql-client-16 bash ncurses-bin && \
     rm -rf /var/lib/apt/lists/*
-
-# Install Node.js (LTS version 18.x)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
 
 WORKDIR /app
 
-# Copy application files
-COPY . .
+ADD . .
 
-# Install application dependencies (if using npm)
-RUN npm install
-
-# Run the migration script and start the server
-CMD ["bash", "-c", "./migrate.sh && node app.js"]
+CMD ["bash", "migrate.sh"]
