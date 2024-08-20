@@ -8,11 +8,10 @@ export TERM=ansi
 _GREEN=$(tput setaf 2)
 _BLUE=$(tput setaf 4)
 _MAGENTA=$(tput setaf 5)
-_CYAN=$(tput setaf 6)
-_RED=$(tput setaf 1)
-_YELLOW=$(tput setaf 3)
 _RESET=$(tput sgr0)
 _BOLD=$(tput bold)
+_RED=$(tput setaf 1)
+_YELLOW=$(tput setaf 3)
 
 # Función para imprimir mensajes de error y salir
 error_exit() {
@@ -119,16 +118,6 @@ dump_database() {
   write_info "Dump file size: $dump_file_size"
 }
 
-remove_timescale_commands() {
-  local database=$1
-  local dump_file="$dump_dir/$database.sql"
-
-  ./comment_timescaledb.awk "$dump_file" > "${dump_file}.new"
-  mv "${dump_file}.new" "$dump_file"
-
-  write_ok "Successfully removed TimescaleDB specific commands from $dump_file"
-}
-
 # Obtener lista de bases de datos, excluyendo bases de datos del sistema
 databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
@@ -137,65 +126,23 @@ for db in $databases; do
   dump_database "$db"
 done
 
-trap - ERR # Deshabilitar temporalmente el manejo de errores para evitar salir en caso de error
-PGPASSWORD=$DB_PASSWORD psql "$DATABASE_URL" -c '\dx' | grep -q 'timescaledb'
-timescaledb_exists=$?
-trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
-
-if [ $timescaledb_exists -ne 0 ]; then
-    write_warn "TimescaleDB extension not found in target database. Ignoring TimescaleDB specific commands."
-    write_warn "If you are using TimescaleDB, please install the extension in the target database and run the migration again."
-fi
-
-# Eliminar la fila _timescaledb_catalog.metadata que contiene exported_uuid para evitar conflictos
-remove_timescale_catalog_metadata() {
-  local db_url=$1
-
-  PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url -c "
-    DO \$\$
-    BEGIN
-      IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
-                  JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-                  WHERE n.nspname = '_timescaledb_catalog' AND c.relname = 'metadata') THEN
-          DELETE FROM _timescaledb_catalog.metadata WHERE key = 'exported_uuid';
-      END IF;
-    END
-    \$\$
-  "
-}
-
-# Crear la base de datos en la URL proporcionada si no existe
-ensure_database_exists() {
-  local db_url=$1
-
-  # Extraer el nombre de la base de datos de DATABASE_URL
-  local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
-
-  # Extraer otros componentes de DATABASE_URL para el comando psql
-  local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
-
-  # Verificar si la base de datos existe
-  if ! PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
-      write_ok "Database $db_name does not exist. Creating..."
-      PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $psql_url -c "CREATE DATABASE \"$db_name\""
-  else
-      write_info "Database $db_name exists."
-  fi
-}
-
 # Restaurar la base de datos en DATABASE_URL
 restore_database() {
   section "Restoring database: $db"
 
-  if [ $timescaledb_exists -ne 0 ]; then
-    remove_timescale_commands "$db"
-  fi
-
   local base_url=$(echo $DATABASE_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
   local db_url="${base_url}/${db}"
 
-  ensure_database_exists "$db_url"
-  remove_timescale_catalog_metadata "$db_url"
+  # Crear la base de datos en la URL proporcionada si no existe
+  local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
+  local db_url_base=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
+
+  if ! PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url_base -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
+      write_ok "Database $db_name does not exist. Creating..."
+      PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url_base -c "CREATE DATABASE \"$db_name\""
+  else
+      write_info "Database $db_name exists."
+  fi
 
   PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url -v ON_ERROR_STOP=1 --echo-errors \
     -f "$dump_dir/$db.sql" || error_exit "Failed to restore database $db."
