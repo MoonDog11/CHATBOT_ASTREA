@@ -28,5 +28,5 @@ COPY init.sh /app/
 RUN chmod +x /app/init.sh
 
 # Run the init script
-CMD ["/init.sh"]
+CMD ["/app/init.sh"]
 
