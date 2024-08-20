@@ -13,7 +13,6 @@ _BOLD=$(tput bold)
 _RED=$(tput setaf 1)
 _YELLOW=$(tput setaf 3)
 
-# Función para imprimir mensajes de error y salir
 error_exit() {
     printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
     exit 1
@@ -52,14 +51,12 @@ printf "${_RESET}\n"
 
 section "Validating environment variables"
 
-# Validar que PLUGIN_URL existe
 if [ -z "$PLUGIN_URL" ]; then
     error_exit "PLUGIN_URL environment variable is not set."
 fi
 
 write_ok "PLUGIN_URL correctly set"
 
-# Validar que DATABASE_URL existe
 if [ -z "$DATABASE_URL" ]; then
     error_exit "DATABASE_URL environment variable is not set."
 fi
@@ -68,14 +65,13 @@ write_ok "DATABASE_URL correctly set"
 
 # Extraer información de DATABASE_URL
 export DB_HOST=$(echo $DATABASE_URL | sed -n 's/.*@\(.*\):[0-9]*\/.*/\1/p')
-export DB_PORT=$(echo $DATABASE_URL | sed -n 's/.*:[0-9]*\/.*/5432/p')
+export DB_PORT=$(echo $DATABASE_URL | sed -n 's/.*:[0-9]*\/.*/56284/p')
 export DB_USER=$(echo $DATABASE_URL | sed -n 's/.*\/\/\([^:]*\):.*/\1/p')
 export DB_PASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:\([^@]*\)@.*/\1/p')
 export DB_NAME=$(echo $DATABASE_URL | sed -n 's/.*\/\([^?]*\).*/\1/p')
 
 section "Checking if DATABASE_URL is empty"
 
-# Consulta para verificar si hay tablas en la nueva base de datos
 query="SELECT count(*) FROM information_schema.tables WHERE table_schema NOT IN ('information_schema', 'pg_catalog');"
 table_count=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "$query")
 
@@ -118,7 +114,6 @@ dump_database() {
   write_info "Dump file size: $dump_file_size"
 }
 
-# Obtener lista de bases de datos, excluyendo bases de datos del sistema
 databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
@@ -132,7 +127,6 @@ restore_database() {
   local base_url=$(echo $DATABASE_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
   local db_url="${base_url}/${db}"
 
-  # Crear la base de datos en la URL proporcionada si no existe
   local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
   local db_url_base=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
