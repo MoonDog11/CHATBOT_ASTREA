@@ -20,7 +20,7 @@ WORKDIR /app
 # Copy application files
 COPY . .
 
-# Install application dependencies
+# Install application dependencies (if using npm)
 RUN npm install
 
 # Copy and set permissions for the init script
@@ -29,5 +29,3 @@ RUN chmod +x /app/init.sh
 
 # Run the init script
 CMD ["/app/init.sh"]
-
-
