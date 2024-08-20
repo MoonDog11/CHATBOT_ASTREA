@@ -126,7 +126,6 @@ for db in $databases; do
   dump_database "$db"
 done
 
-# Restaurar la base de datos en DATABASE_URL
 restore_database() {
   section "Restoring database: $db"
 
