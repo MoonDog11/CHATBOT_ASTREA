@@ -77,7 +77,7 @@ app.post('/submit_registration', upload.single('cv'), UsuarioAbogado);
 
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
-  const landingFilePath = path.join(__dirname, 'client', 'landing.html');
+  const landingFilePath = path.join(__dirname, 'landing.html');
   res.sendFile(landingFilePath, (err) => {
     if (err) {
       console.error('Error al enviar el archivo:', err);
