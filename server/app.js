@@ -46,11 +46,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Servir archivos estáticos desde el directorio 'client' que está al mismo nivel que 'server'
-app.use(express.static(path.join(__dirname, '..', 'client')));
+const clientPath = path.join(__dirname, '..', 'client');
+app.use(express.static(clientPath));
 
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'landing.html'));
+  const landingFilePath = path.join(clientPath, 'landing.html');
+  console.log('Ruta absoluta del archivo landing.html:', landingFilePath); // Log de la ruta
+  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('Error al encontrar el archivo:', err);
+      res.status(404).send('Archivo no encontrado');
+    } else {
+      res.sendFile(landingFilePath, (err) => {
+        if (err) {
+          console.error('Error al enviar el archivo:', err);
+          res.status(500).send('Error al enviar el archivo');
+        }
+      });
+    }
+  });
 });
 
 // Endpoint para manejar la solicitud del formulario de contacto
