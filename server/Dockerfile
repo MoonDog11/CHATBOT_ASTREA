@@ -15,13 +15,16 @@ RUN apt-get update && \
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
+# Set working directory
 WORKDIR /app
 
 # Copy application files
+COPY package*.json ./
+RUN npm install
 COPY . .
 
-# Install application dependencies (if using npm)
-RUN npm install
+# Ensure the directory structure is correct
+RUN mkdir -p /app/client
 
 # Copy and set permissions for the init script
 COPY init.sh /app/
