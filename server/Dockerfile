@@ -23,8 +23,8 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# Ensure the directory structure is correct
-RUN mkdir -p /app/client
+# Copy files from 'client' directory
+COPY client /app/client
 
 # Copy and set permissions for the init script
 COPY init.sh /app/
