@@ -2,10 +2,8 @@
 
 set -o pipefail
 
-# Sleep to allow any dependent services to be ready
 sleep 10
 
-# Setup terminal colors for logging
 export TERM=ansi
 _GREEN=$(tput setaf 2)
 _BLUE=$(tput setaf 4)
@@ -21,35 +19,23 @@ error_exit() {
 }
 
 section() {
-    printf "${_RESET}\n"
-    echo "${_BOLD}${_BLUE}==== $1 ====${_RESET}"
+  printf "${_RESET}\n"
+  echo "${_BOLD}${_BLUE}==== $1 ====${_RESET}"
 }
 
 write_ok() {
-    echo "[$_GREEN OK $_RESET] $1"
+  echo "[$_GREEN OK $_RESET] $1"
 }
 
 write_info() {
-    echo "[$_BLUE INFO $_RESET] $1"
+  echo "[$_BLUE INFO $_RESET] $1"
 }
 
 write_warn() {
-    echo "[$_YELLOW WARN $_RESET] $1"
+  echo "[$_YELLOW WARN $_RESET] $1"
 }
 
-trap 'echo "An error occurred. Exiting..."; rm -f /tmp/migrate.lock; exit 1;' ERR
-
-# Check if script is already running
-if [ -f /tmp/migrate.lock ]; then
-    echo "Migration script is already running. Exiting."
-    exit 1
-fi
-
-# Create a lock file
-touch /tmp/migrate.lock
-
-# Ensure lock file is removed on exit
-trap 'rm -f /tmp/migrate.lock' EXIT
+trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
 printf "${_BOLD}${_MAGENTA}"
 echo "+-------------------------------------+"
@@ -68,14 +54,16 @@ section "Validating environment variables"
 if [ -z "$PLUGIN_URL" ]; then
     error_exit "PLUGIN_URL environment variable is not set."
 fi
+
 write_ok "PLUGIN_URL correctly set"
 
 if [ -z "$DATABASE_URL" ]; then
     error_exit "DATABASE_URL environment variable is not set."
 fi
+
 write_ok "DATABASE_URL correctly set"
 
-# Extract information from DATABASE_URL
+# Extraer información de DATABASE_URL
 export DB_HOST=$(echo $DATABASE_URL | sed -n 's/.*@\(.*\):[0-9]*\/.*/\1/p')
 export DB_PORT=$(echo $DATABASE_URL | sed -n 's/.*:[0-9]*\/.*/56284/p')
 export DB_USER=$(echo $DATABASE_URL | sed -n 's/.*\/\/\([^:]*\):.*/\1/p')
@@ -88,76 +76,75 @@ query="SELECT count(*) FROM information_schema.tables WHERE table_schema NOT IN 
 table_count=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
-    write_ok "The new database is empty. Proceeding with restore."
+  write_ok "The new database is empty. Proceeding with restore."
 else
-    echo "Table count: $table_count"
-    if [ -z "$OVERWRITE_DATABASE" ]; then
-        error_exit "The new database is not empty. Aborting migration.\nSet the OVERWRITE_DATABASE environment variable to overwrite the new database."
-    fi
-    write_warn "The new database is not empty. Found OVERWRITE_DATABASE environment variable. Proceeding with restore."
+  echo "Table count: $table_count"
+  if [ -z "$OVERWRITE_DATABASE" ]; then
+    error_exit "The new database is not empty. Aborting migration.\nSet the OVERWRITE_DATABASE environment variable to overwrite the new database."
+  fi
+  write_warn "The new database is not empty. Found OVERWRITE_DATABASE environment variable. Proceeding with restore."
 fi
 
 dump_dir="plugin_dump"
 mkdir -p $dump_dir
 
 dump_database() {
-    local database=$1
-    local dump_file="$dump_dir/$database.sql"
+  local database=$1
+  local dump_file="$dump_dir/$database.sql"
 
-    section "Dumping database: $database"
+  section "Dumping database: $database"
 
-    local base_url=$(echo $PLUGIN_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
-    local db_url="${base_url}/${database}"
+  local base_url=$(echo $PLUGIN_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
+  local db_url="${base_url}/${database}"
 
-    echo "Dumping database from $db_url"
+  echo "Dumping database from $db_url"
 
-    PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$database" \
-        --format=plain \
-        --quote-all-identifiers \
-        --no-tablespaces \
-        --no-owner \
-        --no-privileges \
-        --disable-triggers \
-        --file=$dump_file || error_exit "Failed to dump database from $database."
+  PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$database" \
+      --format=plain \
+      --quote-all-identifiers \
+      --no-tablespaces \
+      --no-owner \
+      --no-privileges \
+      --disable-triggers \
+      --file=$dump_file || error_exit "Failed to dump database from $database."
 
-    write_ok "Successfully saved dump to $dump_file"
+  write_ok "Successfully saved dump to $dump_file"
 
-    dump_file_size=$(ls -lh "$dump_file" | awk '{print $5}')
-    write_info "Dump file size: $dump_file_size"
+  dump_file_size=$(ls -lh "$dump_file" | awk '{print $5}')
+  write_info "Dump file size: $dump_file_size"
 }
 
 databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 for db in $databases; do
-    dump_database "$db"
+  dump_database "$db"
 done
 
 restore_database() {
-    local db=$1
-    section "Restoring database: $db"
+  section "Restoring database: $db"
 
-    local base_url=$(echo $DATABASE_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
-    local db_url="${base_url}/${db}"
+  local base_url=$(echo $DATABASE_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
+  local db_url="${base_url}/${db}"
 
-    local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
-    local db_url_base=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
+  local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
+  local db_url_base=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
-    if ! PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url_base -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
-        write_ok "Database $db_name does not exist. Creating..."
-        PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url_base -c "CREATE DATABASE \"$db_name\""
-    else
-        write_info "Database $db_name exists."
-    fi
+  if ! PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url_base -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
+      write_ok "Database $db_name does not exist. Creating..."
+      PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url_base -c "CREATE DATABASE \"$db_name\""
+  else
+      write_info "Database $db_name exists."
+  fi
 
-    PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url -v ON_ERROR_STOP=1 --echo-errors \
-        -f "$dump_dir/$db.sql" || error_exit "Failed to restore database $db."
-    
-    write_ok "Successfully restored database $db from dump"
+  PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d $db_url -v ON_ERROR_STOP=1 --echo-errors \
+    -f "$dump_dir/$db.sql" || error_exit "Failed to restore database $db."
+  
+  write_ok "Successfully restored database $db from dump"
 }
 
 for db in $databases; do
-    restore_database "$db"
+  restore_database "$db"
 done
 
 echo "Migration completed successfully."
