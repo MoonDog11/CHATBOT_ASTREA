@@ -28,13 +28,10 @@ COPY . .
 RUN mkdir -p /app/client
 
 # Copiar y establecer permisos para scripts init.sh y list_files.sh
-COPY list_files.sh /app/
-RUN chmod +x /app/list_files.sh
+
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
 
-# Copiar archivos desde la carpeta client a /proyecto/client/
-COPY client/ /proyecto/client/
 
 # Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/app/init.sh"]
