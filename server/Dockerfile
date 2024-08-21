@@ -1,32 +1,44 @@
-# Dockerfile
 FROM ubuntu:jammy
 
-# Instalaciones previas...
+# Add the PostgreSQL Apt Repository for PostgreSQL packages
+RUN apt-get update && \
+    apt-get install -y gnupg wget && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-# Establecer el directorio de trabajo dentro del contenedor
+# Install postgresql-client-16 and other dependencies
+RUN apt-get update && \
+    apt-get install -y postgresql-client-16 bash ncurses-bin curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Node.js (LTS version 18.x)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Set working directory
 WORKDIR /app
 
-# Copiar archivos de la aplicación
+# Copy application files
 COPY package*.json ./
 RUN npm install
 
-# Copiar código de la aplicación y archivos HTML
+# Copy application code and HTML files
 COPY . .
 
-# Asegurar estructura de directorios correcta
+# Ensure the directory structure is correct
 RUN mkdir -p /app/client
 
-# Copiar y establecer permisos para scripts init y list_files.sh
+# Copy and set permissions for the init script and list_files.sh
 COPY list_files.sh /app/
 RUN chmod +x /app/list_files.sh
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
 
-# Copiar archivos desde la carpeta client
-COPY client/ /proyecto/client/
+# Copy the files from the client directory
+COPY client/ /app/client/
 
-# Verificar archivos en la carpeta client
+# List files in the client directory for verification
 RUN /app/list_files.sh
 
-# Ejecutar script init.sh al iniciar el contenedor
+# Run the init script
 CMD ["/app/init.sh"]
