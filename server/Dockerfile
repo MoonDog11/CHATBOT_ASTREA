@@ -21,20 +21,23 @@ WORKDIR /app
 # Copy application files
 COPY package*.json ./
 RUN npm install
+
+# Copy application code and HTML files
 COPY . .
 
 # Ensure the directory structure is correct
 RUN mkdir -p /app/client
 
-# Copy the list_files.sh script
+# Copy and set permissions for the init script and list_files.sh
 COPY list_files.sh /app/
 RUN chmod +x /app/list_files.sh
-
-# Copy and set permissions for the init script
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
 
-# List files in the client directory
+# Copy the files from the client directory
+COPY client/ /app/client/
+
+# List files in the client directory for verification
 RUN /app/list_files.sh
 
 # Run the init script
