@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Middleware
+// Configuración de middlewares
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -45,16 +45,17 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Servir archivos estáticos desde el directorio 'client' que está al mismo nivel que 'server'
+// Configura la ruta para los archivos estáticos
 const clientPath = path.join(__dirname, '..', 'client');
-console.log('Ruta absoluta del directorio client:', clientPath); // Log de la ruta
+console.log('Ruta absoluta del directorio client:', clientPath);
 
 app.use(express.static(clientPath));
 
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
   const landingFilePath = path.join(clientPath, 'landing.html');
-  console.log('Ruta absoluta del archivo landing.html:', landingFilePath); // Log de la ruta
+  console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
+  
   fs.access(landingFilePath, fs.constants.F_OK, (err) => {
     if (err) {
       console.error('Error al encontrar el archivo:', err);
