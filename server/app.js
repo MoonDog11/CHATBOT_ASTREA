@@ -47,6 +47,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Servir archivos estáticos desde el directorio 'client' que está al mismo nivel que 'server'
 const clientPath = path.join(__dirname, '..', 'client');
+console.log('Ruta absoluta del directorio client:', clientPath); // Log de la ruta
+
 app.use(express.static(clientPath));
 
 // Ruta para la página de inicio
