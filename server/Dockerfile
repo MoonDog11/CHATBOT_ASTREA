@@ -21,8 +21,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copiar el código de la aplicación y archivos HTML
-COPY . /app/
+# Copiar los archivos necesarios para la aplicación
+COPY server/ /app/server/
+COPY client/ /app/client/
 
 # Asegurar que se cree la estructura de directorios correcta (si es necesario)
 RUN mkdir -p /app/client
