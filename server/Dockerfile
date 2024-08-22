@@ -24,10 +24,7 @@ RUN npm install
 # Copiar el código de la aplicación y archivos HTML
 COPY . /app/
 
-# Asegurar que se cree la estructura de directorios correcta (si es necesario)
-RUN mkdir -p /app/client
-
-# Agregar comando para listar archivos en el directorio
+# Verificar que los archivos se han copiado correctamente
 RUN ls -l /app
 RUN ls -l /app/client
 
