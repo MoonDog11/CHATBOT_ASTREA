@@ -18,18 +18,16 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 WORKDIR /app
 
 # Copiar los archivos necesarios para la aplicación (asumiendo que package.json está en el directorio server)
-COPY server/package*.json ./
+COPY package*.json ./
 RUN npm install
 
 # Copiar el código de la aplicación y archivos HTML
-COPY server/ /app/
-COPY client/ /app/client/
+COPY . /app/
 
 # Asegurar que se cree la estructura de directorios correcta (si es necesario)
 RUN mkdir -p /app/client
 
 # Copiar y establecer permisos para el script init.sh
-COPY server/init.sh /app/
 RUN chmod +x /app/init.sh
 
 # Ejecutar el script init.sh al iniciar el contenedor
