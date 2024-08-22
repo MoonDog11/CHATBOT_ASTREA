@@ -21,10 +21,10 @@ WORKDIR /app
 COPY server/package*.json ./
 RUN npm install
 
-# Copiar todo el contenido del directorio `server` al contenedor
+# Copiar el código de la aplicación desde el directorio `server`
 COPY server/ /app/server/
 
-# Copiar el contenido del directorio `client` al contenedor
+# Copiar los archivos desde el directorio `client` al contenedor
 # Nota: Asume que el contexto de construcción es el directorio raíz del proyecto
 COPY client/ /app/client/
 
@@ -33,7 +33,7 @@ RUN ls -l /app
 RUN ls -l /app/server
 RUN ls -l /app/client
 
-# Copiar y establecer permisos para el script init.sh si está en `server`
+# Copiar y establecer permisos para el script init.sh
 COPY server/init.sh /app/
 RUN chmod +x /app/init.sh
 
