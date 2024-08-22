@@ -7,7 +7,12 @@
         "prestart": "npx eslint . --no-ignore",
         "start": "node app.js",
         "dev": "nodemon app.js",
-        "test": "jest"
+        "test": "jest",
+        "docker:build": "docker build -t my-project .",
+        "docker:run": "docker run -p 8080:8080 my-project",
+        "docker:stop": "docker stop $(docker ps -q --filter ancestor=my-project)",
+        "docker:clean": "docker system prune -f",
+        "docker:logs": "docker logs $(docker ps -q --filter ancestor=my-project)"
     },
     "dependencies": {
         "@bot-whatsapp/bot": "^0.1.38",
