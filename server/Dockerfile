@@ -3,9 +3,14 @@ FROM ubuntu:jammy
 
 # Instalaciones previas y configuraciones necesarias
 RUN apt-get update && \
-    apt-get install -y gnupg wget curl bash ncurses-bin && \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    apt-get install -y \
+        gnupg \
+        wget \
+        curl \
+        bash \
+        ncurses-bin && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list && \
     apt-get update && \
     apt-get install -y postgresql-client-16 && \
     rm -rf /var/lib/apt/lists/*
@@ -29,6 +34,9 @@ RUN mkdir -p /app/client
 
 # Copiar y establecer permisos para el script init.sh
 RUN chmod +x /app/init.sh
+
+# Exponer el puerto en el que el contenedor escuchará
+EXPOSE 8080
 
 # Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/app/init.sh"]
