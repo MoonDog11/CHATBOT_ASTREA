@@ -24,12 +24,17 @@ RUN npm install
 # Copiar el código de la aplicación y archivos HTML
 COPY . .
 
-# Asegurar que se cree la estructura de directorios correcta (si es necesario)
+# Asegurarse de que los directorios necesarios existan
 RUN mkdir -p /app/client
 
-# Copiar y establecer permisos para scripts init.sh y list_files.sh
+# Copiar y establecer permisos para scripts init.sh
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
 
+# Verificar la estructura de directorios y archivos
+RUN ls -l /app
+RUN ls -l /app/client
+
 # Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/app/init.sh"]
+
