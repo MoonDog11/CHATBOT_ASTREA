@@ -49,7 +49,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const clientPath = path.join(__dirname, '..', 'client');
 console.log('Ruta absoluta del directorio client:', clientPath);
 
-app.use(express.static(clientPath));
+app.use(express.static('/app/client'));
 
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
