@@ -24,6 +24,10 @@ RUN npm install
 # Copiar el código de la aplicación y archivos HTML
 COPY . .
 
+
+# Expon el puerto en el que tu aplicación escuchará
+EXPOSE 8080
+
 # Asegurarse de que los directorios necesarios existan
 RUN mkdir -p /app/client
 
