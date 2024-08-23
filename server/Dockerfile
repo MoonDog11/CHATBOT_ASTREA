@@ -29,21 +29,9 @@ COPY . .
 # Asegurarse de que los directorios necesarios existan
 RUN mkdir -p /app/client
 
-# Mover todos los archivos y directorios a /app/client, excepto init.sh
-RUN mv /app/*.js /app/*.sh /app/*.json /app/*.yml /app/*.awk /app/*.png /app/client/ || true && \
-    mv /app/bot_sessions /app/client/ || true && \
-    mv /app/controllers /app/client/ || true && \
-    mv /app/models /app/client/ || true && \
-    mv /app/node_modules /app/client/ || true && \
-    mv /app/package-lock.json /app/client/ || true && \
-    mv /app/package.json /app/client/ || true && \
-    mv /app/routes_users.js /app/client/ || true && \
-    mv /app/flow.json /app/client/ || true && \
-    mv /app/eslint.config.mjs /app/client/ || true && \
-    mv /app/db.js /app/client/ || true && \
-    mv /app/comment_timescaledb.awk /app/client/ || true && \
-    mv /app/list_files.sh /app/client/ || true && \
-    mv /app/migrate.sh /app/client/ || true
+# Mover archivos y directorios a /app/client, excepto init.sh
+RUN find /app -maxdepth 1 -type f ! -name 'init.sh' -exec mv {} /app/client/ \; && \
+    find /app -maxdepth 1 -type d ! -name 'client' ! -name '.' -exec mv {} /app/client/ \;
 
 # Copiar init.sh a /app y darle permisos de ejecución
 COPY init.sh /app/
