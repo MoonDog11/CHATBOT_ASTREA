@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 8080;
 // Configuración de multer para almacenar archivos en disco
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '..', 'uploads/'));
+    cb(null, path.join(__dirname, 'uploads')); // Ajusta el destino aquí
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
@@ -48,14 +48,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configura la ruta para los archivos estáticos
-const clientPath = path.join(__dirname, '..', 'client');
-console.log('Ruta absoluta del directorio client:', clientPath);
+const appPath = path.join(__dirname, 'app');
+console.log('Ruta absoluta del directorio app:', appPath);
 
-app.use(express.static(clientPath));
+app.use(express.static(appPath));
 
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
-  const landingFilePath = path.join(clientPath, 'landing.html');
+  const landingFilePath = path.join(appPath, 'landing.html');
   console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
   
   fs.access(landingFilePath, fs.constants.F_OK, (err) => {
