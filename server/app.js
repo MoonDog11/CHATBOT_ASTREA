@@ -9,7 +9,7 @@ require('dotenv').config();
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs'); // Añadido para verificar archivos
-const bcrypt = require('bcrypt'); // Asegúrate de que `bcrypt` esté instalado
+const bcrypt = require('bcryptjs'); // Asegúrate de que `bcrypt` esté instalado
 const { Pool } = require('pg'); // Paquete para PostgreSQL
 const flows = require('./flow.json');
 
