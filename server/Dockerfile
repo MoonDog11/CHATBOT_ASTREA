@@ -29,9 +29,9 @@ COPY . .
 # Asegurarse de que los directorios necesarios existan
 RUN mkdir -p /app/client
 
-# Mover archivos y directorios a /app/client, excepto init.sh
-RUN find /app -maxdepth 1 -type f ! -name 'init.sh' -exec mv {} /app/client/ \; && \
-    find /app -maxdepth 1 -type d ! -name 'client' ! -name '.' -exec mv {} /app/client/ \;
+# Mover archivos a /app/client, excepto init.sh
+RUN find /app -maxdepth 1 -type f ! -name 'init.sh' -exec mv -t /app/client/ {} + && \
+    find /app -maxdepth 1 -type d ! -name 'client' ! -name '.' -exec mv -t /app/client/ {} +
 
 # Copiar init.sh a /app y darle permisos de ejecución
 COPY init.sh /app/
