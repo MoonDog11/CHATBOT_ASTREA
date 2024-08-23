@@ -26,13 +26,6 @@ RUN npm install
 # Copiar el resto del código de la aplicación
 COPY . .
 
-# Asegurarse de que el directorio /app/client existe
-RUN mkdir -p /app/client
-
-# Mover archivos individuales a /app/client, excepto init.sh
-RUN find /app -maxdepth 1 -type f ! -name 'init.sh' -exec mv -t /app/client/ {} + && \
-    find /app -maxdepth 1 -type d ! -name 'client' ! -name '.' -exec mv -t /app/client/ {} +
-
 # Copiar init.sh a /app y darle permisos de ejecución
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
@@ -42,7 +35,6 @@ EXPOSE 8080
 
 # Verificar la estructura de directorios y archivos (opcional, para depuración)
 RUN ls -l /app
-RUN ls -l /app/client
 
 # Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/app/init.sh"]
