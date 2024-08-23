@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { crearUsuario, buscarUsuarioPorCorreo, buscarUsuarioPorNombreUsuario,nuevoAbogado} = require('../models/user_model'); // Asegúrate de importar las funciones adecuadas desde tu modelo
 
 
