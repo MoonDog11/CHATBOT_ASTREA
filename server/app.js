@@ -9,6 +9,8 @@ require('dotenv').config();
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs'); // Añadido para verificar archivos
+const bcrypt = require('bcrypt'); // Asegúrate de que `bcrypt` esté instalado
+const { Pool } = require('pg'); // Paquete para PostgreSQL
 const flows = require('./flow.json');
 
 const usuariosRutas = require('./routes_users');
@@ -92,6 +94,39 @@ app.post('/sendContactForm', async (req, res) => {
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Hubo un error al enviar el mensaje' });
+  }
+});
+
+// Configuración de la conexión a la base de datos
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
+// Ruta para registrar un nuevo usuario
+app.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Por favor, proporciona un nombre de usuario y una contraseña.' });
+  }
+
+  try {
+    // Cifra la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Inserta el nuevo usuario en la base de datos
+    const query = 'INSERT INTO usuarios (username, password) VALUES ($1, $2) RETURNING id';
+    const values = [username, hashedPassword];
+    const result = await pool.query(query, values);
+
+    res.status(201).json({ message: 'Usuario registrado exitosamente.', userId: result.rows[0].id });
+  } catch (error) {
+    console.error('Error al registrar el usuario:', error);
+    res.status(500).json({ error: 'Hubo un error al registrar el usuario.' });
   }
 });
 
