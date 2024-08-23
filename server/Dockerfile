@@ -17,22 +17,33 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar los archivos necesarios para la aplicación
-COPY package*.json ./
-RUN npm install
+# Copiar todos los archivos al directorio /app
+COPY . /app/
 
-# Copiar el código de la aplicación y archivos HTML
-COPY . .
-
-
-# Expon el puerto en el que tu aplicación escuchará
-EXPOSE 8080
-
-# Asegurarse de que los directorios necesarios existan
+# Asegurarse de que el directorio client existe
 RUN mkdir -p /app/client
 
-# Verificar la estructura de directorios y archivos
-RUN ls -l /app
+# Mover los archivos al directorio /app/client
+RUN mv /app/*.js /app/*.sh /app/*.json /app/*.yml /app/*.awk /app/*.png /app/client/ \
+    && mv /app/bot_sessions /app/client/ \
+    && mv /app/controllers /app/client/ \
+    && mv /app/models /app/client/ \
+    && mv /app/node_modules /app/client/ \
+    && mv /app/package-lock.json /app/client/ \
+    && mv /app/package.json /app/client/ \
+    && mv /app/routes_users.js /app/client/ \
+    && mv /app/flow.json /app/client/ \
+    && mv /app/eslint.config.mjs /app/client/ \
+    && mv /app/db.js /app/client/ \
+    && mv /app/comment_timescaledb.awk /app/client/ \
+    && mv /app/init.sh /app/client/ \
+    && mv /app/list_files.sh /app/client/ \
+    && mv /app/migrate.sh /app/client/
+
+# Exponer el puerto en el que tu aplicación escuchará
+EXPOSE 8080
+
+# Verificar la estructura de directorios y archivos (opcional, para depuración)
 RUN ls -l /app/client
 
 # Copiar y establecer permisos para scripts init.sh
