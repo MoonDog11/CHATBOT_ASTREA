@@ -23,22 +23,27 @@ COPY . /app/
 # Asegurarse de que el directorio client existe
 RUN mkdir -p /app/client
 
-# Mover los archivos al directorio /app/client
+# Mover archivos individuales (separados por tipo)
 RUN mv /app/*.js /app/*.sh /app/*.json /app/*.yml /app/*.awk /app/*.png /app/client/ \
-    && mv /app/bot_sessions /app/client/ \
-    && mv /app/controllers /app/client/ \
-    && mv /app/models /app/client/ \
-    && mv /app/node_modules /app/client/ \
-    && mv /app/package-lock.json /app/client/ \
-    && mv /app/package.json /app/client/ \
-    && mv /app/routes_users.js /app/client/ \
-    && mv /app/flow.json /app/client/ \
-    && mv /app/eslint.config.mjs /app/client/ \
-    && mv /app/db.js /app/client/ \
-    && mv /app/comment_timescaledb.awk /app/client/ \
-    && mv /app/init.sh /app/client/ \
-    && mv /app/list_files.sh /app/client/ \
-    && mv /app/migrate.sh /app/client/
+    || true
+
+# Mover directorios si existen
+RUN [ -d /app/bot_sessions ] && mv /app/bot_sessions /app/client/ || true
+RUN [ -d /app/controllers ] && mv /app/controllers /app/client/ || true
+RUN [ -d /app/models ] && mv /app/models /app/client/ || true
+RUN [ -d /app/node_modules ] && mv /app/node_modules /app/client/ || true
+
+# Mover archivos restantes
+RUN [ -f /app/package-lock.json ] && mv /app/package-lock.json /app/client/ || true
+RUN [ -f /app/package.json ] && mv /app/package.json /app/client/ || true
+RUN [ -f /app/routes_users.js ] && mv /app/routes_users.js /app/client/ || true
+RUN [ -f /app/flow.json ] && mv /app/flow.json /app/client/ || true
+RUN [ -f /app/eslint.config.mjs ] && mv /app/eslint.config.mjs /app/client/ || true
+RUN [ -f /app/db.js ] && mv /app/db.js /app/client/ || true
+RUN [ -f /app/comment_timescaledb.awk ] && mv /app/comment_timescaledb.awk /app/client/ || true
+RUN [ -f /app/init.sh ] && mv /app/init.sh /app/client/ || true
+RUN [ -f /app/list_files.sh ] && mv /app/list_files.sh /app/client/ || true
+RUN [ -f /app/migrate.sh ] && mv /app/migrate.sh /app/client/ || true
 
 # Exponer el puerto en el que tu aplicación escuchará
 EXPOSE 8080
