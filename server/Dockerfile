@@ -26,7 +26,7 @@ RUN npm install
 # Copiar el resto del código de la aplicación
 COPY . .
 
-# Asegurarse de que los directorios necesarios existan
+# Asegurarse de que el directorio /app/client existe
 RUN mkdir -p /app/client
 
 # Mover archivos individuales a /app/client, excepto init.sh
