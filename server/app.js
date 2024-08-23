@@ -47,17 +47,15 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Configura la ruta para los archivos estáticos
-const appPath = path.join(__dirname, 'app');
+const appPath = path.join(__dirname); // Asumiendo que /app es el directorio raíz
 console.log('Ruta absoluta del directorio app:', appPath);
 
 app.use(express.static(appPath));
 
-// Ruta para la página de inicio
 app.get('/', (req, res) => {
   const landingFilePath = path.join(appPath, 'landing.html');
   console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
-  
+
   fs.access(landingFilePath, fs.constants.F_OK, (err) => {
     if (err) {
       console.error('Error al encontrar el archivo:', err);
@@ -72,7 +70,6 @@ app.get('/', (req, res) => {
     }
   });
 });
-
 // Endpoint para manejar la solicitud del formulario de contacto
 app.post('/sendContactForm', async (req, res) => {
   const form = new FormData();
