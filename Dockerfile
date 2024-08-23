@@ -41,4 +41,3 @@ RUN chmod +x /app/init.sh
 
 # Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/app/init.sh"]
-
