@@ -45,6 +45,9 @@ RUN [ -f /app/init.sh ] && mv /app/init.sh /app/client/ || true
 RUN [ -f /app/list_files.sh ] && mv /app/list_files.sh /app/client/ || true
 RUN [ -f /app/migrate.sh ] && mv /app/migrate.sh /app/client/ || true
 
+# Asignar permisos si el archivo existe
+RUN [ -f /app/client/migrate.sh ] && chmod +x /app/client/migrate.sh || true
+
 # Exponer el puerto en el que tu aplicación escuchará
 EXPOSE 8080
 
