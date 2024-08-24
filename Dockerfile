@@ -1,37 +1,26 @@
-# Usa una imagen base de Ubuntu
-FROM ubuntu:jammy
+# Usar la imagen base
+FROM node:18
 
-# Instalaciones previas y configuraciones necesarias
-RUN apt-get update && \
-    apt-get install -y gnupg wget curl bash && \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-    apt-get update && \
-    apt-get install -y postgresql-client-16 && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
-    rm -rf /var/lib/apt/lists/*
-
-# Establecer el directorio de trabajo dentro del contenedor
+# Crear el directorio de la aplicación
 WORKDIR /app
 
-# Copiar los archivos necesarios para la aplicación
+# Copiar archivos de configuración
 COPY package*.json ./
 RUN npm install
 
-# Copiar el código de la aplicación y archivos del cliente
+# Copiar todos los archivos de la aplicación
 COPY . .
 
-# Exponer el puerto en el que tu aplicación escuchará
-EXPOSE 8080
+# Copiar el script list_files.sh y dar permisos de ejecución
+COPY list_files.sh /app/
+RUN chmod +x /app/list_files.sh
 
-# Verificar la estructura de directorios y archivos
-RUN ls -l /app
-RUN ls -l /app/server
+# Ejecutar el script para listar archivos (solo para depuración)
+RUN /app/list_files.sh
 
-# Copiar y establecer permisos para scripts init.sh
+# Copiar el script init.sh y dar permisos de ejecución
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
 
-# Ejecutar el script init.sh al iniciar el contenedor
-CMD ["/app/init.sh"]
+# Establecer el punto de entrada
+ENTRYPOINT ["/app/init.sh"]
