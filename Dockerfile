@@ -27,6 +27,7 @@ EXPOSE 8080
 
 # Verificar la estructura de directorios y archivos
 RUN ls -l /app
+RUN ls -l /app/client
 RUN ls -l /app/server
 
 # Copiar y establecer permisos para scripts init.sh
