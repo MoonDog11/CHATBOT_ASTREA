@@ -1,18 +1,6 @@
-#!/bin/bash
-
-# Asegurar que migrate.sh tenga permisos de ejecución
-chmod +x /app/migrate.sh
-
-# Verificar la existencia del archivo migrate.sh
-if [ -f /app/migrate.sh ]; then
-    echo "migrate.sh encontrado."
-else
-    echo "migrate.sh no encontrado."
-    exit 1
-fi
-
-# Ejecutar el script de migración
-/app/migrate.sh
-
-# Iniciar el servidor Node.js
-node /server/app.js || exit 1
+# Copiar el script init.sh al contenedor
+COPY init.sh /app/
+# Dar permisos de ejecución
+RUN chmod +x /app/init.sh
+# Establecer el punto de entrada
+ENTRYPOINT ["/app/init.sh"]
