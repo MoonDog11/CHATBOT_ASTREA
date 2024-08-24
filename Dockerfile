@@ -3,7 +3,7 @@ FROM ubuntu:jammy
 
 # Instalaciones previas y configuraciones necesarias
 RUN apt-get update && \
-    apt-get install -y gnupg wget curl bash ncurses-bin && \
+    apt-get install -y gnupg wget curl bash && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     apt-get update && \
@@ -27,7 +27,6 @@ EXPOSE 8080
 
 # Verificar la estructura de directorios y archivos
 RUN ls -l /app
-RUN ls -l /app/client
 RUN ls -l /app/server
 
 # Copiar y establecer permisos para scripts init.sh
