@@ -43,9 +43,9 @@ jobs:
 
       - name: Run container to validate setup
         run: |
-          docker run -d --name temp-container ghcr.io/${{ github.repository }}:latest
+          docker run -d --name temp-container -p 8080:8080 ghcr.io/${{ github.repository }}:latest
           sleep 20  # Espera a que el contenedor se inicie
           docker logs temp-container
-          docker inspect --format='{{json .State.Health}}' temp-container
+          curl http://localhost:8080/  # Verifica que la aplicación esté accesible
           docker stop temp-container
           docker rm temp-container
