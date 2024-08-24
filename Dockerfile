@@ -8,11 +8,9 @@ RUN apt-get update && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     apt-get update && \
     apt-get install -y postgresql-client-16 && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
-
-# Instalar Node.js (versión LTS 18.x)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
 
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
@@ -21,14 +19,15 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copiar el código de la aplicación y archivos HTML
+# Copiar el código de la aplicación y archivos del cliente
 COPY . .
 
 # Exponer el puerto en el que tu aplicación escuchará
 EXPOSE 8080
 
-# Asegurarse de que los directorios necesarios existan
-RUN mkdir -p /server
+# Verificar la estructura de directorios y archivos
+RUN ls -l /app
+RUN ls -l /app/server
 
 # Copiar y establecer permisos para scripts init.sh
 COPY init.sh /app/
