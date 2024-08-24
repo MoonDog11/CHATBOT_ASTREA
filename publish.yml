@@ -41,6 +41,6 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
 
-      - name: Run container to list files
+      - name: Run container to validate setup
         run: |
           docker run --rm ghcr.io/${{ github.repository }}:latest
