@@ -22,5 +22,9 @@ RUN /app/list_files.sh
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
 
+# Configurar HEALTHCHECK
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD curl --fail http://localhost:8080/ || exit 1
+  
 # Establecer el punto de entrada
 ENTRYPOINT ["/app/init.sh"]
