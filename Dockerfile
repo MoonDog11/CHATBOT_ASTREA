@@ -29,7 +29,7 @@ EXPOSE 8080
 
 # Configurar HEALTHCHECK
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD curl --fail http://localhost:8080/ || exit 1
+CMD curl --fail http://localhost:8080/ || exit 1
 
 # Asegurarse de que los directorios necesarios existan
 RUN mkdir -p /app/client
