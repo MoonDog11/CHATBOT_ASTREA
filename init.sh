@@ -15,4 +15,4 @@ fi
 /app/migrate.sh
 
 # Iniciar el servidor Node.js
-node /server/app.js
+node /server/app.js || exit 1
