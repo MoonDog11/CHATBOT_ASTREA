@@ -30,10 +30,6 @@ EXPOSE 8080
 # Asegurarse de que los directorios necesarios existan
 RUN mkdir -p /server
 
-# Verificar la estructura de directorios y archivos
-RUN ls -l /app
-RUN ls -l /server
-
 # Copiar y establecer permisos para scripts init.sh
 COPY init.sh /app/
 RUN chmod +x /app/init.sh
