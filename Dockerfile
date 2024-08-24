@@ -24,9 +24,12 @@ RUN npm install
 # Copiar el código de la aplicación y archivos HTML
 COPY . .
 
-
-# Expon el puerto en el que tu aplicación escuchará
+# Exponer el puerto en el que la aplicación escuchará
 EXPOSE 8080
+
+# Configurar HEALTHCHECK
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD curl --fail http://localhost:8080/ || exit 1
 
 # Asegurarse de que los directorios necesarios existan
 RUN mkdir -p /app/client
