@@ -1,9 +1,4 @@
-#!/bin/bash
-
-# Print a message indicating the start of the initialization
-echo "Starting initialization..."
-
-# Run database migrations
+# Ejecutar migraciones de base de datos si existe el archivo /app/migrate.sh
 echo "Running database migrations..."
 if [ -f /app/migrate.sh ]; then
     /app/migrate.sh
@@ -11,27 +6,13 @@ else
     echo "Migration script not found!"
 fi
 
-# Start the application
+# Iniciar la aplicación Node.js (app.js) si existe el archivo /app/server/app.js
 echo "Starting the application..."
-if [ -f /app/app.js ]; then
-    node /app/app.js
+if [ -f /app/server/app.js ]; then
+    node /app/server/app.js
 else
     echo "Application entry point not found!"
 fi
 
-# Print a message indicating the end of initialization
+# Imprimir un mensaje indicando la finalización de la inicialización
 echo "Initialization complete."
-#!/bin/bash
-
-# Imprimir mensaje de inicio
-echo "Iniciando el contenedor..."
-
-# Ejecutar script de migración si es necesario
-if [ -f /app/migrate.sh ]; then
-    echo "Ejecutando script de migración..."
-    /app/migrate.sh
-fi
-
-# Iniciar la aplicación
-echo "Iniciando la aplicación..."
-node /app/app.js
