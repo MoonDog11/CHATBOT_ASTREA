@@ -1,37 +1,37 @@
-# Utiliza la imagen base de Node.js versión 18
+# Utilizar la imagen base de Node.js versión 18
 FROM node:18
 
-# Instala herramientas necesarias y añade el repositorio de PostgreSQL
+# Instalar dependencias para PostgreSQL
 RUN apt-get update && \
     apt-get install -y gnupg wget && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-# Establece el directorio de trabajo dentro del contenedor
+# Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia los archivos necesarios para la aplicación (package.json y package-lock.json)
+# Copiar los archivos necesarios para la aplicación
 COPY package*.json ./
 
-# Instala las dependencias de Node.js
+# Instalar dependencias Node.js
 RUN npm install
 
-# Copia todo el código de la aplicación al directorio /app/server en el contenedor
-COPY server ./server
+# Copiar todo el código de la aplicación (incluyendo server/)
+COPY . .
 
-# Asegura que se cree la estructura de directorios correcta, en este caso /client
-RUN mkdir -p /client
+# Asegurar que se cree la estructura de directorios correcta
+RUN mkdir -p /app/client
 
-# Copia y establece permisos para el script init.sh
+# Copiar y establecer permisos para el script init.sh
 COPY init.sh /
 RUN chmod +x /init.sh
 
-# Expone el puerto en el que la aplicación escuchará (puerto 8080)
-EXPOSE 8080
+# Exponer el puerto en el que la aplicación escuchará (si es necesario)
+# EXPOSE 8080
 
-# Configura el HEALTHCHECK para verificar la salud de la aplicación
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD curl --fail http://localhost:8080/ || exit 1
+# Configurar HEALTHCHECK (opcional)
+# HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+#   CMD curl --fail http://localhost:8080/ || exit 1
 
-# Ejecuta el script init.sh al iniciar el contenedor
+# Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/init.sh"]
