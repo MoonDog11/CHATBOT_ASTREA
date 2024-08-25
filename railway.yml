@@ -1,0 +1,5 @@
+services:
+  my-postgres:
+    image: postgres:latest
+    ports:
+      - 5500:5432
