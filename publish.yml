@@ -8,10 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-      id-token: write
 
     steps:
       - name: Checkout sources
@@ -36,11 +32,14 @@ jobs:
       - name: Build and Publish
         uses: docker/build-push-action@v4
         with:
-          file: Dockerfile
+          context: .  # Path to the Dockerfile context, adjust if necessary
+          file: Dockerfile  # Path to the Dockerfile relative to the context
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: |
+            ghcr.io/${{ github.repository }}/latest
+            ghcr.io/${{ github.repository }}/v${{ github.run_number }}
 
       - name: Run container to list files
         run: |
-          docker run --rm ghcr.io/${{ github.repository }}:latest
+          docker run --rm ghcr.io/${{ github.repository }}:latest ls -l /app/server
