@@ -1,16 +1,10 @@
-# Usar la imagen base de Ubuntu
-FROM ubuntu:jammy
+FROM node:18
 
-# Instalaciones previas y configuraciones necesarias
+# Add the PostgreSQL Apt Repository for PostgreSQL packages
 RUN apt-get update && \
-    apt-get install -y gnupg wget curl \
-    postgresql-client-16 bash ncurses-bin && \
+    apt-get install -y gnupg wget && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-    apt-get update && \
-    apt-get install -y nodejs && \
-    rm -rf /var/lib/apt/lists/*
-
+    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
@@ -34,10 +28,6 @@ EXPOSE 8080
 # Configurar HEALTHCHECK
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
   CMD curl --fail http://localhost:8080/ || exit 1
-
-# Verificar la estructura de directorios y archivos
-RUN ls -l /app
-RUN ls -l /app/client
 
 # Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/app/init.sh"]
