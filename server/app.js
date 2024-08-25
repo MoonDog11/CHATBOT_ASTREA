@@ -5,7 +5,6 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const path = require('path');
 const multer = require('multer');
-require('dotenv').config();
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs'); // Añadido para verificar archivos
@@ -94,14 +93,7 @@ app.post('/sendContactForm', async (req, res) => {
   }
 });
 
-// Configuración de la conexión a la base de datos
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
+
 
 // Ruta para registrar un nuevo usuario
 app.post('/register', async (req, res) => {
