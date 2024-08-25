@@ -5,16 +5,19 @@ echo "Starting initialization..."
 
 # Ejecutar migraciones de base de datos si existe el archivo /app/server/migrate.sh
 echo "Running database migrations..."
-if [ -f /server/migrate.sh ]; then
-    /server/migrate.sh
+if [ -f /app/server/migrate.sh ]; then
+    /app/server/migrate.sh
 else
     echo "Migration script not found!"
 fi
 
+# Cambiar al directorio /app/server para iniciar la aplicación Node.js
+cd /app/server || exit
+
 # Iniciar la aplicación Node.js (app.js) desde el directorio /app/server
 echo "Starting the application..."
-if [ -f /server/app.js ]; then
-    node /server/app.js
+if [ -f /app/server/app.js ]; then
+    node app.js
 else
     echo "Application entry point not found!"
 fi
