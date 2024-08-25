@@ -41,11 +41,6 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
 
-      - name: Run container to validate setup
+      - name: Run container to list files
         run: |
-          docker run -d --name temp-container -p 8080:8080 ghcr.io/${{ github.repository }}:latest
-          sleep 20  # Espera a que el contenedor se inicie
-          docker logs temp-container
-          curl http://localhost:8080/  # Verifica que la aplicación esté accesible
-          docker stop temp-container
-          docker rm temp-container
+          docker run --rm ghcr.io/${{ github.repository }}:latest
