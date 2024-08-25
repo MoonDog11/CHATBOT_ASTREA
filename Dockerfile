@@ -1,13 +1,13 @@
-# Usa una imagen base de Ubuntu
+# Dockerfile
 FROM ubuntu:jammy
 
 # Instalaciones previas y configuraciones necesarias
 RUN apt-get update && \
-    apt-get install -y gnupg wget curl bash ncurses-bin && \
+    apt-get install -y gnupg wget && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     apt-get update && \
-    apt-get install -y postgresql-client-16 && \
+    apt-get install -y postgresql-client-16 bash ncurses-bin curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Instalar Node.js (versión LTS 18.x)
@@ -19,6 +19,23 @@ WORKDIR /app
 
 # Copiar los archivos necesarios para la aplicación
 COPY package*.json ./
+RUN npm install
+
+# Copiar el código de la aplicación y archivos HTML
+COPY . .
+
+# Asegurar que se cree la estructura de directorios correcta
+RUN mkdir -p /app/client
+
+# Copiar y establecer permisos para scripts init.sh y list_files.sh
+
+COPY init.sh /app/
+RUN chmod +x /app/init.sh
+
+
+# Ejecutar el script init.sh al iniciar el contenedor
+CMD ["/app/init.sh"]
+
 RUN npm install
 
 # Copiar el código de la aplicación y archivos HTML
