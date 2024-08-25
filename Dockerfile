@@ -16,11 +16,11 @@ RUN npm install
 COPY . .
 
 # Asegurar que se cree la estructura de directorios correcta
-RUN mkdir -p /app/client
+RUN mkdir -p /client
 
 # Copiar y establecer permisos para scripts init.sh
-COPY init.sh /app/
-RUN chmod +x /app/init.sh
+COPY init.sh /
+RUN chmod +x /init.sh
 
 # Exponer el puerto en el que la aplicación escuchará
 EXPOSE 8080
@@ -30,4 +30,4 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
   CMD curl --fail http://localhost:8080/ || exit 1
 
 # Ejecutar el script init.sh al iniciar el contenedor
-CMD ["/app/init.sh"]
+CMD ["/init.sh"]
