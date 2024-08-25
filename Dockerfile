@@ -8,7 +8,7 @@ RUN apt-get update && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 # Establece el directorio de trabajo dentro del contenedor
-WORKDIR /
+WORKDIR /app
 
 # Copia los archivos necesarios para la aplicación (package.json y package-lock.json)
 COPY package*.json ./
