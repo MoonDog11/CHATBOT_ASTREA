@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const path = require('path');
 const multer = require('multer');
 const FormData = require('form-data');
-const fetch = require('node-fetch');
+
 const fs = require('fs'); // Añadido para verificar archivos
 const bcrypt = require('bcryptjs'); // Asegúrate de que `bcrypt` esté instalado
 const { Pool } = require('pg'); // Paquete para PostgreSQL
