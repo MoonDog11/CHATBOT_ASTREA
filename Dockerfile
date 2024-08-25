@@ -6,7 +6,7 @@ RUN apt-get update && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 # Establecer el directorio de trabajo dentro del contenedor
-WORKDIR /app
+WORKDIR /
 
 # Copiar los archivos necesarios para la aplicación
 COPY package*.json ./
