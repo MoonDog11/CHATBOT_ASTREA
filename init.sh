@@ -5,8 +5,8 @@ echo "Starting initialization..."
 
 # Ejecutar migraciones de base de datos si existe el archivo /app/server/migrate.sh
 echo "Running database migrations..."
-if [ -f /app/server/migrate.sh ]; then
-    /app/server/migrate.sh
+if [ -f /server/migrate.sh ]; then
+    /server/migrate.sh
 else
     echo "Migration script not found!"
 fi
