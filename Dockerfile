@@ -21,8 +21,6 @@ COPY . .
 
 # Asegurar que se cree la estructura de directorios correcta
 RUN mkdir -p /app/client
-RUN mkdir -p /app/scripts
-RUN mkdir -p /app/migrations
 
 # Copiar y establecer permisos para el script init.sh
 COPY init.sh /
