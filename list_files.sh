@@ -33,12 +33,3 @@ if [ -d /app/migrations ]; then
     ls -l /app/migrations
 else
     echo "Directorio /app/migrations no encontrado."
-fi
-
-# Listar archivos en el directorio server, si existe
-if [ -d /app/server ]; then
-    echo "Archivos en /app/server:"
-    ls -l /app/server
-else
-    echo "Directorio /app/server no encontrado."
-fi
