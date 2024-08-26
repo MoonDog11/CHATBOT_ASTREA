@@ -46,13 +46,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Directorio raíz de la aplicación
-const appRoot = path.join(__dirname);
+const clientPath = path.join(__dirname, 'client');
 
-// Ruta estática para servir archivos desde el directorio client
-const clientPath = path.join(appRoot, 'client');
+console.log('Ruta absoluta del directorio client:', clientPath);
+
 app.use(express.static(clientPath));
 
-// Ruta para la página de inicio (landing.html)
 app.get('/', (req, res) => {
   const landingFilePath = path.join(clientPath, 'landing.html');
   console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
