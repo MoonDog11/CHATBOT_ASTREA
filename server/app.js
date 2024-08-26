@@ -98,9 +98,12 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Ruta para servir landing.html desde el directorio client
+const clientPath = path.join(__dirname, 'client'); // Ruta al directorio client desde app.js
+
+app.use(express.static(clientPath));
+
 app.get('/', (req, res) => {
-  const landingFilePath = path.join(__dirname, 'client', 'landing.html');
+  const landingFilePath = path.join(clientPath, 'landing.html');
   console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
 
   fs.access(landingFilePath, fs.constants.F_OK, (err) => {
