@@ -8,7 +8,7 @@ RUN apt-get update && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 # Establecer el directorio de trabajo dentro del contenedor
-WORKDIR /app
+WORKDIR /
 
 # Copiar los archivos necesarios para la aplicación
 COPY package*.json ./
@@ -16,11 +16,11 @@ COPY package*.json ./
 # Instalar dependencias Node.js
 RUN npm install
 
-# Copiar todo el código de la aplicación (incluyendo server/)
+# Copiar todo el código de la aplicación
 COPY . .
 
 # Asegurar que se cree la estructura de directorios correcta
-RUN mkdir -p /app/client
+RUN mkdir -p /client
 
 # Copiar y establecer permisos para el script init.sh
 COPY init.sh /
