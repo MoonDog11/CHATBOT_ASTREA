@@ -45,10 +45,32 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const appPath = path.join(__dirname); // Asumiendo que /app es el directorio raíz
-console.log('Ruta absoluta del directorio app:', appPath);
+// Directorio raíz de la aplicación
+const appRoot = path.join(__dirname);
 
-app.use(express.static(appPath));
+// Ruta estática para servir archivos desde el directorio client
+const clientPath = path.join(appRoot, 'client');
+app.use(express.static(clientPath));
+
+// Ruta para la página de inicio (landing.html)
+app.get('/', (req, res) => {
+  const landingFilePath = path.join(clientPath, 'landing.html');
+  console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
+
+  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('Error al encontrar el archivo:', err);
+      res.status(404).send('Archivo no encontrado');
+    } else {
+      res.sendFile(landingFilePath, (err) => {
+        if (err) {
+          console.error('Error al enviar el archivo:', err);
+          res.status(500).send('Error al enviar el archivo');
+        }
+      });
+    }
+  });
+});
 
 // Ruta para manejar la solicitud del formulario de contacto
 app.post('/sendContactForm', async (req, res) => {
@@ -98,33 +120,13 @@ app.post('/register', async (req, res) => {
   }
 });
 
-const clientPath = path.join(__dirname, 'client'); // Ruta al directorio client desde app.js
-
-app.use(express.static(clientPath));
-
-app.get('/', (req, res) => {
-  const landingFilePath = path.join(clientPath, 'landing.html');
-  console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
-
-  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.error('Error al encontrar el archivo:', err);
-      res.status(404).send('Archivo no encontrado');
-    } else {
-      res.sendFile(landingFilePath, (err) => {
-        if (err) {
-          console.error('Error al enviar el archivo:', err);
-          res.status(500).send('Error al enviar el archivo');
-        }
-      });
-    }
-  });
-});
-
-// Rutas
+// Rutas API
 app.use('/api', usuariosRutas);
+
+// Endpoint para manejar el registro de abogados
 app.post('/submit_registration', upload.single('cv'), UsuarioAbogado);
 
+// Endpoint para obtener datos del bot
 app.get('/bot/data', (req, res) => {
   res.json(flows);
 });
