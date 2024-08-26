@@ -6,7 +6,6 @@ const helmet = require('helmet');
 const path = require('path');
 const multer = require('multer');
 const FormData = require('form-data');
-
 const fs = require('fs'); // Añadido para verificar archivos
 const bcrypt = require('bcryptjs'); // Asegúrate de que `bcrypt` esté instalado
 const { Pool } = require('pg'); // Paquete para PostgreSQL
@@ -51,25 +50,7 @@ console.log('Ruta absoluta del directorio app:', appPath);
 
 app.use(express.static(appPath));
 
-app.get('/', (req, res) => {
-  const landingFilePath = path.join(appPath, 'landing.html');
-  console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
-
-  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.error('Error al encontrar el archivo:', err);
-      res.status(404).send('Archivo no encontrado');
-    } else {
-      res.sendFile(landingFilePath, (err) => {
-        if (err) {
-          console.error('Error al enviar el archivo:', err);
-          res.status(500).send('Error al enviar el archivo');
-        }
-      });
-    }
-  });
-});
-// Endpoint para manejar la solicitud del formulario de contacto
+// Ruta para manejar la solicitud del formulario de contacto
 app.post('/sendContactForm', async (req, res) => {
   const form = new FormData();
   form.append('name', req.body.name);
@@ -93,8 +74,6 @@ app.post('/sendContactForm', async (req, res) => {
   }
 });
 
-
-
 // Ruta para registrar un nuevo usuario
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -117,6 +96,26 @@ app.post('/register', async (req, res) => {
     console.error('Error al registrar el usuario:', error);
     res.status(500).json({ error: 'Hubo un error al registrar el usuario.' });
   }
+});
+
+// Ruta para servir landing.html desde el directorio client
+app.get('/', (req, res) => {
+  const landingFilePath = path.join(__dirname, 'client', 'landing.html');
+  console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
+
+  fs.access(landingFilePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('Error al encontrar el archivo:', err);
+      res.status(404).send('Archivo no encontrado');
+    } else {
+      res.sendFile(landingFilePath, (err) => {
+        if (err) {
+          console.error('Error al enviar el archivo:', err);
+          res.status(500).send('Error al enviar el archivo');
+        }
+      });
+    }
+  });
 });
 
 // Rutas
