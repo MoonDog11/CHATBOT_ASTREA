@@ -2,9 +2,22 @@
 
 set -o pipefail
 
-sleep 10
+# Variables de configuración de la base de datos de origen
+DB_USER=postgres
+DB_PASSWORD=Jphv19840625*
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=nordeste_abogados_users_db
+PLUGIN_URL=postgresql://postgres:Jphv19840625*@localhost:5432/nordeste_abogados_users_db
 
-export TERM=ansi
+# Variables de configuración de Railway (suponiendo que DATABASE_URL es la única relevante para el script)
+DATABASE_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
+
+# Secreto para JWT
+JWT_SECRET=nordesteLaw2024*
+
+# Definición de colores para salida en consola
+_TERM=ansi
 _GREEN=$(tput setaf 2)
 _BLUE=$(tput setaf 4)
 _MAGENTA=$(tput setaf 5)
@@ -13,30 +26,37 @@ _BOLD=$(tput bold)
 _RED=$(tput setaf 1)
 _YELLOW=$(tput setaf 3)
 
+# Función para mostrar errores y salir
 error_exit() {
     printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
     exit 1
 }
 
+# Función para mostrar secciones
 section() {
   printf "${_RESET}\n"
   echo "${_BOLD}${_BLUE}==== $1 ====${_RESET}"
 }
 
+# Función para mostrar mensaje de éxito
 write_ok() {
   echo "[$_GREEN OK $_RESET] $1"
 }
 
+# Función para mostrar mensaje de información
 write_info() {
   echo "[$_BLUE INFO $_RESET] $1"
 }
 
+# Función para mostrar advertencia
 write_warn() {
   echo "[$_YELLOW WARN $_RESET] $1"
 }
 
+# Captura de errores
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
+# Encabezado del script
 printf "${_BOLD}${_MAGENTA}"
 echo "+-------------------------------------+"
 echo "|                                     |"
@@ -45,10 +65,7 @@ echo "|                                     |"
 echo "+-------------------------------------+"
 printf "${_RESET}\n"
 
-echo "For more information, see https://docs.railway.app/database/migration"
-echo "If you run into any issues, please reach out to us on Discord: https://discord.gg/railway"
-printf "${_RESET}\n"
-
+# Validación de variables de entorno
 section "Validating environment variables"
 
 if [ -z "$PLUGIN_URL" ]; then
@@ -88,6 +105,7 @@ fi
 dump_dir="plugin_dump"
 mkdir -p $dump_dir
 
+# Función para volcar la base de datos
 dump_database() {
   local database=$1
   local dump_file="$dump_dir/$database.sql"
@@ -114,13 +132,16 @@ dump_database() {
   write_info "Dump file size: $dump_file_size"
 }
 
+# Obtener listado de bases de datos a migrar
 databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -p $DB_PORT -d "$DB_NAME" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
+# Iterar sobre cada base de datos para realizar el volcado
 for db in $databases; do
   dump_database "$db"
 done
 
+# Función para restaurar la base de datos desde el volcado
 restore_database() {
   section "Restoring database: $db"
 
@@ -143,13 +164,14 @@ restore_database() {
   write_ok "Successfully restored database $db from dump"
 }
 
+# Iterar sobre cada base de datos para restaurarla desde el volcado
 for db in $databases; do
   restore_database "$db"
 done
 
 echo "Migration completed successfully."
 
-# Start the server
+# Iniciar el servidor (asumiendo que esta parte es para otro script o aplicación relacionada)
 section "Starting the server"
 node app.js || error_exit "Failed to start the server."
 write_ok "Server started successfully."
