@@ -13,7 +13,7 @@ else
 fi
 
 # Cambiar al directorio /app/server para iniciar la aplicación Node.js
-cd / || exit
+cd /app/server || exit
 
 # Iniciar la aplicación Node.js (app.js) desde el directorio /app/server
 echo "Starting the application..."
