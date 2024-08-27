@@ -2,19 +2,6 @@
 
 set -o pipefail
 
-# Variables de configuración de la base de datos de origen
-DB_USER=postgres
-DB_PASSWORD=Jphv19840625*
-DB_HOST=localhost
-DB_PORT=5432
-DB_DATABASE=nordeste_abogados_users_db
-PLUGIN_URL=postgresql://postgres:Jphv19840625*@localhost:5432/nordeste_abogados_users_db
-
-# Variables de configuración de Railway (suponiendo que DATABASE_URL es la única relevante para el script)
-DATABASE_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
-
-# Secreto para JWT
-JWT_SECRET=nordesteLaw2024*
 
 # Definición de colores para salida en consola
 _TERM=ansi
