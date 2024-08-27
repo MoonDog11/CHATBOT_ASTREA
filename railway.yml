@@ -7,6 +7,6 @@ services:
     env:
       NODE_ENV: production
   database:
-    image: postgres:15.3
+    image: postgres:16
     ports:
       - 5432
