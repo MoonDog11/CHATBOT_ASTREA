@@ -45,14 +45,16 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Directorio raíz de la aplicación
-const clientPath = path.join(__dirname, 'client');
+// Ruta del directorio 'client', que está un nivel arriba del directorio 'server'
+const clientPath = path.join(__dirname, '..', 'client');
 
 console.log('Ruta absoluta del directorio client:', clientPath);
 
+// Configurar Express para servir archivos estáticos desde el directorio '/client'
 app.use(express.static(clientPath));
 
 app.get('/', (req, res) => {
+  // Ruta del archivo 'landing.html' dentro del directorio '/client'
   const landingFilePath = path.join(clientPath, 'landing.html');
   console.log('Ruta absoluta del archivo landing.html:', landingFilePath);
 
