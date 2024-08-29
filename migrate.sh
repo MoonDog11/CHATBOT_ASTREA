@@ -109,14 +109,14 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  /usr/local/opt/postgresql@14/bin/psql -d "$db_url" \
+  /usr/local/opt/postgresql@14/bin/pg_dump -d "$db_url" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
       --no-owner \
       --no-privileges \
       --disable-triggers \
-      --file="$dump_file" || error_exit "Failed to dump database from $database."
+      --file=$dump_file || error_exit "Failed to dump database from $database."
 
   write_ok "Successfully saved dump to $dump_file"
 
