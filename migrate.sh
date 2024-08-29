@@ -84,7 +84,6 @@ WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
   );"
 table_count=$(/usr/local/opt/postgresql@14/bin/psql "$NEW_URL" -t -A -c "$query")
 
-
 if [[ $table_count -eq 0 ]]; then
   write_ok "The new database is empty. Proceeding with restore."
 else
@@ -134,19 +133,15 @@ remove_timescale_commands() {
   write_ok "Successfully removed TimescaleDB specific commands from $dump_file"
 }
 
-
 # Get list of databases, excluding system databases
 databases=$(/usr/local/opt/postgresql@14/bin/psql -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
-
-dump_dir="plugin_dump"
-mkdir -p $dump_dir
 
 for db in $databases; do
   dump_database "$db"
 done
 
-trap - ERR # Temporary disable error trap to avoid exiting on error
+trap - ERR # Temporarily disable error trap to avoid exiting on error
 /usr/local/opt/postgresql@14/bin/psql "$NEW_URL" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
@@ -194,6 +189,7 @@ ensure_database_exists() {
 
 # Restore the database to NEW_URL
 restore_database() {
+  local db=$1
   section "Restoring database: $db"
 
   if [ $timescaledb_exists -ne 0 ]; then
