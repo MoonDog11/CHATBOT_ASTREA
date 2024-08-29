@@ -82,7 +82,7 @@ WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
     WHERE c.relname = t.table_name
       AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
   );"
-table_count=$(/usr/local/bin/psql "$NEW_URL" -t -A -c "$query")
+table_count=$(/usr/local/opt/postgresql@14/bin/psql "$NEW_URL" -t -A -c "$query")
 
 
 if [[ $table_count -eq 0 ]]; then
@@ -109,7 +109,7 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  /usr/local/bin/psql -d "$db_url" \
+  /usr/local/opt/postgresql@14/bin/psql -d "$db_url" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
@@ -136,7 +136,7 @@ remove_timescale_commands() {
 
 
 # Get list of databases, excluding system databases
-databases=$(/usr/local/bin/psql -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(/usr/local/opt/postgresql@14/bin/psql -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 dump_dir="plugin_dump"
@@ -147,7 +147,7 @@ for db in $databases; do
 done
 
 trap - ERR # Temporary disable error trap to avoid exiting on error
-/usr/local/bin/psql "$NEW_URL" -c '\dx' | grep -q 'timescaledb'
+/usr/local/opt/postgresql@14/bin/psql "$NEW_URL" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
@@ -160,7 +160,7 @@ fi
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
-  /usr/local/bin/psql $db_url -c "
+  /usr/local/opt/postgresql@14/bin/psql $db_url -c "
     DO \$\$
     BEGIN
       IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
@@ -184,9 +184,9 @@ ensure_database_exists() {
   local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   # Check if database exists
-  if ! /usr/local/bin/psql $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
+  if ! /usr/local/opt/postgresql@14/bin/psql $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
       write_ok "Database $db_name does not exist. Creating..."
-      /usr/local/bin/psql $psql_url -c "CREATE DATABASE \"$db_name\""
+      /usr/local/opt/postgresql@14/bin/psql $psql_url -c "CREATE DATABASE \"$db_name\""
   else
       write_info "Database $db_name exists."
   fi
@@ -206,7 +206,7 @@ restore_database() {
   ensure_database_exists "$db_url"
   remove_timescale_catalog_metadata "$db_url"
 
-  /usr/local/bin/psql $db_url -v ON_ERROR_STOP=1 --echo-errors \
+  /usr/local/opt/postgresql@14/bin/psql $db_url -v ON_ERROR_STOP=1 --echo-errors \
     -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to NEW_URL."
 
   write_ok "Successfully restored $db to NEW_URL"
