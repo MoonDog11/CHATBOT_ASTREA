@@ -5,8 +5,9 @@ set -o pipefail
 # Espera 10 segundos antes de iniciar
 sleep 10
 
-# Ruta fija a psql
+# Ruta a psql
 PSQL_PATH="/usr/local/Cellar/postgresql@14/14.13/bin/psql"
+
 echo "Ruta detectada para psql: $PSQL_PATH"
 
 if [ ! -x "$PSQL_PATH" ]; then
@@ -187,4 +188,24 @@ remove_timescale_catalog_metadata "$NEW_URL"
 # Crear las bases de datos si no existen y restaurarlas
 ensure_database_exists() {
   local db_url=$1
-  local db_name=$(echo $db_url |
+  local db_name=$(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|')
+
+  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d postgres -c "CREATE DATABASE $db_name;" || echo "Database $db_name already exists or could not be created."
+}
+
+restore_database() {
+  local db=$1
+  local dump_file="$dump_dir/$db.sql"
+
+  section "Restoring database: $db"
+
+  ensure_database_exists "$NEW_URL/$db"
+
+  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $db -f "$dump_file" || error_exit "Failed to restore database from $dump_file."
+
+  write_ok "Successfully restored database $db from $dump_file"
+}
+
+for db in $databases; do
+  restore_database "$db"
+done
