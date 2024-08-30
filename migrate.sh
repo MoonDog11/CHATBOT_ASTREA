@@ -77,7 +77,7 @@ WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
     WHERE c.relname = t.table_name
       AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
   );"
-table_count=$(psql "$DATABASE_URL" -t -A -c "$query")
+table_count=$(PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$PGDATABASE" -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
   write_ok "The new database is empty. Proceeding with restore."
@@ -103,7 +103,7 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  pg_dump -h $PGHOST -p $PGPORT -U $PGUSER -d "$db_url" \
+  PGPASSWORD=$PGPASSWORD pg_dump -h $PGHOST -p $PGPORT -U $PGUSER -d "$db_url" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
@@ -129,7 +129,7 @@ remove_timescale_commands() {
 }
 
 # Get list of databases, excluding system databases
-databases=$(psql "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$PGDATABASE" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 dump_dir="plugin_dump"
@@ -140,7 +140,7 @@ for db in $databases; do
 done
 
 trap - ERR # Temporary disable error trap to avoid exiting on error
-psql "$DATABASE_URL" -c '\dx' | grep -q 'timescaledb'
+PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$PGDATABASE" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
@@ -153,7 +153,7 @@ fi
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
-  psql $db_url -c "
+  PGPASSWORD=$PGPASSWORD psql -h $(echo $db_url | sed -E 's/postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+\/(.*)/\1/') -d $(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/') -c "
     DO \$\$
     BEGIN
       IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
@@ -177,9 +177,9 @@ ensure_database_exists() {
   local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   # Check if database exists
-  if ! psql $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
+  if ! PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$psql_url" -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
       write_ok "Database $db_name does not exist. Creating..."
-      psql $psql_url -c "CREATE DATABASE \"$db_name\""
+      PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$psql_url" -c "CREATE DATABASE \"$db_name\""
   else
       write_info "Database $db_name exists."
   fi
@@ -199,7 +199,7 @@ restore_database() {
   ensure_database_exists "$db_url"
   remove_timescale_catalog_metadata "$db_url"
 
-  psql $db_url -v ON_ERROR_STOP=1 --echo-errors \
+  PGPASSWORD=$PGPASSWORD psql -h $(echo $db_url | sed -E 's/postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+\/(.*)/\1/') -d $(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/') -v ON_ERROR_STOP=1 --echo-errors \
     -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to DATABASE_URL."
 
   write_ok "Successfully restored $db to DATABASE_URL"
