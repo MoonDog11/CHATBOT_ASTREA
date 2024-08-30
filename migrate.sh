@@ -14,6 +14,16 @@ _YELLOW=$(tput setaf 3)
 _RESET=$(tput sgr0)
 _BOLD=$(tput bold)
 
+# Define environment variables
+DB_USER=postgres
+DB_PASSWORD=Jphv19840625*
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=nordeste_abogados_users_db
+PLUGIN_URL=postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_DATABASE
+
+NEW_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
+
 # Function to print error messages and exit
 error_exit() {
     printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
@@ -70,7 +80,6 @@ write_ok "NEW_URL correctly set"
 section "Checking if NEW_URL is empty"
 
 # Query to check if there are any tables in the new database
-# We filter out any tables that are created by extensions
 query="SELECT count(*)
 FROM information_schema.tables t
 WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
@@ -143,7 +152,7 @@ for db in $databases; do
   dump_database "$db"
 done
 
-trap - ERR # Temporary disable error trap to avoid exiting on error
+trap - ERR # Temporarily disable error trap to avoid exiting on error
 PGPASSWORD=$NEW_PASSWORD psql "$NEW_URL" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
