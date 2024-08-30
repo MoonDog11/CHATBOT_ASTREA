@@ -2,7 +2,8 @@
 
 set -o pipefail
 
-# Color definitions
+sleep 10
+
 export TERM=ansi
 _GREEN=$(tput setaf 2)
 _BLUE=$(tput setaf 4)
@@ -12,6 +13,12 @@ _RED=$(tput setaf 1)
 _YELLOW=$(tput setaf 3)
 _RESET=$(tput sgr0)
 _BOLD=$(tput bold)
+
+# Function to print error messages and exit
+error_exit() {
+    printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
+    exit 1
+}
 
 section() {
   printf "${_RESET}\n"
@@ -30,14 +37,8 @@ write_warn() {
   echo "[$_YELLOW WARN $_RESET] $1"
 }
 
-error_exit() {
-  printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
-  exit 1
-}
-
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
-# Initialize
 printf "${_BOLD}${_MAGENTA}"
 echo "+-------------------------------------+"
 echo "|                                     |"
@@ -52,18 +53,24 @@ printf "${_RESET}\n"
 
 section "Validating environment variables"
 
-# Validate that required environment variables are set
-for var in DATABASE_URL PGDATABASE PGHOST PGPASSWORD PGPORT PGUSER PLUGIN_URL; do
-    if [ -z "${!var}" ]; then
-        error_exit "$var environment variable is not set."
-    fi
-done
+# Validate that PLUGIN_URL environment variable exists
+if [ -z "$PLUGIN_URL" ]; then
+    error_exit "PLUGIN_URL environment variable is not set."
+fi
 
-write_ok "All required environment variables are set"
+write_ok "PLUGIN_URL correctly set"
 
-section "Checking if the new database is empty"
+# Validate that NEW_URL environment variable exists
+if [ -z "$NEW_URL" ]; then
+    error_exit "NEW_URL environment variable is not set."
+fi
+
+write_ok "NEW_URL correctly set"
+
+section "Checking if NEW_URL is empty"
 
 # Query to check if there are any tables in the new database
+# We filter out any tables that are created by extensions
 query="SELECT count(*)
 FROM information_schema.tables t
 WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
@@ -75,7 +82,8 @@ WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
     WHERE c.relname = t.table_name
       AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
   );"
-table_count=$(PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$PGDATABASE" -t -A -c "$query")
+table_count=$(psql "$NEW_URL" -t -A -c "$query")
+
 
 if [[ $table_count -eq 0 ]]; then
   write_ok "The new database is empty. Proceeding with restore."
@@ -87,7 +95,6 @@ else
   write_warn "The new database is not empty. Found OVERWRITE_DATABASE environment variable. Proceeding with restore."
 fi
 
-# Define the dump directory
 dump_dir="plugin_dump"
 mkdir -p $dump_dir
 
@@ -102,12 +109,13 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  PGPASSWORD=$PGPASSWORD pg_dump -h $PGHOST -p $PGPORT -U $PGUSER -d "$db_url" \
+  pg_dump -d "$db_url" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
       --no-owner \
       --no-privileges \
+      --disable-triggers \
       --file=$dump_file || error_exit "Failed to dump database from $database."
 
   write_ok "Successfully saved dump to $dump_file"
@@ -126,16 +134,20 @@ remove_timescale_commands() {
   write_ok "Successfully removed TimescaleDB specific commands from $dump_file"
 }
 
+
 # Get list of databases, excluding system databases
-databases=$(PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$PGDATABASE" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(psql -d "$PLUGIN_URL" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
+
+dump_dir="plugin_dump"
+mkdir -p $dump_dir
 
 for db in $databases; do
   dump_database "$db"
 done
 
 trap - ERR # Temporary disable error trap to avoid exiting on error
-PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$PGDATABASE" -c '\dx' | grep -q 'timescaledb'
+psql "$NEW_URL" -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
@@ -144,10 +156,11 @@ if [ $timescaledb_exists -ne 0 ]; then
     write_warn "If you are using TimescaleDB, please install the extension in the target database and run the migration again."
 fi
 
+# Delete the _timescaledb_catalog.metadata row that contains the exported_uuid to avoid conflicts
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
-  PGPASSWORD=$PGPASSWORD psql -h $(echo $db_url | sed -E 's/postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+\/(.*)/\1/') -d $(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/') -c "
+  psql $db_url -c "
     DO \$\$
     BEGIN
       IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
@@ -160,24 +173,26 @@ remove_timescale_catalog_metadata() {
   "
 }
 
+# Create the database in the provided connection string if it doesn't exist
 ensure_database_exists() {
   local db_url=$1
 
-  # Extract database name from DATABASE_URL
+  # Extract database name from NEW_URL
   local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
 
-  # Extract other components from DATABASE_URL for psql command
+  # Extract other components from NEW_URL for psql command
   local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   # Check if database exists
-  if ! PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$psql_url" -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
+  if ! psql $psql_url -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
       write_ok "Database $db_name does not exist. Creating..."
-      PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$psql_url" -c "CREATE DATABASE \"$db_name\""
+      psql $psql_url -c "CREATE DATABASE \"$db_name\""
   else
       write_info "Database $db_name exists."
   fi
 }
 
+# Restore the database to NEW_URL
 restore_database() {
   section "Restoring database: $db"
 
@@ -185,22 +200,30 @@ restore_database() {
     remove_timescale_commands "$db"
   fi
 
-  local base_url=$(echo $DATABASE_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
+  local base_url=$(echo $NEW_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
   local db_url="${base_url}/${db}"
 
   ensure_database_exists "$db_url"
   remove_timescale_catalog_metadata "$db_url"
 
-  PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$db_url" < "$dump_dir/$db.sql" || error_exit "Failed to restore database $db."
+  psql $db_url -v ON_ERROR_STOP=1 --echo-errors \
+    -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to NEW_URL."
 
-  write_ok "Successfully restored database $db"
+  write_ok "Successfully restored $db to NEW_URL"
 }
 
 for db in $databases; do
   restore_database "$db"
 done
 
-section "Starting application"
+printf "${_RESET}\n"
+printf "${_RESET}\n"
+echo "${_BOLD}${_GREEN}Migration completed successfully${_RESET}"
+printf "${_RESET}\n"
+echo "Next steps..."
+echo "1. Update your application's DATABASE_URL environment variable to point to the new database."
+echo '  - You can use variable references to do this. For example `${{ Postgres.DATABASE_URL }}`'
+echo "2. Verify that your application is working as expected."
+echo "3. Remove the legacy plugin and this service from your Railway project."
 
-# Start the application
-exec npm start
+printf "${_RESET}\n"
