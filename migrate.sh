@@ -5,12 +5,12 @@ set -o pipefail
 # Espera 10 segundos antes de iniciar
 sleep 10
 
-# Exporta la ruta de psql dinámicamente
-PSQL_PATH=$(which psql)
+# Ruta fija a psql
+PSQL_PATH="/usr/local/Cellar/postgresql@14/14.13/bin/psql"
 echo "Ruta detectada para psql: $PSQL_PATH"
 
-if [ -z "$PSQL_PATH" ]; then
-  echo "psql no encontrado. Asegúrate de que PostgreSQL esté instalado y en tu PATH."
+if [ ! -x "$PSQL_PATH" ]; then
+  echo "psql no encontrado en $PSQL_PATH. Asegúrate de que PostgreSQL esté instalado y la ruta sea correcta."
   exit 1
 fi
 
@@ -187,18 +187,4 @@ remove_timescale_catalog_metadata "$NEW_URL"
 # Crear las bases de datos si no existen y restaurarlas
 ensure_database_exists() {
   local db_url=$1
-  local db_name=$(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|')
-
-  if ! PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+|5432|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "SELECT 1" | grep -q 1; then
-    write_info "Database $db_name does not exist. Creating it."
-    PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+|5432|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "CREATE DATABASE $db_name;"
-  fi
-}
-
-# Ejecutar el script de migración
-section "Starting migration"
-for db in $databases; do
-  remove_timescale_commands "$db"
-  ensure_database_exists "$NEW_URL"
-  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $NEW_URL | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $NEW_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $NEW_URL | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $NEW_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -f "$dump_dir/$db.sql"
-done
+  local db_name=$(echo $db_url |
