@@ -71,7 +71,13 @@ write_ok "NEW_URL correctly set"
 
 section "Checking if NEW_URL is empty"
 
-# Query to check if there are any tables in the new database
+NEW_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
+NEW_PASSWORD=RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE
+
+# Imprimir la URL para verificación
+echo "NEW_URL: $NEW_URL"
+
+# Ejecutar consulta para contar tablas
 query="SELECT count(*)
 FROM information_schema.tables t
 WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
@@ -83,6 +89,8 @@ WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
     WHERE c.relname = t.table_name
       AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
   );"
+
+# Ejecutar el comando psql
 table_count=$(PGPASSWORD=$NEW_PASSWORD psql "$NEW_URL" -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
