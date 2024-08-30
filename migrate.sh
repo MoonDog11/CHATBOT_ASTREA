@@ -16,7 +16,6 @@ if [ ! -x "$PSQL_PATH" ]; then
 fi
 
 export PATH=$PATH:$(dirname $PSQL_PATH)
-
 export TERM=ansi
 _GREEN=$(tput setaf 2)
 _BLUE=$(tput setaf 4)
@@ -73,28 +72,24 @@ fi
 
 write_ok "PLUGIN_URL correctly set"
 
-# Validar que la variable de entorno NEW_URL existe
-if [ -z "$NEW_URL" ]; then
-    error_exit "NEW_URL environment variable is not set."
+# Validar que la variable de entorno DATABASE_URL existe
+if [ -z "$DATABASE_URL" ]; then
+    error_exit "DATABASE_URL environment variable is not set."
 fi
 
-write_ok "NEW_URL correctly set"
+write_ok "DATABASE_URL correctly set"
 
-section "Checking if NEW_URL is empty"
+section "Checking if DATABASE_URL is empty"
+
+# Obtener la URL de conexión destino desglosada
+DB_URL_HOST=$(echo $DATABASE_URL | sed -E 's|postgresql://([^:]+):[^@]+@([^:]+):([0-9]+)/([^?]+)|\2|')
+DB_URL_PORT=$(echo $DATABASE_URL | sed -E 's|postgresql://([^:]+):[^@]+@([^:]+):([0-9]+)/([^?]+)|\3|')
+DB_URL_USER=$(echo $DATABASE_URL | sed -E 's|postgresql://([^:]+):[^@]+@([^:]+):([0-9]+)/([^?]+)|\1|')
+DB_URL_DB=$(echo $DATABASE_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|')
 
 # Consulta para verificar si hay tablas en la nueva base de datos
-query="SELECT count(*)
-FROM information_schema.tables t
-WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
-  AND NOT EXISTS (
-  SELECT 1
-  FROM pg_depend d
-  JOIN pg_extension e ON d.refobjid = e.oid
-  JOIN pg_class c ON d.objid = c.oid
-  WHERE c.relname = t.table_name
-    AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
-);"
-table_count=$(PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $NEW_DB_NAME -t -A -c "$query")
+query="SELECT count(*) FROM information_schema.tables t WHERE table_schema NOT IN ('information_schema', 'pg_catalog') AND NOT EXISTS (SELECT 1 FROM pg_depend d JOIN pg_extension e ON d.refobjid = e.oid JOIN pg_class c ON d.objid = c.oid WHERE c.relname = t.table_name AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema));"
+table_count=$(PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $DB_URL_HOST -p $DB_URL_PORT -U $DB_URL_USER -d $DB_URL_DB -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
   write_ok "The new database is empty. Proceeding with restore."
@@ -119,14 +114,7 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  PGPASSWORD=$DB_PASSWORD $PSQL_PATH -d "$db_url" \
-      --format=plain \
-      --quote-all-identifiers \
-      --no-tablespaces \
-      --no-owner \
-      --no-privileges \
-      --disable-triggers \
-      --file=$dump_file || error_exit "Failed to dump database from $database."
+  PGPASSWORD=$DB_PASSWORD $PSQL_PATH -d "$db_url" --format=plain --quote-all-identifiers --no-tablespaces --no-owner --no-privileges --disable-triggers --file=$dump_file || error_exit "Failed to dump database from $database."
 
   write_ok "Successfully saved dump to $dump_file"
 
@@ -144,8 +132,7 @@ remove_timescale_commands() {
   write_ok "Successfully removed TimescaleDB specific commands from $dump_file"
 }
 
-# Obtener lista de bases de datos, excluyendo bases de datos del sistema
-databases=$($PSQL_PATH -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_DATABASE -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(PGPASSWORD=$DB_PASSWORD $PSQL_PATH -h $(echo $PLUGIN_URL | sed -E 's|postgresql://([^:]+):[^@]+@([^:]+):([0-9]+)/([^?]+)|\2|') -p $(echo $PLUGIN_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\3|') -U $(echo $PLUGIN_URL | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|\1|') -d $(echo $PLUGIN_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 dump_dir="plugin_dump"
@@ -155,8 +142,8 @@ for db in $databases; do
   dump_database "$db"
 done
 
-trap - ERR # Desactivar temporalmente el manejo de errores para evitar salir en caso de error
-PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $NEW_DB_NAME -c '\dx' | grep -q 'timescaledb'
+trap - ERR
+PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $DB_URL_HOST -p $DB_URL_PORT -U $DB_URL_USER -d $DB_URL_DB -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
@@ -165,11 +152,10 @@ if [ $timescaledb_exists -ne 0 ]; then
     write_warn "If you are using TimescaleDB, please install the extension in the target database and run the migration again."
 fi
 
-# Eliminar la fila _timescaledb_catalog.metadata que contiene el exported_uuid para evitar conflictos
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
-  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|localhost|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|5432|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|\1|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "
+  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@([^:]+):([0-9]+)/([^?]+)|\2|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\3|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|\1|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "
   DO \$\$
   BEGIN
     IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
@@ -183,14 +169,13 @@ remove_timescale_catalog_metadata() {
   write_ok "Successfully removed TimescaleDB catalog metadata from $db_url"
 }
 
-remove_timescale_catalog_metadata "$NEW_URL"
+remove_timescale_catalog_metadata "$DATABASE_URL"
 
-# Crear las bases de datos si no existen y restaurarlas
 ensure_database_exists() {
   local db_url=$1
   local db_name=$(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|')
 
-  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d postgres -c "CREATE DATABASE $db_name;" || echo "Database $db_name already exists or could not be created."
+  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $DB_URL_HOST -p $DB_URL_PORT -U $DB_URL_USER -d postgres -c "CREATE DATABASE $db_name;" || echo "Database $db_name already exists or could not be created."
 }
 
 restore_database() {
@@ -199,9 +184,9 @@ restore_database() {
 
   section "Restoring database: $db"
 
-  ensure_database_exists "$NEW_URL/$db"
+  ensure_database_exists "$DATABASE_URL/$db"
 
-  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $db -f "$dump_file" || error_exit "Failed to restore database from $dump_file."
+  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $DB_URL_HOST -p $DB_URL_PORT -U $DB_URL_USER -d $db -f "$dump_file" || error_exit "Failed to restore database from $dump_file."
 
   write_ok "Successfully restored database $db from $dump_file"
 }
