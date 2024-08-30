@@ -14,15 +14,7 @@ _YELLOW=$(tput setaf 3)
 _RESET=$(tput sgr0)
 _BOLD=$(tput bold)
 
-# Define environment variables
-DB_USER=postgres
-DB_PASSWORD=Jphv19840625*
-DB_HOST=localhost
-DB_PORT=5432
-DB_DATABASE=nordeste_abogados_users_db
-PLUGIN_URL=postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_DATABASE
 
-NEW_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
 
 # Function to print error messages and exit
 error_exit() {
