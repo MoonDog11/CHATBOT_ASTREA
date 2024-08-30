@@ -50,7 +50,7 @@ printf "${_RESET}\n"
 
 section "Validating environment variables"
 
-for var in DATABASE_URL PGDATABASE PGHOST PGPASSWORD PGPORT PGUSER PLUGIN_URL; do
+for var in DATABASE_URL; do
     if [ -z "${!var}" ]; then
         error_exit "$var environment variable is not set."
     fi
@@ -93,18 +93,15 @@ dump_database() {
 
   section "Dumping database: $database"
 
-  local base_url=$(echo $PLUGIN_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
-  local db_url="${base_url}/${database}"
+  echo "Dumping database from $DATABASE_URL"
 
-  echo "Dumping database from $db_url"
-
-  PGPASSWORD=$PGPASSWORD pg_dump "$db_url" \
+  PGPASSWORD=$PGPASSWORD pg_dump "$DATABASE_URL" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
       --no-owner \
       --no-privileges \
-      --disable-triggers \
+      --disable-tables \
       --file=$dump_file || error_exit "Failed to dump database from $database."
 
   write_ok "Successfully saved dump to $dump_file"
@@ -177,13 +174,10 @@ restore_database() {
     remove_timescale_commands "$db"
   fi
 
-  local base_url=$(echo $DATABASE_URL | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
-  local db_url="${base_url}/${db}"
+  ensure_database_exists "$DATABASE_URL"
+  remove_timescale_catalog_metadata "$DATABASE_URL"
 
-  ensure_database_exists "$db_url"
-  remove_timescale_catalog_metadata "$db_url"
-
-  PGPASSWORD=$PGPASSWORD psql "$db_url" -v ON_ERROR_STOP=1 --echo-errors \
+  PGPASSWORD=$PGPASSWORD psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --echo-errors \
     -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to DATABASE_URL."
 
   write_ok "Successfully restored $db to DATABASE_URL"
