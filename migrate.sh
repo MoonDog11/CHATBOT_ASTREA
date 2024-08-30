@@ -65,7 +65,6 @@ write_ok "All required environment variables are set"
 section "Checking if the new database is empty"
 
 # Query to check if there are any tables in the new database
-# We filter out any tables that are created by extensions
 query="SELECT count(*)
 FROM information_schema.tables t
 WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
@@ -103,7 +102,7 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  PGPASSWORD=$PGPASSWORD pg_dump "$db_url" \
+  PGPASSWORD=$PGPASSWORD pg_dump -h $PGHOST -p $PGPORT -U $PGUSER -d "$db_url" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
@@ -130,6 +129,9 @@ remove_timescale_commands() {
 # Get list of databases, excluding system databases
 databases=$(PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$PGDATABASE" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
+
+dump_dir="plugin_dump"
+mkdir -p $dump_dir
 
 for db in $databases; do
   dump_database "$db"
@@ -195,22 +197,16 @@ restore_database() {
   ensure_database_exists "$db_url"
   remove_timescale_catalog_metadata "$db_url"
 
-  PGPASSWORD=$PGPASSWORD psql -h $(echo $db_url | sed -E 's/postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+\/(.*)/\1/') -d $(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/') -v ON_ERROR_STOP=1 --echo-errors \
-    -f "$dump_dir/$db.sql" > /dev/null || error_exit "Failed to restore database to DATABASE_URL."
+  PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d "$db_url" < "$dump_dir/$db.sql" || error_exit "Failed to restore database $db."
 
-  write_ok "Successfully restored $db to DATABASE_URL"
+  write_ok "Successfully restored database $db"
 }
 
 for db in $databases; do
   restore_database "$db"
 done
 
-printf "${_RESET}\n"
-printf "${_RESET}\n"
-echo "${_BOLD}${_GREEN}Migration completed successfully${_RESET}"
-printf "${_RESET}\n"
-echo "Next steps..."
-echo "1. Update your application's DATABASE_URL environment variable to point to the new database."
-echo '  - You can use variable references to do this. For example `${{ Postgres.DATABASE_URL }}`'
-echo "2. Verify that your application works correctly with the new database."
-echo "3. If you used TimescaleDB, ensure the extension is installed in the target database."
+section "Starting application"
+
+# Start the application
+exec npm start
