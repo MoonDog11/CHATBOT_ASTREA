@@ -3,9 +3,11 @@ FROM node:18
 
 # Instalar dependencias para PostgreSQL
 RUN apt-get update && \
-    apt-get install -y gnupg wget postgresql-client-16 bash ncurses-bin && \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ $(grep UBUNTU_CODENAME /etc/os-release | cut -d= -f2)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    apt-get install -y gnupg wget lsb-release && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list && \
+    apt-get update && \
+    apt-get install -y postgresql-client-16 bash ncurses-bin && \
     rm -rf /var/lib/apt/lists/*
 
 # Establecer el directorio de trabajo dentro del contenedor
@@ -32,3 +34,4 @@ EXPOSE 8080
 
 # Ejecutar el script init.sh al iniciar el contenedor
 CMD ["/init.sh"]
+
