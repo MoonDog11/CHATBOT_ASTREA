@@ -7,8 +7,10 @@ sleep 10
 
 # Exporta la ruta de psql dinámicamente
 PSQL_PATH=$(which psql)
+echo "Ruta detectada para psql: $PSQL_PATH"
+
 if [ -z "$PSQL_PATH" ]; then
-  echo "psql not found. Please ensure PostgreSQL is installed and in your PATH."
+  echo "psql no encontrado. Asegúrate de que PostgreSQL esté instalado y en tu PATH."
   exit 1
 fi
 
@@ -84,13 +86,13 @@ query="SELECT count(*)
 FROM information_schema.tables t
 WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
   AND NOT EXISTS (
-    SELECT 1
-    FROM pg_depend d
-    JOIN pg_extension e ON d.refobjid = e.oid
-    JOIN pg_class c ON d.objid = c.oid
-    WHERE c.relname = t.table_name
-      AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
-  );"
+  SELECT 1
+  FROM pg_depend d
+  JOIN pg_extension e ON d.refobjid = e.oid
+  JOIN pg_class c ON d.objid = c.oid
+  WHERE c.relname = t.table_name
+    AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
+);"
 table_count=$(PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $NEW_DB_NAME -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
@@ -167,32 +169,29 @@ remove_timescale_catalog_metadata() {
   local db_url=$1
 
   PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|localhost|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|5432|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|\1|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "
-    DO \$\$
-    BEGIN
-      IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
-                  JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-                  WHERE n.nspname = '_timescaledb_catalog' AND c.relname = 'metadata') THEN
-          DELETE FROM _timescaledb_catalog.metadata WHERE key = 'exported_uuid';
-      END IF;
-    END
-    \$\$
-  "
+  DO \$\$
+  BEGIN
+    IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
+                JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+                WHERE n.nspname = '_timescaledb_catalog' AND c.relname = 'metadata') THEN
+        DELETE FROM _timescaledb_catalog.metadata;
+    END IF;
+  END \$\$;
+  " || error_exit "Failed to remove TimescaleDB catalog metadata."
+
+  write_ok "Successfully removed TimescaleDB catalog metadata from $db_url"
 }
 
-# Crear la base de datos en la cadena de conexión proporcionada si no existe
+remove_timescale_catalog_metadata "$NEW_URL"
+
+# Crear las bases de datos si no existen y restaurarlas
 ensure_database_exists() {
   local db_url=$1
+  local db_name=$(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|')
 
-  # Extraer el nombre de la base de datos de NEW_URL
-  local db_name=$(echo $db_url | sed -E 's/.*\/([^\/?]+).*/\1/')
-
-  # Extraer otros componentes de NEW_URL para el comando psql
-  local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
-
-  # Verificar si la base de datos existe
-  if ! PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -c "SELECT 1 FROM pg_database WHERE datname = '$db_name';" | grep -q 1; then
+  if ! PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+|5432|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "SELECT 1" | grep -q 1; then
     write_info "Database $db_name does not exist. Creating it."
-    PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -c "CREATE DATABASE $db_name;"
+    PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+|5432|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+|localhost|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "CREATE DATABASE $db_name;"
   fi
 }
 
