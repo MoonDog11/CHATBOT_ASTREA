@@ -5,8 +5,14 @@ set -o pipefail
 # Espera 10 segundos antes de iniciar
 sleep 10
 
-# Exporta la ruta de psql
-export PATH=$PATH:/usr/local/Cellar/postgresql@14/14.13/bin
+# Exporta la ruta de psql dinámicamente
+PSQL_PATH=$(which psql)
+if [ -z "$PSQL_PATH" ]; then
+  echo "psql not found. Please ensure PostgreSQL is installed and in your PATH."
+  exit 1
+fi
+
+export PATH=$PATH:$(dirname $PSQL_PATH)
 
 export TERM=ansi
 _GREEN=$(tput setaf 2)
@@ -85,7 +91,7 @@ WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
     WHERE c.relname = t.table_name
       AND c.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = t.table_schema)
   );"
-table_count=$(PGPASSWORD=$NEW_PASSWORD /usr/local/Cellar/postgresql@14/14.13/bin/psql -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $NEW_DB_NAME -t -A -c "$query")
+table_count=$(PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $NEW_DB_NAME -t -A -c "$query")
 
 if [[ $table_count -eq 0 ]]; then
   write_ok "The new database is empty. Proceeding with restore."
@@ -110,7 +116,7 @@ dump_database() {
 
   echo "Dumping database from $db_url"
 
-  PGPASSWORD=$DB_PASSWORD /usr/local/Cellar/postgresql@14/14.13/bin/pg_dump -d "$db_url" \
+  PGPASSWORD=$DB_PASSWORD $PSQL_PATH -d "$db_url" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
@@ -136,7 +142,7 @@ remove_timescale_commands() {
 }
 
 # Obtener lista de bases de datos, excluyendo bases de datos del sistema
-databases=$(/usr/local/Cellar/postgresql@14/14.13/bin/psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_DATABASE -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$($PSQL_PATH -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_DATABASE -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 write_info "Found databases to migrate: $databases"
 
 dump_dir="plugin_dump"
@@ -147,7 +153,7 @@ for db in $databases; do
 done
 
 trap - ERR # Desactivar temporalmente el manejo de errores para evitar salir en caso de error
-PGPASSWORD=$NEW_PASSWORD /usr/local/Cellar/postgresql@14/14.13/bin/psql -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $NEW_DB_NAME -c '\dx' | grep -q 'timescaledb'
+PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $NEW_DB_HOST -p $NEW_DB_PORT -U $NEW_DB_USER -d $NEW_DB_NAME -c '\dx' | grep -q 'timescaledb'
 timescaledb_exists=$?
 trap 'echo "An error occurred. Exiting..."; exit 1;' ERR
 
@@ -160,7 +166,7 @@ fi
 remove_timescale_catalog_metadata() {
   local db_url=$1
 
-  PGPASSWORD=$NEW_PASSWORD /usr/local/Cellar/postgresql@14/14.13/bin/psql -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+/(.+)|\1|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+/(.+)|\1|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -c "
+  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|localhost|') -p $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|5432|') -U $(echo $db_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^:]+/(.+)|\1|') -d $(echo $db_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^:]+/(.+)|\1|') -c "
     DO \$\$
     BEGIN
       IF EXISTS (SELECT 1 FROM pg_catalog.pg_class c
@@ -184,9 +190,9 @@ ensure_database_exists() {
   local psql_url=$(echo $db_url | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   # Verificar si la base de datos existe
-  if ! PGPASSWORD=$NEW_PASSWORD /usr/local/Cellar/postgresql@14/14.13/bin/psql -h $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -c "SELECT 1 FROM pg_database WHERE datname = '$db_name';" | grep -q 1; then
+  if ! PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -c "SELECT 1 FROM pg_database WHERE datname = '$db_name';" | grep -q 1; then
     write_info "Database $db_name does not exist. Creating it."
-    PGPASSWORD=$NEW_PASSWORD /usr/local/Cellar/postgresql@14/14.13/bin/psql -h $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -c "CREATE DATABASE $db_name;"
+    PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $psql_url | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $psql_url | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -c "CREATE DATABASE $db_name;"
   fi
 }
 
@@ -195,5 +201,5 @@ section "Starting migration"
 for db in $databases; do
   remove_timescale_commands "$db"
   ensure_database_exists "$NEW_URL"
-  PGPASSWORD=$NEW_PASSWORD /usr/local/Cellar/postgresql@14/14.13/bin/psql -h $(echo $NEW_URL | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $NEW_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $NEW_URL | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $NEW_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -f "$dump_dir/$db.sql"
+  PGPASSWORD=$NEW_PASSWORD $PSQL_PATH -h $(echo $NEW_URL | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -p $(echo $NEW_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+|5432|') -U $(echo $NEW_URL | sed -E 's|postgresql://([^:]+):[^@]+@[^:]+:[^/]+|localhost|') -d $(echo $NEW_URL | sed -E 's|postgresql://[^:]+:[^@]+@[^:]+:[^/]+/(.+)|\1|') -f "$dump_dir/$db.sql"
 done
