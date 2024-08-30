@@ -2,6 +2,12 @@
 
 set -o pipefail
 
+export PGHOST=viaduct.proxy.rlwy.net
+export PGPORT=56284
+export PGUSER=postgres
+export PGPASSWORD=RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE
+export PGDATABASE=railway
+
 section() {
   echo "==== $1 ===="
 }
