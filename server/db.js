@@ -1,7 +1,7 @@
-// db.js
 require('dotenv').config();
 const { Pool } = require('pg');
 
+// Configuración del Pool
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -9,18 +9,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false // Habilita SSL solo si se usa DATABASE_URL
 });
 
-const testQuery = async () => {
-  try {
-    const res = await pool.query('SELECT NOW()');
-    console.log('Hora actual en la base de datos:', res.rows[0].now);
-  } catch (err) {
-    console.error('Error en la consulta de prueba:', err);
-  }
-};
-
-testQuery();
-
-module.exports = { pool };
+module.exports = { pool };  // Asegúrate de exportar `pool`
