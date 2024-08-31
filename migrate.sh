@@ -72,7 +72,7 @@ export DB_HOST=$(echo "$DATABASE_URL" | awk -F[@:] '{print $4}')
 export DB_PORT=$(echo "$DATABASE_URL" | awk -F[@:] '{print $5}' | sed 's/\/.*//')  # Ajustar para extraer solo el número del puerto
 export DB_USER=$(echo "$DATABASE_URL" | awk -F[/:@] '{print $4}')
 export DB_PASSWORD=$(echo "$DATABASE_URL" | awk -F[:@] '{print $3}' | sed 's/@.*//')
-export DB_NAME=$(echo "$DATABASE_URL" | awk -F[/:] '{print $5}')
+export DB_NAME=$(echo "$DATABASE_URL" | awk -F'/' '{print $4}')
 
 # Validación de la información extraída
 section "Database Connection Info"
