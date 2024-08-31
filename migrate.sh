@@ -18,6 +18,8 @@ export PGPORT=56284
 export PGUSER=postgres
 export PGPASSWORD=RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE
 export PGDATABASE=railway
+export PLUGIN_URL=postgresql://postgres:Jphv19840625*@localhost:5432/nordeste_abogados_users_db
+export DATABASE_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
 
 
 section "Starting migration"
