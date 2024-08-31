@@ -99,6 +99,17 @@ fi
 dump_dir="plugin_dump"
 mkdir -p "$dump_dir"
 
+# Función para eliminar todas las tablas en la base de datos
+drop_all_tables() {
+  section "Dropping all tables in database: $DB_NAME"
+  local drop_query="DO \$\$ DECLARE r RECORD; BEGIN FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP EXECUTE 'DROP TABLE IF EXISTS public.' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END \$\$;"
+  PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" -c "$drop_query" || error_exit "Failed to drop all tables."
+  write_ok "Successfully dropped all tables."
+}
+
+# Eliminar tablas antes de restaurar
+drop_all_tables
+
 # Función para volcar la base de datos
 dump_database() {
   local database="$1"
@@ -154,11 +165,18 @@ restore_database() {
       write_info "Database $db_name exists."
   fi
 
-  # Para evitar errores con tablas existentes, utilizamos --clean para eliminar objetos antes de crear
+  # Modificar el archivo SQL para reemplazar tablas existentes
+  temp_file=$(mktemp)
+  sed 's/^CREATE TABLE /DROP TABLE IF EXISTS /; s/CREATE TABLE /CREATE TABLE /' "$dump_dir/$database.sql" > "$temp_file"
+
+  # Restaurar la base de datos, redirigiendo los errores a un archivo de log
   PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$db_url" -v ON_ERROR_STOP=1 --echo-errors \
-    -f "$dump_dir/$database.sql" || {
-      write_warn "Errors occurred during restore, but the process will continue. Check restore.log for details."
+    -f "$temp_file" 2>> restore_errors.log || {
+      write_warn "Errors occurred during restore, but the process will continue. Check restore_errors.log for details."
     }
+  
+  # Limpiar archivo temporal
+  rm "$temp_file"
   
   write_ok "Successfully restored database $database from dump"
 }
