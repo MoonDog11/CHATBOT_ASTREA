@@ -69,10 +69,17 @@ write_ok "DATABASE_URL correctly set"
 
 # Extraer información de DATABASE_URL usando bash
 export DB_HOST=$(echo "$DATABASE_URL" | awk -F[@:] '{print $4}')
-export DB_PORT=$(echo "$DATABASE_URL" | awk -F[@:] '{print $5}')
+export DB_PORT=$(echo "$DATABASE_URL" | awk -F[@:] '{print $5}' | sed 's/\/.*//')  # Ajustar para extraer solo el número del puerto
 export DB_USER=$(echo "$DATABASE_URL" | awk -F[/:@] '{print $4}')
 export DB_PASSWORD=$(echo "$DATABASE_URL" | awk -F[:@] '{print $3}' | sed 's/@.*//')
 export DB_NAME=$(echo "$DATABASE_URL" | awk -F[/:] '{print $5}')
+
+# Validación de la información extraída
+section "Database Connection Info"
+write_info "Host: $DB_HOST"
+write_info "Port: $DB_PORT"
+write_info "User: $DB_USER"
+write_info "Database: $DB_NAME"
 
 section "Checking if DATABASE_URL is empty"
 
@@ -102,7 +109,7 @@ dump_database() {
   local base_url=$(echo "$PLUGIN_URL" | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
   local db_url="${base_url}/${database}"
 
-  echo "Dumping database from $db_url"
+  write_info "Dumping database from $db_url"
 
   PGPASSWORD="$DB_PASSWORD" pg_dump -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$database" \
       --format=plain \
@@ -158,7 +165,7 @@ for db in $databases; do
   restore_database "$db"
 done
 
-echo "Migration completed successfully."
+write_ok "Migration completed successfully."
 
 # Iniciar el servidor (asumiendo que esta parte es para otro script o aplicación relacionada)
 section "Starting the server"
