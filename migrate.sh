@@ -11,15 +11,15 @@ error_exit() {
   exit 1
 }
 
-# Exportar variables de configuración
+# Exportar variables de configuración para la base de datos local
 export DB_USER=postgres
 export DB_PASSWORD=Jphv19840625*
-export DB_HOST=localhost
+export DB_HOST=10.250.18.6
 export DB_PORT=5432
 export DB_DATABASE=nordeste_abogados_users_db
-export PLUGIN_URL=postgresql://postgres:Jphv19840625*@localhost:5432/nordeste_abogados_users_db
+export PLUGIN_URL=postgresql://postgres:Jphv19840625*@10.250.18.6:5432/nordeste_abogados_users_db
 
-# Variables de configuración para Railway
+# Exportar variables de configuración para Railway
 export RAILWAY_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
 
 # Define el directorio para el volcado
