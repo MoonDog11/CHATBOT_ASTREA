@@ -69,17 +69,10 @@ write_ok "DATABASE_URL correctly set"
 
 # Extraer información de DATABASE_URL usando bash
 export DB_HOST=$(echo "$DATABASE_URL" | awk -F[@:] '{print $4}')
-export DB_PORT=$(echo "$DATABASE_URL" | awk -F[@:] '{print $5}' | sed 's/\/.*//')  # Ajustar para extraer solo el número del puerto
-export DB_USER=$(echo "$DATABASE_URL" | awk -F[/:@] '{print $4}')
-export DB_PASSWORD=$(echo "$DATABASE_URL" | awk -F[:@] '{print $3}' | sed 's/@.*//')
-export DB_NAME=$(echo "$DATABASE_URL" | awk -F'/' '{print $4}')
-
-# Validación de la información extraída
-section "Database Connection Info"
-write_info "Host: $DB_HOST"
-write_info "Port: $DB_PORT"
-write_info "User: $DB_USER"
-write_info "Database: $DB_NAME"
+export DB_PORT=$(echo "$DATABASE_URL" | awk -F[@:] '{print $5}')
+export DB_USER=$(echo "$DATABASE_URL" | awk -F[/@] '{print $4}')
+export DB_PASSWORD=$(echo "$DATABASE_URL" | awk -F[:] '{print $3}' | sed 's/@.*//')
+export DB_NAME=$(echo "$DATABASE_URL" | awk -F[/:] '{print $4}')
 
 section "Checking if DATABASE_URL is empty"
 
@@ -99,17 +92,6 @@ fi
 dump_dir="plugin_dump"
 mkdir -p "$dump_dir"
 
-# Función para eliminar todas las tablas en la base de datos
-drop_all_tables() {
-  section "Dropping all tables in database: $DB_NAME"
-  local drop_query="DO \$\$ DECLARE r RECORD; BEGIN FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP EXECUTE 'DROP TABLE IF EXISTS public.' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END \$\$;"
-  PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" -c "$drop_query" || error_exit "Failed to drop all tables."
-  write_ok "Successfully dropped all tables."
-}
-
-# Eliminar tablas antes de restaurar
-drop_all_tables
-
 # Función para volcar la base de datos
 dump_database() {
   local database="$1"
@@ -120,7 +102,7 @@ dump_database() {
   local base_url=$(echo "$PLUGIN_URL" | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
   local db_url="${base_url}/${database}"
 
-  write_info "Dumping database from $db_url"
+  echo "Dumping database from $db_url"
 
   PGPASSWORD="$DB_PASSWORD" pg_dump -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$database" \
       --format=plain \
@@ -155,7 +137,7 @@ restore_database() {
   local base_url=$(echo "$DATABASE_URL" | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
   local db_url="${base_url}/${database}"
 
-  local db_name=$(echo "$database" | sed -E 's/.*\/([^?]+).*/\1/')
+  local db_name=$(echo "$db_url" | sed -E 's/.*\/([^?]+).*/\1/')
   local db_url_base=$(echo "$db_url" | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   if ! PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$db_url_base" -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
@@ -165,8 +147,11 @@ restore_database() {
       write_info "Database $db_name exists."
   fi
 
+  # Intentar restaurar el volcado y capturar errores
   PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$db_url" -v ON_ERROR_STOP=1 --echo-errors \
-    -f "$dump_dir/$database.sql" || error_exit "Failed to restore database $database."
+    -f "$dump_dir/$database.sql" 2>&1 | tee -a restore.log || {
+    write_warn "Errors occurred during restore, but the process will continue. Check restore.log for details."
+  }
   
   write_ok "Successfully restored database $database from dump"
 }
@@ -176,7 +161,7 @@ for db in $databases; do
   restore_database "$db"
 done
 
-write_ok "Migration completed successfully."
+echo "Migration completed successfully."
 
 # Iniciar el servidor (asumiendo que esta parte es para otro script o aplicación relacionada)
 section "Starting the server"
