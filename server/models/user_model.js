@@ -1,5 +1,5 @@
 // servidor/modelos/usuario.js
-const pool = require('../db');
+const pool = require('./db');
 const fs = require('fs');
 const path = require('path');
 // Función para crear un nuevo usuarioconst crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuario, contrasena }) => {
