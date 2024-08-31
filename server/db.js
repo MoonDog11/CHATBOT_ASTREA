@@ -37,9 +37,9 @@ const checkConnection = async () => {
 const urlDatabase = process.env.DATABASE_URL;
 
 if (urlDatabase) {
-  console.log(`DATABASE_URL configurada correctamente: ${urlDatabase}`);
+  console.log(DATABASE_URL configurada correctamente: ${urlDatabase});
 } else {
-  console.log('DATABASE_URL no está configurada correctamente o está vacía.');
+  console.log(DATABASE_URL no está configurada correctamente o está vacía.);
 }
 
 // Ejecutar la verificación de conexión
