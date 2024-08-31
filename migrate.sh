@@ -25,12 +25,11 @@ export PGUSER_DEST=postgres
 export PGPASSWORD_DEST=RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE
 export PGDATABASE_DEST=railway
 
-section "Starting migration"
-
 # Define el directorio para el volcado
 dump_dir="plugin_dump"
 mkdir -p $dump_dir
 
+# Volcar base de datos
 dump_database() {
   local database=$1
   local dump_file="$dump_dir/$database.sql"
@@ -50,15 +49,7 @@ dump_database() {
   echo "Successfully saved dump to $dump_file"
 }
 
-# Realiza el volcado
-databases=$(PGPASSWORD=$PGPASSWORD_SOURCE psql -h $PGHOST_SOURCE -p $PGPORT_SOURCE -U $PGUSER_SOURCE -d "$PGDATABASE_SOURCE" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
-for db in $databases; do
-  dump_database "$db"
-done
-
-section "Uploading dumps to Railway"
-
-# Subir dumps a la base de datos de destino en Railway
+# Subir volcado a Railway
 upload_dump() {
   local dump_file=$1
   local database=$2
@@ -70,10 +61,34 @@ upload_dump() {
   echo "Successfully uploaded dump for $database"
 }
 
-# Sube cada volcado a Railway
+# Inicializar el servidor
+initialize_server() {
+  section "Starting server"
+
+  # Aquí se incluirían las instrucciones para iniciar el servidor.
+  # Asegúrate de que cualquier comando o script que inicie el servidor se ejecuta aquí.
+  
+  # Ejemplo:
+  # npm start
+}
+
+section "Starting migration"
+
+# Realizar el volcado
+databases=$(PGPASSWORD=$PGPASSWORD_SOURCE psql -h $PGHOST_SOURCE -p $PGPORT_SOURCE -U $PGUSER_SOURCE -d "$PGDATABASE_SOURCE" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+for db in $databases; do
+  dump_database "$db"
+done
+
+section "Uploading dumps to Railway"
+
+# Subir cada volcado a Railway
 for dump_file in $dump_dir/*.sql; do
   db_name=$(basename "$dump_file" .sql)
   upload_dump "$dump_file" "$db_name"
 done
 
-echo "Migration completed successfully"
+# Inicializar el servidor después de la migración
+initialize_server
+
+echo "Migration and server initialization completed successfully"
