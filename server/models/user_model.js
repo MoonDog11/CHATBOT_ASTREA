@@ -1,20 +1,16 @@
-// servidor/modelos/usuario.js
 const { Pool } = require('pg');
-const fs = require('fs');
-const path = require('path');
 require('dotenv').config();
 
 // Configuración del Pool de PostgreSQL
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  connectionString: process.env.DATABASE_URL,
+  user: process.env.DB_USER,              // Usuario de la base de datos
+  host: process.env.DB_HOST,              // Host de la base de datos
+  database: process.env.DB_DATABASE,      // Nombre de la base de datos
+  password: process.env.DB_PASSWORD,      // Contraseña de la base de datos
+  port: process.env.DB_PORT,              // Puerto de la base de datos
+  connectionString: process.env.DATABASE_URL, // Cadena de conexión completa
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false // Habilita SSL solo si se usa DATABASE_URL
 });
-
 
 // Función para crear un nuevo usuario
 const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuario, contrasena }) => {
