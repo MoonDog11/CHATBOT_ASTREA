@@ -11,6 +11,11 @@ _BOLD="\033[1m"
 _RED="\033[0;31m"
 _YELLOW="\033[1;33m"
 
+
+
+export DATABASE_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
+
+
 # Función para mostrar errores y salir
 error_exit() {
     printf "[ ${_RED}ERROR${_RESET} ] ${_RED}$1${_RESET}\n" >&2
