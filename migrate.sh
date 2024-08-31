@@ -193,4 +193,5 @@ done
 write_ok "Migration completed successfully."
 
 # Iniciar el servidor (asumiendo que esta parte es para otro script o aplicación relacionada)
-section "Starting the server
+section "Starting the server"
+# Aquí deberías incluir el comando para iniciar el servidor si es necesario
