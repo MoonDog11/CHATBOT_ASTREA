@@ -1,9 +1,22 @@
 // servidor/modelos/usuario.js
-const pool = require('./db');
+const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
-// Función para crear un nuevo usuarioconst crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuario, contrasena }) => {
+require('dotenv').config();
 
+// Configuración del Pool de PostgreSQL
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false // Habilita SSL solo si se usa DATABASE_URL
+});
+
+
+// Función para crear un nuevo usuario
 const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuario, contrasena }) => {
     const query = `
         INSERT INTO usuarios (nombre_completo, correo_electronico, nombre_usuario, contrasena)
@@ -35,8 +48,13 @@ const buscarUsuarioPorCorreo = async (correo_electronico) => {
         WHERE correo_electronico = $1;
     `;
     const values = [correo_electronico];
-    const result = await pool.query(query, values);
-    return result.rows[0];
+    try {
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error al buscar usuario por correo:', error);
+        throw error;
+    }
 };
 
 // Función para buscar un usuario por nombre de usuario
@@ -46,10 +64,16 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
         WHERE nombre_usuario = $1;
     `;
     const values = [nombre_usuario];
-    const result = await pool.query(query, values);
-    return result.rows[0];
+    try {
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error al buscar usuario por nombre de usuario:', error);
+        throw error;
+    }
 };
-// Function to create a new Abogado (lawyer)
+
+// Función para crear un nuevo Abogado (lawyer)
 const nuevoAbogado = async (userData) => {
     const { nombre, email, telefono, cv_path, consent } = userData;
     
@@ -61,9 +85,14 @@ const nuevoAbogado = async (userData) => {
     
     const values = [nombre, email, telefono, cv_path, consent];
     
-    const result = await pool.query(query, values);
-    return result.rows[0];
-  };
+    try {
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error al crear nuevo abogado:', error);
+        throw error;
+    }
+};
 
 module.exports = {
     crearUsuario,
