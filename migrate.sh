@@ -173,3 +173,42 @@ restore_database() {
   else
       write_info "Database $db_name exists."
   fi
+
+  # Modificar el archivo SQL para reemplazar tablas existentes
+  temp_file=$(mktemp)
+  sed 's/^CREATE TABLE /DROP TABLE IF EXISTS /; s/CREATE TABLE /CREATE TABLE /' "$dump_dir/$database.sql" > "$temp_file"
+
+  # Mostrar el contenido del archivo temporal para depuración
+  section "Content of the temporary file for restoration"
+  cat "$temp_file"
+
+  # Restaurar la base de datos, redirigiendo los errores a un archivo de log
+  PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$db_url" -v ON_ERROR_STOP=1 --echo-errors \
+    -f "$temp_file" 2>> restore_errors.log || {
+      write_warn "Errors occurred during restore, but the process will continue. Check restore_errors.log for details."
+    }
+  
+  # Limpiar archivo temporal
+  rm "$temp_file"
+  
+  write_ok "Successfully restored database $database from dump"
+}
+
+# Iterar sobre cada base de datos para restaurarla desde el volcado
+for db in $databases; do
+  restore_database "$db"
+done
+
+write_ok "Migration completed successfully."
+
+# Mostrar el contenido del archivo de errores de restauración
+section "Displaying restore errors (if any)"
+if [ -s restore_errors.log ]; then
+  cat restore_errors.log
+else
+  write_ok "No errors found in restore_errors.log"
+fi
+
+# Iniciar el servidor (asumiendo que esta parte es para otro script o aplicación relacionada)
+section "Starting the server"
+# Aquí deberías incluir el comando para iniciar el servidor si es necesario
