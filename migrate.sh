@@ -81,6 +81,15 @@ write_info "Port: $DB_PORT"
 write_info "User: $DB_USER"
 write_info "Database: $DB_NAME"
 
+# Conexión a la base de datos para verificar la conexión
+write_info "Testing database connection..."
+PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" -c "SELECT 1;" > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  write_ok "Successfully connected to the database."
+else
+  error_exit "Failed to connect to the database."
+fi
+
 section "Checking if DATABASE_URL is empty"
 
 query="SELECT count(*) FROM information_schema.tables WHERE table_schema NOT IN ('information_schema', 'pg_catalog');"
@@ -164,34 +173,3 @@ restore_database() {
   else
       write_info "Database $db_name exists."
   fi
-
-  # Modificar el archivo SQL para reemplazar tablas existentes
-  temp_file=$(mktemp)
-  sed 's/^CREATE TABLE /DROP TABLE IF EXISTS /; s/CREATE TABLE /CREATE TABLE /' "$dump_dir/$database.sql" > "$temp_file"
-
-  # Mostrar el contenido del archivo temporal para depuración
-  section "Content of the temporary file for restoration"
-  cat "$temp_file"
-
-  # Restaurar la base de datos, redirigiendo los errores a un archivo de log
-  PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$db_url" -v ON_ERROR_STOP=1 --echo-errors \
-    -f "$temp_file" 2>> restore_errors.log || {
-      write_warn "Errors occurred during restore, but the process will continue. Check restore_errors.log for details."
-    }
-  
-  # Limpiar archivo temporal
-  rm "$temp_file"
-  
-  write_ok "Successfully restored database $database from dump"
-}
-
-# Iterar sobre cada base de datos para restaurarla desde el volcado
-for db in $databases; do
-  restore_database "$db"
-done
-
-write_ok "Migration completed successfully."
-
-# Iniciar el servidor (asumiendo que esta parte es para otro script o aplicación relacionada)
-section "Starting the server"
-# Aquí deberías incluir el comando para iniciar el servidor si es necesario
