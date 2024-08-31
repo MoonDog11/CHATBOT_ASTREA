@@ -11,10 +11,7 @@ _BOLD="\033[1m"
 _RED="\033[0;31m"
 _YELLOW="\033[1;33m"
 
-
-
 export DATABASE_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
-
 
 # Función para mostrar errores y salir
 error_exit() {
@@ -73,9 +70,9 @@ write_ok "DATABASE_URL correctly set"
 # Extraer información de DATABASE_URL usando bash
 export DB_HOST=$(echo "$DATABASE_URL" | awk -F[@:] '{print $4}')
 export DB_PORT=$(echo "$DATABASE_URL" | awk -F[@:] '{print $5}')
-export DB_USER=$(echo "$DATABASE_URL" | awk -F[/@] '{print $4}')
-export DB_PASSWORD=$(echo "$DATABASE_URL" | awk -F[:] '{print $3}' | sed 's/@.*//')
-export DB_NAME=$(echo "$DATABASE_URL" | awk -F[/:] '{print $4}')
+export DB_USER=$(echo "$DATABASE_URL" | awk -F[/:@] '{print $4}')
+export DB_PASSWORD=$(echo "$DATABASE_URL" | awk -F[:@] '{print $3}' | sed 's/@.*//')
+export DB_NAME=$(echo "$DATABASE_URL" | awk -F[/:] '{print $5}')
 
 section "Checking if DATABASE_URL is empty"
 
@@ -140,7 +137,7 @@ restore_database() {
   local base_url=$(echo "$DATABASE_URL" | sed -E 's/(postgresql:\/\/[^:]+:[^@]+@[^:]+:[0-9]+)\/.*/\1/')
   local db_url="${base_url}/${database}"
 
-  local db_name=$(echo "$db_url" | sed -E 's/.*\/([^?]+).*/\1/')
+  local db_name=$(echo "$database" | sed -E 's/.*\/([^?]+).*/\1/')
   local db_url_base=$(echo "$db_url" | sed -E 's/(.*)\/[^\/?]+/\1/')
 
   if ! PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USER" -p "$DB_PORT" -d "$db_url_base" -tA -c "SELECT 1 FROM pg_database WHERE datname='$db_name'" | grep -q 1; then
