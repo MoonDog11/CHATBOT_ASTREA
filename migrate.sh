@@ -11,34 +11,31 @@ error_exit() {
   exit 1
 }
 
-# Configuración para la base de datos de origen
-export PGHOST_SOURCE=10.250.18.6
-export PGPORT_SOURCE=5432
-export PGUSER_SOURCE=postgres
-export PGPASSWORD_SOURCE=RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE
-export PGDATABASE_SOURCE=nordeste_abogados_users_db
+# Exportar variables de configuración
+export DB_USER=postgres
+export DB_PASSWORD=Jphv19840625*
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_DATABASE=nordeste_abogados_users_db
+export PLUGIN_URL=postgresql://postgres:Jphv19840625*@localhost:5432/nordeste_abogados_users_db
 
-# Configuración para la base de datos de destino (Railway)
-export PGHOST_DEST=viaduct.proxy.rlwy.net
-export PGPORT_DEST=56284
-export PGUSER_DEST=postgres
-export PGPASSWORD_DEST=RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE
-export PGDATABASE_DEST=railway
+# Variables de configuración para Railway
+export RAILWAY_URL=postgresql://postgres:RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE@viaduct.proxy.rlwy.net:56284/railway
 
 # Define el directorio para el volcado
 dump_dir="plugin_dump"
 mkdir -p $dump_dir
 
-# Volcar base de datos
+# Función para volcar la base de datos
 dump_database() {
   local database=$1
-  local dump_file="$dump_dir/$database.sql"
+  local dump_file="$dump_dir/${database}_dump.sql"
 
   section "Dumping database: $database"
 
-  echo "Dumping database from $PGDATABASE_SOURCE"
+  echo "Dumping database from $PLUGIN_URL"
 
-  PGPASSWORD=$PGPASSWORD_SOURCE pg_dump -h $PGHOST_SOURCE -p $PGPORT_SOURCE -U $PGUSER_SOURCE -d "$database" \
+  PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER -d "$database" \
       --format=plain \
       --quote-all-identifiers \
       --no-tablespaces \
@@ -49,14 +46,14 @@ dump_database() {
   echo "Successfully saved dump to $dump_file"
 }
 
-# Subir volcado a Railway
+# Función para subir el volcado a Railway
 upload_dump() {
   local dump_file=$1
   local database=$2
 
   section "Uploading dump for database: $database"
 
-  PGPASSWORD=$PGPASSWORD_DEST psql -h $PGHOST_DEST -p $PGPORT_DEST -U $PGUSER_DEST -d "$database" -f "$dump_file" || error_exit "Failed to upload dump to $database."
+  PGPASSWORD=RoJuKhWPvLtbSQILdwueQPcKMGUuXMkE psql -h viaduct.proxy.rlwy.net -p 56284 -U postgres -d "$database" -f "$dump_file" || error_exit "Failed to upload dump to $database."
   
   echo "Successfully uploaded dump for $database"
 }
@@ -75,7 +72,7 @@ initialize_server() {
 section "Starting migration"
 
 # Realizar el volcado
-databases=$(PGPASSWORD=$PGPASSWORD_SOURCE psql -h $PGHOST_SOURCE -p $PGPORT_SOURCE -U $PGUSER_SOURCE -d "$PGDATABASE_SOURCE" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+databases=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d "$DB_DATABASE" -t -A -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
 for db in $databases; do
   dump_database "$db"
 done
@@ -83,8 +80,8 @@ done
 section "Uploading dumps to Railway"
 
 # Subir cada volcado a Railway
-for dump_file in $dump_dir/*.sql; do
-  db_name=$(basename "$dump_file" .sql)
+for dump_file in $dump_dir/*_dump.sql; do
+  db_name=$(basename "$dump_file" _dump.sql)
   upload_dump "$dump_file" "$db_name"
 done
 
