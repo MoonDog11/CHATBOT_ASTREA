@@ -34,7 +34,6 @@ const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuari
 
 // Función para buscar un usuario por nombre de usuario
 const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
-    // Consulta SQL
     const query = `
         SELECT * FROM public."usuarios"
         WHERE LOWER(nombre_usuario) = LOWER($1);
@@ -60,10 +59,12 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
         console.error('Error al buscar usuario por nombre de usuario:');
         console.error('Consulta SQL:', query);
         console.error('Valores:', values);
-        console.error('Detalles del error:', error);
+        console.error('Detalles del error:', error.message);
+        console.error('Stack del error:', error.stack);
         throw error;
     }
 };
+
 // Función para buscar un usuario por correo electrónico
 const buscarUsuarioPorCorreo = async (correo_electronico) => {
     const query = `
