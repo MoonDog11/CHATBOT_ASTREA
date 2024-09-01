@@ -108,6 +108,9 @@ fi
 dump_dir="plugin_dump"
 mkdir -p "$dump_dir"
 
+# Mostrar la ruta del directorio de volcados
+write_info "Database dumps will be stored in: $(realpath "$dump_dir")"
+
 # Función para eliminar todas las tablas en la base de datos
 drop_all_tables() {
   section "Dropping all tables in database: $DB_NAME"
