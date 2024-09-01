@@ -18,12 +18,15 @@ const checkConnection = async () => {
     const { rows } = await client.query('SELECT version()');
     console.log('Versión del servidor PostgreSQL:', rows[0].version);
 
+    // Consultar el nombre de la base de datos
+    const { rows: dbNameRows } = await client.query('SELECT current_database();');
+    console.log('Base de datos conectada:', dbNameRows[0].current_database);
+
   } catch (err) {
     console.error('Error al conectar a la base de datos:', err.message);
   } finally {
-    // Liberar el cliente y cerrar el pool
+    // Liberar el cliente
     if (client) client.release();
-    await pool.end();
   }
 };
 
@@ -38,3 +41,6 @@ if (urlDatabase) {
 
 // Ejecutar la verificación de conexión
 checkConnection();
+
+// Exportar el pool para su uso en otras partes de la aplicación
+module.exports = pool;
