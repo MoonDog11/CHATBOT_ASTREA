@@ -23,7 +23,9 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
-
+pool.query('SELECT current_database();')
+    .then(res => console.log('Base de datos conectada:', res.rows[0].current_database))
+    .catch(err => console.error('Error al verificar la base de datos:', err));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
