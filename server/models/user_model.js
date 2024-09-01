@@ -9,7 +9,10 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  max: 20, // Número máximo de conexiones en el pool
+  idleTimeoutMillis: 30000, // Tiempo en ms antes de cerrar una conexión inactiva
+  connectionTimeoutMillis: 2000 // Tiempo en ms para esperar una conexión
 });
 
 // Función para crear un nuevo usuario
