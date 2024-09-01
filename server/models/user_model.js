@@ -9,10 +9,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
-  max: 20, // Número máximo de conexiones en el pool
-  idleTimeoutMillis: 30000, // Tiempo en ms antes de cerrar una conexión inactiva
-  connectionTimeoutMillis: 2000 // Tiempo en ms para esperar una conexión
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
 // Función para crear un nuevo usuario
@@ -25,7 +22,7 @@ const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuari
     const values = [nombre_completo, correo_electronico, nombre_usuario, contrasena];
     
     try {
-        console.log('Ejecutando consulta:', query, values); // Log de la consulta
+        console.log('Ejecutando consulta para crear usuario:', query, values); // Log de la consulta
         const result = await pool.query(query, values);
         console.log('Usuario insertado correctamente:', result.rows[0]);
         return result.rows[0];
@@ -43,15 +40,17 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
     `;
     const values = [nombre_usuario];
     try {
-        console.log('Ejecutando consulta:', query, values); // Log de la consulta
+        console.log('Ejecutando consulta para buscar usuario:', query, values); // Log de la consulta
         const result = await pool.query(query, values);
+        if (result.rows.length === 0) {
+            console.log('No se encontró ningún usuario con el nombre de usuario proporcionado.');
+        }
         return result.rows[0];
     } catch (error) {
         console.error('Error al buscar usuario por nombre de usuario:', error);
         throw error;
     }
 };
-
 // Función para buscar un usuario por correo electrónico
 const buscarUsuarioPorCorreo = async (correo_electronico) => {
     const query = `
