@@ -41,21 +41,16 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
     const values = [nombre_usuario];
     
     try {
-        // Log de la consulta y los valores
         console.log('Ejecutando consulta SQL:');
         console.log('Consulta:', query);
         console.log('Valores:', values);
 
-        // Ejecutar la consulta
         const result = await pool.query(query, values);
 
-        // Log del resultado
         console.log('Resultado de la consulta:', result.rows);
 
-        // Retornar el primer usuario encontrado
         return result.rows[0];
     } catch (error) {
-        // Log del error con detalles
         console.error('Error al buscar usuario por nombre de usuario:');
         console.error('Consulta SQL:', query);
         console.error('Valores:', values);
