@@ -39,14 +39,25 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
         WHERE LOWER(nombre_usuario) = LOWER($1);
     `;
     const values = [nombre_usuario];
+    
     try {
+        // Log de la consulta y valores
         console.log('Ejecutando consulta:', query);
         console.log('Valores:', values);
+
+        // Ejecutar la consulta
         const result = await pool.query(query, values);
+
+        // Log del resultado de la consulta
         console.log('Resultado de la consulta:', result.rows);
+
+        // Retornar el primer resultado encontrado
         return result.rows[0];
     } catch (error) {
+        // Log del error si ocurre
         console.error('Error al buscar usuario por nombre de usuario:', error);
+        
+        // Re-throw del error para que pueda ser manejado por el llamador
         throw error;
     }
 };
