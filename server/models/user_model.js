@@ -58,6 +58,7 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
     `;
     const values = [nombre_usuario];
     try {
+        console.log('Ejecutando consulta:', query, values); // Log de la consulta
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
