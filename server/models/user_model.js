@@ -35,7 +35,7 @@ const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuari
 // Función para buscar un usuario por nombre de usuario
 const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
     const query = `
-        SELECT * FROM public."usuarios"
+        SELECT * FROM public.usuarios
         WHERE LOWER(nombre_usuario) = LOWER($1);
     `;
     const values = [nombre_usuario];
