@@ -10,9 +10,19 @@ const fs = require('fs'); // Añadido para verificar archivos
 const bcrypt = require('bcryptjs'); // Asegúrate de que `bcrypt` esté instalado
 const { Pool } = require('pg'); // Paquete para PostgreSQL
 const flows = require('./flow.json');
-
 const usuariosRutas = require('./routes_users');
 const { UsuarioAbogado } = require('./controllers/users_controllers');
+
+// Configuración del Pool de PostgreSQL
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -110,7 +120,7 @@ app.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Inserta el nuevo usuario en la base de datos
-    const query = 'INSERT INTO usuarios (username, password) VALUES ($1, $2) RETURNING id';
+    const query = 'INSERT INTO public."usuarios" (nombre_usuario, contrasena) VALUES ($1, $2) RETURNING id';
     const values = [username, hashedPassword];
     const result = await pool.query(query, values);
 
