@@ -3,35 +3,29 @@ require('dotenv').config();
 
 // Configuración del Pool de PostgreSQL
 const pool = new Pool({
-  user: process.env.DB_USER,              // Usuario de la base de datos
-  host: process.env.DB_HOST,              // Host de la base de datos
-  database: process.env.DB_DATABASE,      // Nombre de la base de datos
-  password: process.env.DB_PASSWORD,      // Contraseña de la base de datos
-  port: process.env.DB_PORT,              // Puerto de la base de datos
-  connectionString: process.env.DATABASE_URL, // Cadena de conexión completa
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false // Habilita SSL solo si se usa DATABASE_URL
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
 // Función para crear un nuevo usuario
 const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuario, contrasena }) => {
     const query = `
-        INSERT INTO usuarios (nombre_completo, correo_electronico, nombre_usuario, contrasena)
+        INSERT INTO public."usuarios" (nombre_completo, correo_electronico, nombre_usuario, contrasena)
         VALUES ($1, $2, $3, $4)
         RETURNING *;
     `;
     const values = [nombre_completo, correo_electronico, nombre_usuario, contrasena];
     
     try {
-        // Ejecutar la consulta SQL
         const result = await pool.query(query, values);
-        
-        // Log de depuración para verificar si la inserción fue exitosa
         console.log('Usuario insertado correctamente:', result.rows[0]);
-
-        // Devolver el resultado de la consulta
         return result.rows[0];
     } catch (error) {
-        // Manejar cualquier error que ocurra durante la inserción
         console.error('Error al insertar usuario:', error);
         throw error;
     }
@@ -40,7 +34,7 @@ const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuari
 // Función para buscar un usuario por correo electrónico
 const buscarUsuarioPorCorreo = async (correo_electronico) => {
     const query = `
-        SELECT * FROM usuarios
+        SELECT * FROM public."usuarios"
         WHERE correo_electronico = $1;
     `;
     const values = [correo_electronico];
@@ -56,8 +50,8 @@ const buscarUsuarioPorCorreo = async (correo_electronico) => {
 // Función para buscar un usuario por nombre de usuario
 const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
     const query = `
-        SELECT * FROM usuarios
-        WHERE nombre_usuario = $1;
+        SELECT * FROM public."usuarios"
+        WHERE LOWER(nombre_usuario) = LOWER($1);
     `;
     const values = [nombre_usuario];
     try {
@@ -74,7 +68,7 @@ const nuevoAbogado = async (userData) => {
     const { nombre, email, telefono, cv_path, consent } = userData;
     
     const query = `
-      INSERT INTO job_applications (nombre, email, telefono, cv_path, consent)
+      INSERT INTO public."job_applications" (nombre, email, telefono, cv_path, consent)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `;
