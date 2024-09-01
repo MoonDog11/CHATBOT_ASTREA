@@ -44,16 +44,12 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
         console.log('Valores:', values);
         const result = await pool.query(query, values);
         console.log('Resultado de la consulta:', result.rows);
-        if (result.rows.length === 0) {
-            console.log('No se encontró ningún usuario con el nombre de usuario proporcionado.');
-        }
         return result.rows[0];
     } catch (error) {
         console.error('Error al buscar usuario por nombre de usuario:', error);
         throw error;
     }
 };
-
 // Función para buscar un usuario por correo electrónico
 const buscarUsuarioPorCorreo = async (correo_electronico) => {
     const query = `
