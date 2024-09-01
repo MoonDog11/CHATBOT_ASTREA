@@ -40,8 +40,10 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
     `;
     const values = [nombre_usuario];
     try {
-        console.log('Ejecutando consulta para buscar usuario:', query, values); // Log de la consulta
+        console.log('Ejecutando consulta:', query);
+        console.log('Valores:', values);
         const result = await pool.query(query, values);
+        console.log('Resultado de la consulta:', result.rows);
         if (result.rows.length === 0) {
             console.log('No se encontró ningún usuario con el nombre de usuario proporcionado.');
         }
