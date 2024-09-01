@@ -51,6 +51,7 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
         throw error;
     }
 };
+
 // Función para buscar un usuario por correo electrónico
 const buscarUsuarioPorCorreo = async (correo_electronico) => {
     const query = `
