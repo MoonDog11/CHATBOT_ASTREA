@@ -25,27 +25,12 @@ const crearUsuario = async ({ nombre_completo, correo_electronico, nombre_usuari
     const values = [nombre_completo, correo_electronico, nombre_usuario, contrasena];
     
     try {
+        console.log('Ejecutando consulta:', query, values); // Log de la consulta
         const result = await pool.query(query, values);
         console.log('Usuario insertado correctamente:', result.rows[0]);
         return result.rows[0];
     } catch (error) {
         console.error('Error al insertar usuario:', error);
-        throw error;
-    }
-};
-
-// Función para buscar un usuario por correo electrónico
-const buscarUsuarioPorCorreo = async (correo_electronico) => {
-    const query = `
-        SELECT * FROM public."usuarios"
-        WHERE correo_electronico = $1;
-    `;
-    const values = [correo_electronico];
-    try {
-        const result = await pool.query(query, values);
-        return result.rows[0];
-    } catch (error) {
-        console.error('Error al buscar usuario por correo:', error);
         throw error;
     }
 };
@@ -63,6 +48,22 @@ const buscarUsuarioPorNombreUsuario = async (nombre_usuario) => {
         return result.rows[0];
     } catch (error) {
         console.error('Error al buscar usuario por nombre de usuario:', error);
+        throw error;
+    }
+};
+
+// Función para buscar un usuario por correo electrónico
+const buscarUsuarioPorCorreo = async (correo_electronico) => {
+    const query = `
+        SELECT * FROM public."usuarios"
+        WHERE correo_electronico = $1;
+    `;
+    const values = [correo_electronico];
+    try {
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error al buscar usuario por correo:', error);
         throw error;
     }
 };
