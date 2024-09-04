@@ -45,10 +45,10 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'http://localhost:3002'],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://chatbot-react-astrea-production.up.railway.app/'],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
       imgSrc: ["'self'", 'data:', 'https://example.com'],
-      frameSrc: ["http://localhost:3002"],
+      frameSrc: ["https://chatbot-react-astrea-production.up.railway.app/"],
     },
   })
 );
